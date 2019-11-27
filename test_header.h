@@ -27,6 +27,7 @@ int     ft_printf(char *fmt, ...);
 int     ft_printf2(char *fmt, ...);
 char	*ft_strdup(const char *s1);
 int     ft_cut_backspaces(const char *s);
+int		ft_atoi(const char *str);
 int		ft_atoi2(const char *str, char *end);
 int     digits_in_base(int value, int base);
 int    ft_putdouble(double a, int prec);

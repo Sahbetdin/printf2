@@ -73,8 +73,7 @@ void print_sp(t_specif *sp)
 	printf("point: %d\n", sp->point);
 	printf("numb: %d\n", sp->numb);
 	printf("decim: %d\n", sp->decim);
-	printf("plus: %d\n", sp->plus);
-	printf("minus: %d\n\n", sp->minus);
+	printf("sign: %c\n", sp->sign);
 	return ;
 }
 
@@ -109,7 +108,7 @@ char *set_sign(char *p, char *s, t_specif *sp)
 	while (ptr < s)
 	{
 		if (!flag && (*ptr == '+' || *ptr == '-'))
-			flag == 1;
+			flag = 1;
 		if (flag && (*ptr == '+' || *ptr == '-'))
 			return (NULL);
 		ptr++;
@@ -133,8 +132,8 @@ char *set_sign(char *p, char *s, t_specif *sp)
 
 /*we search for point after we've searched for letter*/
 /*we search between p and s-1 */
-/*if found we set sp->point as 1 and return pointer to '.' */
-char *set_point(char *p, char *s, t_specif *sp)
+/*if found we set sp->point as 1 and return [pointer to '.'] */
+void	set_point(char *p, char *s, t_specif *sp)
 {
 	while (*p && p < s)
 	{
@@ -143,22 +142,34 @@ char *set_point(char *p, char *s, t_specif *sp)
 			p++;
 		else if (*p == '.')
 		{
-			sp->minus = 1;
-			return (p);
+			sp->point = 1;
+			return ;
 		}
 		else
-			return (NULL);
+			return ;
 	}
-	return (NULL);
+	return ;
 }
 
+/*we input pointer next after % as p
+and ptr_spec or (ptr_point?) as s */
+void	set_numb(char *p, char *s, t_specif *sp)
+{
+	while (*p && p < s && (*p == ' ' || *p == '\t' || *p == '+' || *p == '-' || *p == '#'))
+		p++;
+	sp->numb = ft_atoi(p);
+}
 
+void	set_decimal(char *p, char *s, t_specif *sp)
+{
+	sp->decim = ft_atoi(p);
+}
 
 
 //сначала ищем букву. Ту , которая нужна
 // ищем ноль (done)
-// ищем плюс/минус
-// ищем numb
+// ищем плюс/минус (done)
+// ищем numb which is before . (done)
 // ищем точку (done)
 // ищем decimal part
 
@@ -167,23 +178,17 @@ char *parse_specifier(char *p, t_specif *sp)
 	char *ptr_lett;
 	char *ptr_point;
 	char *ptr_zero;
+	char *ptr_sign;
 
 	clear_spec(sp);
 	if ((ptr_lett = find_spec(p + 1, sp)))
 	{
 		ptr_zero = set_zero(p + 1, ptr_lett, sp);
-
+		ptr_sign = set_sign(p + 1, ptr_lett, sp);//может быть сдеать void?
+		set_numb(p + 1, ptr_lett, sp);
+		if (ptr_point)
+			set_decimal(ptr_point + 1, ptr_lett, sp);
 	}
-
-
-
-
-		// if ((ptr_p = set_point(p, ptr_lett, sp)))
-		// 	//ищем numb
-		// 	//ищем decimal part
-		// else
-		// 	//ищем numb
-
 	return (ptr_lett);
 }
 
@@ -208,6 +213,7 @@ int     ft_printf2(char *fmt, ...)
 				printf("%c", sp->specif);
 				p = s + 1;
 			}
+			print_sp(sp);
 //			printf("CH spec: %d\n", sp->specif);
 //			s = parse_specifier(p + 1, sp);
 //			printf("CH spec: %d\n", sp->specif);
