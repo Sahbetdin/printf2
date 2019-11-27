@@ -5,7 +5,7 @@ RM = /bin/rm -f
 LDFLAGS = -L.
 LDLIBS = -lft
 HDDIRS = -I.
-SRC = ./functions2.c ./printf_test_file.c
+SRC = ./functions2.c ./printf_test_file2.c
 
 OBJ = $(subst .c,.o,$(SRC))
 
@@ -16,8 +16,6 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
-	@gcc main.c -L. libftprintf.a
-	@./a.out
 
 %.o: %.c
 	$(CC) $< -c -o $@ -I.$(HEAD) 

@@ -7,6 +7,16 @@
 #include <string.h>
 #include <stdlib.h>
 
+typedef struct s_specif
+{
+	char	specif;
+	int		zero;
+	int		point;
+	int		numb;
+	int		decim;
+	char 	sign;
+}				t_specif;
+
 
 int		ft_putchar(char c);
 size_t	ft_strlen(const char *s);
@@ -14,6 +24,7 @@ int		ft_putstr(char const *s);
 int		ft_putnbr(int n);
 char	*ft_strchr(const char *s, int c);
 int     ft_printf(char *fmt, ...);
+int     ft_printf2(char *fmt, ...);
 char	*ft_strdup(const char *s1);
 int     ft_cut_backspaces(const char *s);
 int		ft_atoi2(const char *str, char *end);
