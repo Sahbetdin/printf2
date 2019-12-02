@@ -59,8 +59,6 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-
-
 char	*ft_strdup(const char *s1)
 {
 	char	*tmp;
@@ -150,7 +148,7 @@ int			ft_atoi2(const char *str, char *end)
 	return (sign * res);
 }
 
-int digits_in_base(int value, int base)
+int digits_in_base(long value, int base)
 {
 	int i;
 
@@ -160,39 +158,6 @@ int digits_in_base(int value, int base)
 		value /= base;
 		i++;
 	}
-	return (i);
-}
-
-int	ft_putdouble(double a, int prec)
-{
-	long d;
-	int i;
-
-	i = 0;
-	if (a < 0)
-	{
-		ft_putchar('-');
-		i++;
-		a = -a;
-	}
-	d = a;
-	i += ft_putlong(d);
-	ft_putchar('.');
-	i++;
- 	while (prec)
- 	{
- 		a = (a - d) * 10;
- 		d = a;
- 		if (prec == 1)
- 		{
-			if ((a - (long)a) * 10 > 4)
-				d += 1;
- 		}
-		ft_putchar(d + '0');
-		i++;
- 		prec--;
- 	}
-	ft_putchar('\n'); //потом убрать!
 	return (i);
 }
 
@@ -224,21 +189,244 @@ int        ft_putlong(long n)
     return (i);
 }
 
-int		ft_isspace(char c)
+void print_sp(t_specif *sp)
 {
-	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r')
-		return (1);
-	else
-		return (0); 
+	printf("spec: %c\n", sp->specif);
+	printf("zero: %d\n", sp->zero);
+	printf("point: %d\n", sp->point);
+	printf("numb: %d\n", sp->numb);
+	printf("decim: %d\n", sp->decim);
+	printf("plus: %d\n", sp->plus);
+	printf("minus: %d\n", sp->minus);
+	printf("backsp: %d\n", sp->backsp);
+	printf("sign: %d\n", sp->sign);
+	return ;
 }
 
-int		ft_isspace2(char *p1, char *p2)
+void	clear_spec(t_specif *sp)
 {
-	while (*p1 && p1 < p2)
-	{
-		if (*p1 == ' ' || *p1 == '\t' || *p1 == '\n' || *p1 == '\v' || *p1 == '\f' || *p1 == '\r')
-			return (1);
-		p1++;
-	}
-	return (0);
+	sp->specif = '\0';
+	sp->zero = 0;
+	sp->point = 0;
+	sp->numb = 0;
+	sp->decim = -1;
+	sp->plus = 0;
+	sp->minus = 0;
+	sp->backsp = 0;
+	sp->sign = 0;
+	return ;
 }
+
+/* При поиске % мы можем пропускать числа, точку, пробел и таб.
+Иначе если находим %, возвращаем указатель.
+Иначе возвращаем НУЛЬ.
+*/
+
+/*during the search we skip backspace, tab, any number, +, -, # 
+otherwise we return pointer to required letter or NULL */
+char *find_spec(char *p, t_specif *sp)
+{
+	char *lett;
+
+	lett = ft_strdup("diuoxXfFeEgGaAcspn%");
+	while (*p)
+	{
+		if (*p == ' ' || *p == '\t' || *p == '.' || (*p >= '0' && *p <= '9')
+		 || *p == '+' || *p == '-' || *p == '#')
+ 			p++;
+		else if (ft_strchr(lett, *p))
+		{
+			sp->specif = *p;
+			return (p); 
+		}
+		else
+			return (NULL);
+	}
+	free(lett);
+	return (NULL);
+}
+
+/*we search between p and s-1 */
+/*we search before any letter or  */
+void	set_zero(char *p, char *s, t_specif *sp)
+{
+	while (*p && p < s)
+	{
+		if (*p == ' ' || *p == '\t' || *p == '+' || *p == '-' || *p == '#')
+//!!проверить, надо ли ПРПУСКАТЬ #!!!
+ 			p++;
+		else if (*p == '0')
+		{
+			sp->zero = *p;
+			return ; 
+		}
+		else
+			return ;
+	}
+	return ;
+}
+
+void	set_plus(char *p, char *s, t_specif *sp)
+{
+	while (*p && p < s)
+	{
+		if (*p == ' ' || *p == '\t' || *p == '#')
+//!!проверить по оригиналу, надо ли ПРПУСКАТЬ #!!!
+ 			p++;
+		else if (*p == '+')
+		{
+			sp->plus = 1;
+			return ;
+		}
+		else
+			return ;
+	}
+	return ;
+}
+
+void	set_minus(char *p, char *s, t_specif *sp)
+{
+	while (*p && p < s)
+	{
+		if (*p == ' ' || *p == '\t' || *p == '#')
+//!!проверить по оригиналу, надо ли ПРПУСКАТЬ #!!!
+ 			p++;
+		else if (*p == '-')
+		{
+			sp->minus = 1;
+			return ;
+		}
+		else
+			return ;
+	}
+	return ;
+}
+
+
+//!!!НАДО ИСКАТЬ НА ВСЕМ ПРОТЯЖЕНИИ ОТ p ДО p_spec
+void	set_backsp(char *p, char *s, t_specif *sp)
+{
+	while (*p && p < s)
+	{
+		if (*p == ' ')
+		{
+			sp->backsp = 1;
+			return ;
+		}
+		else
+			p++;
+
+	}
+	return ;
+}
+
+/*we search for point after we've searched for letter*/
+/*we search between p and s-1 */
+/*if found we set sp->point as 1 and return [pointer to '.'] */
+char *set_point(char *p, char *s, t_specif *sp)
+{
+	while (*p && p < s)
+	{
+		if (*p == ' ' || *p == '\t' || (*p >= '0' && *p <= '9') 
+		|| *p == '+' || *p == '-' || *p == '#')
+			p++;
+		else if (*p == '.')
+		{
+			sp->point = 1;
+			return (p);
+		}
+		else
+			return (NULL);
+	}
+	return (NULL);
+}
+
+/*we input pointer next after % as p
+and ptr_spec or (ptr_point?) as s */
+void	set_numb(char *p, char *s, t_specif *sp)
+{
+	while (*p && p < s && (*p == ' ' || *p == '\t' 
+		|| *p == '+' || *p == '-' || *p == '#'))
+		p++;
+	sp->numb = ft_atoi(p);
+}
+
+/*works ONLY if point was found */
+void	set_decimal(char *p, t_specif *sp)
+{
+	sp->decim = ft_atoi(p);
+}
+
+
+//сначала ищем букву. Ту, которая нужна, то есть находится в массиве...
+// ищем ноль
+// ищем плюс/минус
+// ищем numb which is before.
+// ищем точку
+// ищем decimal part
+char *parse_specifier(char *p, t_specif *sp)
+{
+	char *ptr_lett;
+	char *ptr_point;
+	char *ptr_zero;
+
+	clear_spec(sp);
+	if ((ptr_lett = find_spec(p, sp)))
+	{
+		set_zero(p, ptr_lett, sp);
+		set_plus(p, ptr_lett, sp);
+		set_minus(p, ptr_lett, sp);
+		set_numb(p, ptr_lett, sp);
+		set_backsp(p, ptr_lett, sp);
+		ptr_point = set_point(p, ptr_lett, sp);
+	//	printf("POINTER TO POINT %p\n", ptr_point);
+		if (ptr_point)
+			set_decimal(ptr_point + 1, sp);
+	}
+	else
+	{
+		ft_putstr("error");
+		ptr_lett = NULL;
+	}
+	return (ptr_lett);
+}
+
+
+
+	// k = sp->numb - digits_in_base(d, 10) - 1 - sp->decim;
+	// if (a < 0 || (a > 0 && sp->plus))
+	// 	k--;
+	// if ()
+
+
+	// return (0);
+//if '+' then we show sign!	
+	// else if ((a > 0) && sp->plus)
+	// 	k--;
+	// if (sp->sign != '-') //если не минус, то сначала precedings
+	// {
+	// 	while (k > 0)
+	// 	{
+	// 		if (sp->zero)
+	// 			ft_putchar('0');
+	// 		else
+	// 			ft_putchar(' ');
+	// 		k--;
+	// 	}
+	// }
+	// printf("PRECEDING #: %d\n", k);
+	// while (k > 0)
+	// {
+	// 	if (is_zero)
+	// 		ft_putchar('0');
+	// 	else
+	// 		ft_putchar(' ');
+	// 	k--;
+	// }
+	// i = 0;
+	// if (a < 0)
+	// {
+	// 	ft_putchar('-');
+	// 	i++;
+	// 	a = -a;
+	// }

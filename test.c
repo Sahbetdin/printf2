@@ -1,24 +1,29 @@
 #include <stdio.h>
 
-typedef struct s_point
-{
-    int x;
-    int y;
-} t_point;
 
-void clear(t_point *pp)
+void clear(int *p)
 {
-    pp->x = -1;
+    *p = 2;
 }
+
+void set()
+{
+	int *pp;
+	
+	clear(pp);
+}
+
 
 int main()
 {
-    t_point *p;
+	set();
 
-    p->x = 5;
-    clear(p);
+    // t_specif1 *p;
 
-    printf("%d", p->x);
+    // p->numb = 5;
+    // clear(p);
+
+    // printf("%d", p->numb);
     return (0);
 }
 
