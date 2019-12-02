@@ -1,36 +1,31 @@
 #include "test_header.h"
 
 
-
-
-
-void	process_specifier(char *ptr, t_specif *sp, va_list ap)
+//надо сделать oct float!!
+int	process_specifier(char *ptr, t_specif *sp, va_list ap)
 {
-	if (sp->specif == 'd')
-		printf("%d\n", va_arg(ap, int));
-	else if (sp->specif == 'i')
-		printf("%i\n", va_arg(ap, int));
-	else if (sp->specif == 'o')
-		printf("%o\n", va_arg(ap, int));
+	if (sp->specif == 'd' || sp->specif == 'i')
+		return (ft_putnbr(va_arg(ap, int)));
+	else if (sp->specif == 'o') //проблема с 0
+		return (ft_itoa_base(va_arg(ap, int), 8, 0));
 	else if (sp->specif == 'u')
-		printf("%u\n", va_arg(ap, int)); //should be unsigned decimal
-	else if (sp->specif == 'x')
-		printf("%x\n", va_arg(ap, int));
-	else if (sp->specif == 'X')
-		printf("%X\n", va_arg(ap, int));
+		return (ft_putnbr_u(va_arg(ap, int)));
+	else if (sp->specif == 'x')  //проблема с 0
+		return (ft_itoa_base(va_arg(ap, int), 16, 0));
+	else if (sp->specif == 'X') //проблема с 0 
+		return (ft_itoa_base(va_arg(ap, int), 16, 1));
 	else if (sp->specif == 'f')
-		ft_put_whole_double(va_arg(ap, double), sp);
+		return (ft_put_whole_double(va_arg(ap, double), sp));
 	else if (sp->specif == 'F')
 		printf("%F\n", va_arg(ap, double));
 	else if (sp->specif == 'c')
 		ft_putchar(va_arg(ap, int));
 	else if (sp->specif == 's')
-		ft_putstr(va_arg(ap, char *));
+		return(ft_putstr(va_arg(ap, char *)));
 	else
 		ft_putstr("AnoTher\n");
-	return ;
+	return (0);
 }
-
 
 int     ft_printf(char *fmt, ...)
 {
@@ -54,7 +49,7 @@ int     ft_printf(char *fmt, ...)
 			{
 			//	print_sp(sp);
 				//вызываем обработчик спарсенного
-				process_specifier(p + 1, sp, ap);
+				ret += process_specifier(p + 1, sp, ap);
 				p = s + 1;
 				continue;
 			}
@@ -72,37 +67,5 @@ int     ft_printf(char *fmt, ...)
 		p++;
 	}
 	free(sp);
-	return (0);
+	return (ret);
 }
-
-
-
-
-
-// char *find_spec(char *p, t_specif *sp)
-// {
-// 	char *tmp;
-// 	char *lett;
-
-// 	lett = ft_strdup("diuoxXfFeEgGaAcspn%");
-
-// 	while (*p)
-// 	{
-// 		if (*p == ' ' || *p == '\t' || *p == '.' || (*p >= '0' && *p <= '9'))
-// 			p++;
-// 		else if ((tmp = ft_strchr(lett, *p)))
-// 		{
-// 			printf("WAS ");
-// 			sp->specif = *p;
-// 			return (p);
-// 		}
-// 		else
-// 			return (NULL);
-// 		p++;
-// 	}
-// 	free(lett);
-// 	return (NULL);
-// }
-
-
-

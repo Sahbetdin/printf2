@@ -17,21 +17,21 @@ typedef struct s_specif
 	int 	plus;
 	int 	minus;
 	int		backsp;
-	int		sign;
+	char	sign;
 }				t_specif;
 
 int		ft_putchar(char c);
 size_t	ft_strlen(const char *s);
 int		ft_putstr(char const *s);
 int		ft_putnbr(int n);
+int		ft_putnbr_u(unsigned int n);
 char	*ft_strchr(const char *s, int c);
 int		ft_printf(char *fmt, ...);
 char	*ft_strdup(const char *s1);
 int		ft_cut_backspaces(const char *s);
 int		ft_atoi(const char *str);
 int		ft_atoi2(const char *str, char *end);
-int		digits_in_base(long value, int base);
-
+int		digits_in_base(int value, int base);
 int		ft_put_whole_double(double a, t_specif *sp);
 int		ft_putdouble(double a, t_specif *sp);
 int		ft_putlong(long n);
@@ -45,4 +45,6 @@ void	set_numb(char *p, char *s, t_specif *sp);
 void	set_decimal(char *p, t_specif *sp);
 void	set_backsp(char *p, char *s, t_specif *sp);
 char	*parse_specifier(char *p, t_specif *sp);
+int		abs_v(int num);
+int		ft_itoa_base(int value, int base, int lett_type);
 #endif

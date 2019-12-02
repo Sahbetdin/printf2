@@ -6,13 +6,17 @@ int	main()
 {
 	int c1, c2;
 	double a;
+	int d;
+	char *s;
 
-	a = -9.42;
-	c1 = printf("%5.3fgl\n", a);
-//	c2 = ft_printf("% 08.3fgl\n", a);
+	d = 0000000;
+	   c1 = printf("%oA\n", d);
+	c2 = ft_printf("%oA\n", d);
 
-//	c1 = printf("%9f", 5.6756567);  //5.653300  dfg
+	printf("c1 = %d, c2 = %d", c1, c2);
 
+	// c1 = ft_putnbr(-2147483648);
+	// printf("int digits = %d", c1);
 	// c1 = printf("%s\n", "goodie");
 	// c2 = ft_printf("%s\n", "goodie");
 

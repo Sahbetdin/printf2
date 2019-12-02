@@ -16,6 +16,14 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
+int abs_v(int num)
+{
+	if (num < 0)
+		return (-num);
+	else
+		return (num);
+}
+
 int	ft_putstr(char const *s)
 {
 	int n;
@@ -28,19 +36,6 @@ int	ft_putstr(char const *s)
 	}
 	else
 		return (-1);
-}
-
-int	ft_putnbr(int n)
-{
-	unsigned int	m;
-
-	m = (n < 0) ? (unsigned int)-n : (unsigned int)n;
-	if (n < 0)
-		ft_putchar('-');
-	if (m > 9)
-		ft_putnbr(m / 10);
-	ft_putchar(m % 10 + '0');
-	return (0);
 }
 
 char	*ft_strchr(const char *s, int c)
@@ -148,7 +143,7 @@ int			ft_atoi2(const char *str, char *end)
 	return (sign * res);
 }
 
-int digits_in_base(long value, int base)
+int digits_in_base(int value, int base)
 {
 	int i;
 
@@ -160,6 +155,39 @@ int digits_in_base(long value, int base)
 	}
 	return (i);
 }
+
+int	ft_putnbr(int n)
+{
+	unsigned int	m;
+	int i;
+
+	m = (n < 0) ? (unsigned int)-n : (unsigned int)n;
+	i = (n < 0) ? 1 : 0;
+	if (n < 0)
+		ft_putchar('-');
+	if (m > 9)
+	{
+		i += ft_putnbr(m / 10);
+	}
+	ft_putchar(m % 10 + '0');
+	i++;
+	return (i);
+}
+
+
+int	ft_putnbr_u(unsigned int n)
+{
+	int i;
+
+	i = 0;
+	if (n > 9)
+		i += ft_putnbr(n / 10);
+	ft_putchar(n % 10 + '0');
+	i++;
+	return (i);
+}
+
+
 
 int        ft_putlong(long n)
 {
@@ -270,7 +298,7 @@ void	set_plus(char *p, char *s, t_specif *sp)
 {
 	while (*p && p < s)
 	{
-		if (*p == ' ' || *p == '\t' || *p == '#')
+		if (*p == ' ' || *p == '\t' || *p == '#' || *p == '0' || *p == '-')
 //!!проверить по оригиналу, надо ли ПРПУСКАТЬ #!!!
  			p++;
 		else if (*p == '+')
@@ -288,7 +316,7 @@ void	set_minus(char *p, char *s, t_specif *sp)
 {
 	while (*p && p < s)
 	{
-		if (*p == ' ' || *p == '\t' || *p == '#')
+		if (*p == ' ' || *p == '\t' || *p == '#' || *p == '0' || *p == '+')
 //!!проверить по оригиналу, надо ли ПРПУСКАТЬ #!!!
  			p++;
 		else if (*p == '-')
@@ -391,42 +419,39 @@ char *parse_specifier(char *p, t_specif *sp)
 	return (ptr_lett);
 }
 
+/*
+for capitals use lett_type = 1;
+for small letters use lett_type = 0; 
+*/
+int		ft_itoa_base(int value, int base, int lett_type)
+{
+    char	*s;
+	int		n;
+	int		i;
+	char	*letters;
 
-
-	// k = sp->numb - digits_in_base(d, 10) - 1 - sp->decim;
-	// if (a < 0 || (a > 0 && sp->plus))
-	// 	k--;
-	// if ()
-
-
-	// return (0);
-//if '+' then we show sign!	
-	// else if ((a > 0) && sp->plus)
-	// 	k--;
-	// if (sp->sign != '-') //если не минус, то сначала precedings
-	// {
-	// 	while (k > 0)
-	// 	{
-	// 		if (sp->zero)
-	// 			ft_putchar('0');
-	// 		else
-	// 			ft_putchar(' ');
-	// 		k--;
-	// 	}
-	// }
-	// printf("PRECEDING #: %d\n", k);
-	// while (k > 0)
-	// {
-	// 	if (is_zero)
-	// 		ft_putchar('0');
-	// 	else
-	// 		ft_putchar(' ');
-	// 	k--;
-	// }
-	// i = 0;
-	// if (a < 0)
-	// {
-	// 	ft_putchar('-');
-	// 	i++;
-	// 	a = -a;
-	// }
+	n = digits_in_base(abs(value), base);
+	if (lett_type)
+		letters = ft_strdup("0123456789ABCDEF");
+	else 
+		letters = ft_strdup("0123456789abcdef");
+	if (value < 0)
+		n += 1;
+    s = (char *)malloc(sizeof(char) * (n + 1));
+	if (value < 0)
+	{
+		s[0] = '-';
+		value = -value;
+	}
+	s[n] = '\0';
+	i = n - 1;
+	while (value)
+	{
+		s[i] = letters[value % base];
+		value /= base;
+		i--;
+	}
+	free(letters);
+	ft_putstr(s);
+    return (n);
+}

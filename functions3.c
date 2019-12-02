@@ -1,34 +1,18 @@
 #include "test_header.h"
 
-void	ft_put_zeros(int n)
+void	ft_put_n_chars(char c, int n)
 {
 	if (n > 0)
 	{
 		while (n)
 		{
-			write(1, "0", 1);
+			write(1, &c, 1);
 			n--;
-		}		
+		}
 	}
 }
 
-void	ft_put_backspaces(int n)
-{
-	if (n > 0)
-	{
-		while (n)
-		{
-			write(1, " ", 1);
-			n--;
-		}		
-	}
-}
-
-void	ft_put_sign(void)
-{
-	ft_putchar('-');
-}
-
+/*PUTS ONLY POSITIVE NUMBERS! */
 int		ft_putdouble(double a, t_specif *sp)
 {
 	long	d; //the same 'a' but rounded
@@ -43,9 +27,8 @@ int		ft_putdouble(double a, t_specif *sp)
  	while (sp->decim > 0)
  	{
  	//	printf("bef %9.5f ", a);
- 		a = (a - d) * 10 + 0.000000001;
+ 		a = (a - d) * 10 + 1.0e-9;
  	//	printf(", aft %9.5f \n", a);
-
 		d = a;
  		if (sp->decim == 1)
  		{
@@ -56,47 +39,128 @@ int		ft_putdouble(double a, t_specif *sp)
 		i++;
  		sp->decim--;
  	}
-//	ft_putchar('\n'); //потом убрать!
 	return (i);
 }
 
 int ft_put_whole_double(double a, t_specif *sp)
 {
-	int k;
+	int		k;
 	long	d; //the same 'a' but rounded
+	int dig;
 
 	if (a < 0)
 	{
-		sp->sign = 1;
+		sp->sign = '-';
 		a = -a;
 	}
+	else
+		sp->sign = '+';
 	d = a;
-	k = sp->numb - digits_in_base(d, 10) - 1 - sp->decim;
+	dig = digits_in_base(d, 10);
+	k = sp->numb - dig - 1 - sp->decim;
+	if (sp->plus)
+		k--;
 //	printf("k = %d\n", k);
 //	printf("digits: %d\n", digits_in_base(d, 10));
-	if (sp->backsp && a > 0)
+	if (sp->plus && sp->minus)
+	{
+		ft_putchar(sp->sign);
+		ft_putdouble(a, sp);
+		ft_put_n_chars(' ', k);
+		return (sp->numb);
+	}
+	else if (sp->plus && sp->zero)
+	{
+		ft_putchar(sp->sign);
+		ft_put_n_chars('0', k);
+		ft_putdouble(a, sp);
+		return (sp->numb);
+	}
+	else if (sp->plus)
+	{
+		ft_put_n_chars(' ', k);
+		ft_putchar(sp->sign);
+		ft_putdouble(a, sp);
+		return (sp->numb);
+	}
+	else if (sp->minus && sp->backsp && sp->sign == '+')
 	{
 		ft_putchar(' ');
-		k--;
+		ft_putdouble(a, sp);
+		ft_put_n_chars(' ', k - 1);
+		return (sp->numb);
 	}
-	else if (sp->minus && a < 0)
+	else if (sp->minus && sp->backsp && sp->sign == '-')
 	{
 		ft_putchar('-');
-		k--;
+		ft_putdouble(a, sp);
+		ft_put_n_chars(' ', k - 1);
+		return (sp->numb);
 	}
-	if (sp->plus && a > 0)
-		ft_putchar('+');
-	if (sp->zero)
+	else if (sp->minus && sp->sign == '+')
+	{	
+		ft_putdouble(a, sp);
+		ft_put_n_chars(' ', k);
+		return (sp->numb);
+	}
+	else if (sp->minus && sp->sign == '-')
 	{
-		while (k)
-		{
-			ft_putchar('0');
-			k--;
-		}
+		ft_putchar('-');
+		ft_putdouble(a, sp);
+		ft_put_n_chars(' ', k - 1);
+		return (sp->numb);
+}
+	else if (sp->backsp && sp->zero && sp->sign == '-')
+	{
+		ft_putchar('-');
+		ft_put_n_chars('0', k - 1);
+		ft_putdouble(a, sp);
+		return (sp->numb);
 	}
-
-	ft_putdouble(a, sp);
-//	if (sp->zero && !sp->plus)
-	return (0);
-
+	else if (sp->backsp && sp->zero)
+	{
+		ft_putchar(' ');
+		ft_put_n_chars('0', k - 1);
+		ft_putdouble(a, sp);
+		return (sp->numb);
+	}
+	else if (sp->zero && sp->sign == '-')
+	{
+		ft_putchar('-');
+		ft_put_n_chars('0', k - 1);
+		ft_putdouble(a, sp);
+		return (sp->numb);
+	}
+	else if (sp->zero)
+	{
+		ft_put_n_chars('0', k);
+		ft_putdouble(a, sp);
+		return (sp->numb);
+	}
+	else if (sp->backsp && sp->sign == '-')
+	{
+		ft_put_n_chars(' ', k - 1);
+		ft_putchar('-');
+		ft_putdouble(a, sp);
+		return (sp->numb);
+	}
+	else if (sp->backsp && sp->sign == '+')
+	{
+		(k > 0) ? ft_put_n_chars(' ', k) : ft_put_n_chars(' ', 1);
+		ft_putdouble(a, sp);
+		return ((k > 0) ? sp->numb : sp->numb + 1);
+	}
+	else if (sp->sign == '-')
+	{
+		ft_put_n_chars(' ', k - 1);
+		ft_putchar(sp->sign);
+		ft_putdouble(a, sp);
+		return (sp->numb);
+	}
+	else // if (sp->sign == '+')
+	{
+		ft_put_n_chars(' ', k);
+		ft_putdouble(a, sp);
+		return (sp->numb);
+	}
 }
