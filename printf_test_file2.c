@@ -18,6 +18,8 @@ int	process_specifier(char *ptr, t_specif *sp, va_list ap)
 		return (ft_put_whole_double(va_arg(ap, double), sp));
 	else if (sp->specif == 'F')
 		printf("%F\n", va_arg(ap, double));
+	else if (sp->specif == 'e')
+		return (ft_putscientific(va_arg(ap, double), sp));
 	else if (sp->specif == 'c')
 		ft_putchar(va_arg(ap, int));
 	else if (sp->specif == 's')

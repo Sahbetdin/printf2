@@ -1,5 +1,11 @@
 #include "test_header.h"
 
+/*
+make scientific notation
+double enters and exponent and mantissa outputs. 
+*/
+
+
 
 
 int	main()
@@ -9,11 +15,11 @@ int	main()
 	int d;
 	char *s;
 
-	d = 0000000;
-	   c1 = printf("%oA\n", d);
-	c2 = ft_printf("%oA\n", d);
+	a = 134300e-300;
+	   c1 = printf("%5.5eA\n", a);
+	c2 = ft_printf("%5.3eA\n", a);
 
-	printf("c1 = %d, c2 = %d", c1, c2);
+//	printf("c1 = %d, c2 = %d", c1, c2);
 
 	// c1 = ft_putnbr(-2147483648);
 	// printf("int digits = %d", c1);

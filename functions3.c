@@ -164,3 +164,52 @@ int ft_put_whole_double(double a, t_specif *sp)
 		return (sp->numb);
 	}
 }
+
+
+int get_exp(double a, t_specif *sp)
+{
+	int i;
+	double b;
+
+	i = 0;
+	b = a;
+	if (b > 10)
+	{
+		while (b >= 10) //проверить таки все здесь
+		{
+			b /= 10;
+			i++;
+		}
+	}
+	else if (b < 10)
+	{
+		while (b < 1)
+		{
+			b *= 10;
+			i++;
+		}
+		i = -i;
+	}
+	else
+		i = 0;
+	ft_put_whole_double(b, sp);
+	ft_putchar('e');
+	if (i < 0)
+		ft_putchar('-');
+	else
+		ft_putchar('+');
+	i = abs_v(i);
+	if (i < 10)
+		ft_putchar('0');
+	ft_putnbr(i);
+	return (i);
+}
+
+int		ft_putscientific(double a, t_specif *sp)
+{
+	print_sp(sp);
+	get_exp(a, sp);
+//	ft_putstr("HERE");
+	return (0);
+}
+

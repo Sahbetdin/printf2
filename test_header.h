@@ -34,6 +34,7 @@ int		ft_atoi2(const char *str, char *end);
 int		digits_in_base(int value, int base);
 int		ft_put_whole_double(double a, t_specif *sp);
 int		ft_putdouble(double a, t_specif *sp);
+int		ft_putscientific(double a, t_specif *sp);
 int		ft_putlong(long n);
 void	print_sp(t_specif *sp);
 void	clear_spec(t_specif *sp);

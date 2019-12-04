@@ -5,7 +5,7 @@ RM = /bin/rm -f
 LDFLAGS = -L.
 LDLIBS = -lft
 HDDIRS = -I.
-SRC = ./functions2.c ./printf_test_file2.c
+SRC = functions2.c printf_test_file2.c main1.c functions3.c
 
 OBJ = $(subst .c,.o,$(SRC))
 
@@ -18,7 +18,8 @@ $(NAME): $(OBJ)
 	@ranlib $(NAME)
 
 %.o: %.c
-	$(CC) $< -c -o $@ -I.$(HEAD) 
+	@$(CC) $< -c -o $@ -I.$(HEAD) 
+	@./a.out
 
 clean:
 	$(RM) -f $(OBJ)
