@@ -5,7 +5,7 @@ make scientific notation
 double enters and exponent and mantissa outputs. 
 */
 
-
+#include "float.h"
 
 
 int	main()
@@ -15,9 +15,10 @@ int	main()
 	int d;
 	char *s;
 
-	a = 134300e-300;
-	   c1 = printf("%5.5eA\n", a);
-	c2 = ft_printf("%5.3eA\n", a);
+	a = 0.95426;
+	long double max = LDBL_MAX;
+	   c1 = printf("%LfA\n", max);
+	c2 = ft_printf("%fA\n", max);
 
 //	printf("c1 = %d, c2 = %d", c1, c2);
 

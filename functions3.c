@@ -207,7 +207,7 @@ int get_exp(double a, t_specif *sp)
 
 int		ft_putscientific(double a, t_specif *sp)
 {
-	print_sp(sp);
+//	print_sp(sp);
 	get_exp(a, sp);
 //	ft_putstr("HERE");
 	return (0);
