@@ -1,8 +1,3 @@
-/bin/rm -f -f ./functions2.o ./printf_test_file.o
-/bin/rm -f -f libftprintf.a
-gcc functions2.c -c -o functions2.o -I.test_header.h 
-gcc printf_test_file.c -c -o printf_test_file.o -I.test_header.h 
-FAILED TESTS:\n
 # TEST NUMBER (TYPE OF ARG)
   INSTRUCTION();
   1. your function ft_printf
