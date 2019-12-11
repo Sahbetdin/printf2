@@ -18,7 +18,9 @@ typedef struct s_specif
 	int 	minus;
 	int		backsp;
 	char	sign;
+	int		hash;
 }				t_specif;
+typedef unsigned int uint;
 
 int		ft_putchar(char c);
 size_t	ft_strlen(const char *s);
@@ -32,6 +34,7 @@ int		ft_cut_backspaces(const char *s);
 int		ft_atoi(const char *str);
 int		ft_atoi2(const char *str, char *end);
 int		digits_in_base(int value, int base);
+int 	digits_in_base_unsigned(uint u_value, int base);
 int		ft_put_whole_double(double a, t_specif *sp);
 int		ft_putdouble(double a, t_specif *sp);
 int		ft_putscientific(double a, t_specif *sp);
@@ -45,7 +48,16 @@ char	*set_point(char *p, char *s, t_specif *sp);
 void	set_numb(char *p, char *s, t_specif *sp);
 void	set_decimal(char *p, t_specif *sp);
 void	set_backsp(char *p, char *s, t_specif *sp);
+void	set_hash(char *p, char *s, t_specif *sp);
 char	*parse_specifier(char *p, t_specif *sp);
+
 int		abs_v(int num);
-int		ft_itoa_base(int value, int base, int lett_type);
+//int		ft_itoa_base(int value, int base, int lett_type);
+int		ft_itoa_base_unsigned(uint u_value, int base, int lett_type);
+
+void	ft_put_n_chars(char c, int n);
+int		ft_put_percentage(t_specif *sp);
+int		ft_put_parsed_integer_u(uint num, t_specif *sp);
+int		ft_put_integer_u(uint u_value, t_specif *sp);
+int		ft_put_string(char *str, t_specif *sp);
 #endif

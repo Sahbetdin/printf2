@@ -12,6 +12,29 @@ void	ft_put_n_chars(char c, int n)
 	}
 }
 
+int		ft_put_percentage(t_specif *sp)
+{
+	if (sp->minus)
+	{
+		ft_putchar('%');
+		ft_put_n_chars(32, sp->numb - 1);
+		return (sp->numb);
+	}
+	else if (sp->numb)
+	{
+		if (sp->zero)
+			ft_put_n_chars(48, sp->numb - 1);
+		else
+			ft_put_n_chars(32, sp->numb - 1);
+		ft_putchar('%');
+		return (sp->numb);	
+	}
+	else
+		ft_putchar('%');
+	return (1);
+}
+
+
 /*PUTS ONLY POSITIVE NUMBERS! */
 int		ft_putdouble(double a, t_specif *sp)
 {
@@ -83,14 +106,14 @@ int ft_put_whole_double(double a, t_specif *sp)
 		ft_putdouble(a, sp);
 		return (sp->numb);
 	}
-	else if (sp->minus && sp->backsp && sp->sign == '+')
+	else if (sp->minus && sp->backsp && sp->sign == '+') //' ' is ignored when '+' is present
 	{
 		ft_putchar(' ');
 		ft_putdouble(a, sp);
 		ft_put_n_chars(' ', k - 1);
 		return (sp->numb);
 	}
-	else if (sp->minus && sp->backsp && sp->sign == '-')
+	else if (sp->minus && sp->backsp && sp->sign == '-') 
 	{
 		ft_putchar('-');
 		ft_putdouble(a, sp);
@@ -213,3 +236,137 @@ int		ft_putscientific(double a, t_specif *sp)
 	return (0);
 }
 
+
+int ft_put_integer_u(uint u_value, t_specif *sp)
+{
+	int n;
+
+	n = 0;
+	// if (sp->hash)
+	// {
+	// 	if (sp->specif == 'o')
+	// 		write(1, "0", 1);
+	// 	else if (sp->specif == 'x')
+	// 		write(1, "0x", 2);
+	// 	else if (sp->specif == 'X')
+	// 		write(1, "0X", 2);
+	// 	if (sp->specif == 'o')
+	// 		n = 1;
+	// 	else if (sp->specif == 'x'|| sp->specif == 'X')
+	// 		n = 2;
+	// }
+	if (sp->specif == 'u')
+		n += ft_itoa_base_unsigned(u_value, 10, 0);
+	else if (sp->specif == 'o')
+		n += ft_itoa_base_unsigned(u_value, 8, 0);
+	else if (sp->specif == 'x')
+		n += ft_itoa_base_unsigned(u_value, 16, 0);
+	else if (sp->specif == 'X')
+		n += ft_itoa_base_unsigned(u_value, 16, 1);
+	else if (sp->specif == 'd')
+		n += ft_putnbr((int)u_value);
+	return (n);
+}
+
+int		ft_put_parsed_integer_u(uint num, t_specif *sp)
+{
+	int		k;
+	int		dig;
+	int		n;
+
+	if (sp->specif == 'u')
+		dig = digits_in_base_unsigned(num, 10);
+	else if (sp->specif == 'o')
+		dig = digits_in_base_unsigned(num, 8);
+	else if (sp->specif == 'x' || sp->specif == 'X')
+		dig = digits_in_base_unsigned(num, 16);
+	else if (sp->specif == 'd')
+		dig = digits_in_base((int)num, 10);
+	if (sp->hash)
+	{
+		if (sp->specif == 'x' || sp->specif == 'X')
+			k = sp->numb - sp->decim - 2;
+		if (k > 0 && sp->minus)
+		{
+			write(1, "0x", 2);
+			ft_put_n_chars('0', sp->decim - dig);
+			n = ft_put_integer_u(num, sp);
+			ft_put_n_chars(32, k);
+		}
+		else if (k > 0 && !sp->minus)
+		{
+			ft_put_n_chars(32, k);	
+			write(1, "0x", 2);
+			n = ft_put_integer_u(num, sp);
+		}
+	return (sp->numb);
+	}
+	k = sp->numb - dig;
+	// print_sp(sp);
+//	printf(" sp->numb = %d. ", sp->numb);
+//	printf(" k = %d. ", k);
+	if (sp->minus)
+	{
+		n = ft_put_integer_u(num, sp);
+		ft_put_n_chars(' ', k);
+	}
+	else if (sp->zero)
+	{
+		ft_put_n_chars('0', k);
+		n = ft_put_integer_u(num, sp);
+	}
+	else
+	{
+//		printf("FFF\n");
+//		if (k > 0)
+		if (sp->hash)
+		{
+			if (sp->specif == 'o')
+				k--;
+			else if (sp->specif == 'x' || sp->specif == 'X')
+				k -= 2;
+		}
+		ft_put_n_chars(' ', k);
+//		else
+//			ft_put_n_chars(' ', 1);
+		n = ft_put_integer_u(num, sp);
+//		return ((k > 0) ? n + k : n + 1);
+	}
+	if (k > 0)
+		n += k;
+//	printf(" n = %d\n", n);
+//	printf("%d --\n", sp->numb);
+//	return ((sp->numb) ? sp->numb : dig);
+	return (n);
+}
+
+int		ft_put_string(char *str, t_specif *sp)
+{
+	int k;
+	int n;
+
+
+	if (!str)
+		return (0);
+	n = (int)ft_strlen(str);
+	if (sp->point)
+		n = sp->decim;
+	k = sp->numb - n;
+	if (k > 0)
+	{
+		if (sp->minus)
+		{
+			write(1, str, n);
+			ft_put_n_chars(' ', k);
+		}
+		else
+		{
+			ft_put_n_chars(' ', k);
+			write(1, str, n);
+		}
+		return (sp->numb);
+	}
+	else
+		write(1, str, n);
+	return (n);
+}

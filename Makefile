@@ -18,8 +18,7 @@ $(NAME): $(OBJ)
 	@ranlib $(NAME)
 
 %.o: %.c
-	@$(CC) $< -c -o $@ -I.$(HEAD) 
-	@./a.out
+	@$(CC) $< -c -o $@ -I.$(HEAD)
 
 clean:
 	$(RM) -f $(OBJ)

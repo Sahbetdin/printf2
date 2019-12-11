@@ -146,7 +146,6 @@ int			ft_atoi2(const char *str, char *end)
 int digits_in_base(int value, int base)
 {
 	int i;
-
 	i = 0;
 	while (value)
 	{
@@ -155,6 +154,22 @@ int digits_in_base(int value, int base)
 	}
 	return (i);
 }
+
+int digits_in_base_unsigned(uint u_value, int base)
+{
+	int i;
+
+	i = 0;
+	if (!u_value)
+		return (1);
+	while (u_value)
+	{
+		u_value /= base;
+		i++;
+	}
+	return (i);
+}
+
 
 int	ft_putnbr(int n)
 {
@@ -228,6 +243,7 @@ void print_sp(t_specif *sp)
 	printf("minus: %d\n", sp->minus);
 	printf("backsp: %d\n", sp->backsp);
 	printf("sign: %d\n", sp->sign);
+	printf("hash: %d\n", sp->hash);
 	return ;
 }
 
@@ -242,6 +258,7 @@ void	clear_spec(t_specif *sp)
 	sp->minus = 0;
 	sp->backsp = 0;
 	sp->sign = 0;
+	sp->hash = 0;
 	return ;
 }
 
@@ -385,6 +402,21 @@ void	set_decimal(char *p, t_specif *sp)
 	sp->decim = ft_atoi(p);
 }
 
+void	set_hash(char *p, char *s, t_specif *sp)
+{
+	while (*p && p < s)
+	{
+		if (*p == '#')
+		{
+			sp->hash = 1;
+			return ;
+		}
+		else
+			p++;
+
+	}
+	return ;
+}
 
 //сначала ищем букву. Ту, которая нужна, то есть находится в массиве...
 // ищем ноль
@@ -392,6 +424,7 @@ void	set_decimal(char *p, t_specif *sp)
 // ищем numb which is before.
 // ищем точку
 // ищем decimal part
+// ищем хэш
 char *parse_specifier(char *p, t_specif *sp)
 {
 	char *ptr_lett;
@@ -406,6 +439,7 @@ char *parse_specifier(char *p, t_specif *sp)
 		set_minus(p, ptr_lett, sp);
 		set_numb(p, ptr_lett, sp);
 		set_backsp(p, ptr_lett, sp);
+		set_hash(p, ptr_lett, sp);
 		ptr_point = set_point(p, ptr_lett, sp);
 	//	printf("POINTER TO POINT %p\n", ptr_point);
 		if (ptr_point)
@@ -423,35 +457,78 @@ char *parse_specifier(char *p, t_specif *sp)
 for capitals use lett_type = 1;
 for small letters use lett_type = 0; 
 */
-int		ft_itoa_base(int value, int base, int lett_type)
+// НЕ НУЖЕН!
+// int		ft_itoa_base(int value, int base, int lett_type)
+// {
+// 	char	*s;
+// 	int		n;
+// 	int		i;
+// 	char	*letters;
+// 	uint	new_value;
+
+// 	new_value = (uint)value;
+// 	n = digits_in_base(new_value, base);
+// 	if (lett_type)
+// 		letters = ft_strdup("0123456789ABCDEF");
+// 	else 
+// 		letters = ft_strdup("0123456789abcdef");
+// 	// if (value < 0)
+// 	// {
+// 	// 	ft_putstr("HERE\n");
+// 	// 	n += 1;
+// 	// }
+// 	s = (char *)malloc(sizeof(char) * (n + 1));
+// 	// if (value < 0)
+// 	// {
+// 	// 	ft_putstr("AND HERE\n");
+// 	// 	s[0] = '-';
+// 	// 	value = -value;
+// 	// }
+// 	s[n] = '\0';
+// 	i = n - 1;
+// 	while (new_value)
+// 	{
+// 		s[i] = letters[new_value % base];
+// 		new_value /= base;
+// 		i--;
+// 	}
+// 	free(letters);
+// 	ft_putstr(s);
+// 	free(s);
+// 	return (n);
+// }
+
+
+
+/*We use only for octal, thus no hex allowed*/
+int		ft_itoa_base_unsigned(uint u_value, int base, int lett_type)
 {
-    char	*s;
+	char	*s;
 	int		n;
 	int		i;
 	char	*letters;
 
-	n = digits_in_base(abs(value), base);
+	if (u_value == 0)
+	{
+		ft_putchar('0');
+		return (1);
+	}
 	if (lett_type)
 		letters = ft_strdup("0123456789ABCDEF");
 	else 
 		letters = ft_strdup("0123456789abcdef");
-	if (value < 0)
-		n += 1;
-    s = (char *)malloc(sizeof(char) * (n + 1));
-	if (value < 0)
-	{
-		s[0] = '-';
-		value = -value;
-	}
+	n = digits_in_base_unsigned(u_value, base);
+	s = (char *)malloc(sizeof(char) * (n + 1));
 	s[n] = '\0';
 	i = n - 1;
-	while (value)
+	while (u_value)
 	{
-		s[i] = letters[value % base];
-		value /= base;
+		s[i] = letters[u_value % base];
+		u_value /= base;
 		i--;
 	}
-	free(letters);
 	ft_putstr(s);
-    return (n);
+	free(letters);
+	free(s);
+	return (n);
 }

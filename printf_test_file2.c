@@ -4,16 +4,13 @@
 //надо сделать oct float!!
 int	process_specifier(char *ptr, t_specif *sp, va_list ap)
 {
-	if (sp->specif == 'd' || sp->specif == 'i')
+	int i;
+
+	if (sp->specif == 'i')
 		return (ft_putnbr(va_arg(ap, int)));
-	else if (sp->specif == 'o') //проблема с 0
-		return (ft_itoa_base(va_arg(ap, int), 8, 0));
-	else if (sp->specif == 'u')
-		return (ft_putnbr_u(va_arg(ap, int)));
-	else if (sp->specif == 'x')  //проблема с 0
-		return (ft_itoa_base(va_arg(ap, int), 16, 0));
-	else if (sp->specif == 'X') //проблема с 0 
-		return (ft_itoa_base(va_arg(ap, int), 16, 1));
+	else if (sp->specif == 'o' || sp->specif == 'u' || sp->specif == 'x' || 
+		sp->specif == 'X' || sp->specif == 'd')
+		return (ft_put_parsed_integer_u(va_arg(ap, uint), sp));
 	else if (sp->specif == 'f')
 		return (ft_put_whole_double(va_arg(ap, double), sp));
 	else if (sp->specif == 'F')
@@ -23,7 +20,9 @@ int	process_specifier(char *ptr, t_specif *sp, va_list ap)
 	else if (sp->specif == 'c')
 		ft_putchar(va_arg(ap, int));
 	else if (sp->specif == 's')
-		return(ft_putstr(va_arg(ap, char *)));
+		return(ft_put_string(va_arg(ap, char *), sp));
+	else if (sp->specif == '%')
+		return (ft_put_percentage(sp));
 	else
 		ft_putstr("AnoTher\n");
 	return (0);
@@ -51,7 +50,9 @@ int     ft_printf(char *fmt, ...)
 			{
 			//	print_sp(sp);
 				//вызываем обработчик спарсенного
+				//printf(" ret bef = %d \n", ret);
 				ret += process_specifier(p + 1, sp, ap);
+				//printf(" ret = %d \n", ret);
 				p = s + 1;
 				continue;
 			}
