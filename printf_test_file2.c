@@ -18,7 +18,7 @@ int	process_specifier(char *ptr, t_specif *sp, va_list ap)
 	else if (sp->specif == 'e')
 		return (ft_putscientific(va_arg(ap, double), sp));
 	else if (sp->specif == 'c')
-		ft_putchar(va_arg(ap, int));
+		return (ft_putchar_c(va_arg(ap, int), sp));
 	else if (sp->specif == 's')
 		return(ft_put_string(va_arg(ap, char *), sp));
 	else if (sp->specif == '%')

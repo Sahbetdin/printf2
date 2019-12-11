@@ -23,6 +23,10 @@ typedef struct s_specif
 typedef unsigned int uint;
 
 int		ft_putchar(char c);
+int		ft_putchar_c(char c, t_specif *sp);
+void	ft_put_zeros_backsp(t_specif *sp);
+int		ft_put_backsp_str_minus(char *str, t_specif *sp);
+int		ft_put_backsp_str(char *str, t_specif *sp);
 size_t	ft_strlen(const char *s);
 int		ft_putstr(char const *s);
 int		ft_putnbr(int n);

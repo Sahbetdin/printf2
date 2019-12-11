@@ -242,19 +242,6 @@ int ft_put_integer_u(uint u_value, t_specif *sp)
 	int n;
 
 	n = 0;
-	// if (sp->hash)
-	// {
-	// 	if (sp->specif == 'o')
-	// 		write(1, "0", 1);
-	// 	else if (sp->specif == 'x')
-	// 		write(1, "0x", 2);
-	// 	else if (sp->specif == 'X')
-	// 		write(1, "0X", 2);
-	// 	if (sp->specif == 'o')
-	// 		n = 1;
-	// 	else if (sp->specif == 'x'|| sp->specif == 'X')
-	// 		n = 2;
-	// }
 	if (sp->specif == 'u')
 		n += ft_itoa_base_unsigned(u_value, 10, 0);
 	else if (sp->specif == 'o')
@@ -263,14 +250,13 @@ int ft_put_integer_u(uint u_value, t_specif *sp)
 		n += ft_itoa_base_unsigned(u_value, 16, 0);
 	else if (sp->specif == 'X')
 		n += ft_itoa_base_unsigned(u_value, 16, 1);
-	else if (sp->specif == 'd')
-		n += ft_putnbr((int)u_value);
 	return (n);
 }
 
 int		ft_put_parsed_integer_u(uint num, t_specif *sp)
 {
 	int		k;
+	int		l;
 	int		dig;
 	int		n;
 
@@ -282,91 +268,188 @@ int		ft_put_parsed_integer_u(uint num, t_specif *sp)
 		dig = digits_in_base_unsigned(num, 16);
 	else if (sp->specif == 'd')
 		dig = digits_in_base((int)num, 10);
-	if (sp->hash)
+	if (sp->point)
+		l = sp->decim - dig;
+	else
+		l = sp->numb - dig;
+	if (sp->hash && sp->specif == 'o')
+			l--;
+	else if (sp->hash && (sp->specif == 'x' || sp->specif == 'X'))
+			l -= 2;
+	if (l < 0)
+		l = 0;
+	if (sp->point && num == 0)
 	{
-		if (sp->specif == 'x' || sp->specif == 'X')
-			k = sp->numb - sp->decim - 2;
-		if (k > 0 && sp->minus)
-		{
-			write(1, "0x", 2);
-			ft_put_n_chars('0', sp->decim - dig);
-			n = ft_put_integer_u(num, sp);
-			ft_put_n_chars(32, k);
-		}
-		else if (k > 0 && !sp->minus)
-		{
-			ft_put_n_chars(32, k);	
-			write(1, "0x", 2);
-			n = ft_put_integer_u(num, sp);
-		}
-	return (sp->numb);
+
+		ft_put_n_chars(32, sp->numb - sp->decim);
+		ft_put_n_chars(48, sp->decim);
+		return (sp->numb);
 	}
-	k = sp->numb - dig;
-	// print_sp(sp);
-//	printf(" sp->numb = %d. ", sp->numb);
-//	printf(" k = %d. ", k);
-	if (sp->minus)
+????
+
+
+	printf("dig = %d, k = %d, l = %d\n", dig, k, l);
+	return (0);
+	k = sp->numb - dig - l;
+	n = 0;
+	
+	if (k <= 0)
 	{
-		n = ft_put_integer_u(num, sp);
-		ft_put_n_chars(' ', k);
-	}
-	else if (sp->zero)
-	{
-		ft_put_n_chars('0', k);
-		n = ft_put_integer_u(num, sp);
+		printf("k = %d, l = %d\n", k, l);
+		if (sp->hash && sp->specif == 'o')
+		{
+			write(1, "0", 1);
+			n += 1; //можно было n++, но так оставил для наглядности
+			sp->numb -= 1;
+			ft_put_n_chars(32, sp->numb - dig);
+		}
+		else if (sp->hash && sp->specif == 'x' && num != 0)
+			write(1, "0x", 2);
+		else if (sp->hash && sp->specif == 'X')
+			write(1, "0X", 2);
+		if (sp->hash && (sp->specif == 'x' || sp->specif == 'X') && num != 0)
+			n += 2;
+		n += ft_put_integer_u(num, sp);
+		ft_put_n_chars(32, sp->numb - dig);
+//		if (sp->hash && sp->specif == 'o')
+//			return (sp->numb + 1);
 	}
 	else
 	{
-//		printf("FFF\n");
-//		if (k > 0)
 		if (sp->hash)
 		{
-			if (sp->specif == 'o')
-				k--;
+			if (sp->specif == 'o' && l == 0) //было && l ==0
+				l++;
 			else if (sp->specif == 'x' || sp->specif == 'X')
+			{
 				k -= 2;
+				n += 2;
+			}	
 		}
-		ft_put_n_chars(' ', k);
-//		else
-//			ft_put_n_chars(' ', 1);
-		n = ft_put_integer_u(num, sp);
-//		return ((k > 0) ? n + k : n + 1);
+		if (sp->minus)
+		{
+			printf("k = %d, l = %d\n", k, l);
+			if (sp->hash && sp->specif == 'x')
+				write(1, "0x", 2);
+			else if (sp->hash && sp->specif == 'X')
+				write(1, "0X", 2);
+//			else if (sp->hash && sp->specif =='o')
+//				write(1, "0", 1);
+			ft_put_n_chars(48, l);
+			ft_put_integer_u(num, sp);
+			ft_put_n_chars(32, k);	
+			n += dig + l + k;
+		}
+		else
+		{
+			if (!sp->zero)
+				ft_put_n_chars(32, k);
+			if (sp->hash && sp->specif == 'x')
+				write(1, "0x", 2);
+			else if (sp->hash && sp->specif == 'X')
+				write(1, "0X", 2);
+			else if (sp->hash && sp->specif =='o')
+				write(1, "0", 1);
+			if (sp->zero)
+				ft_put_n_chars(48, k);
+			ft_put_integer_u(num, sp);
+			n += k + l + dig;
+		}
 	}
-	if (k > 0)
-		n += k;
-//	printf(" n = %d\n", n);
-//	printf("%d --\n", sp->numb);
-//	return ((sp->numb) ? sp->numb : dig);
+
+	if (sp->specif == 'd' || sp->specif == 'i')
+	{
+		if (l > 0)
+			k -= l;
+		if ((int)num < 0)
+		{
+			ft_put_n_chars(32, k - 1);
+			write(1, "-", 1);
+			ft_put_n_chars(48, l);
+			n = ft_putnbr(-num);
+			n++; //because of "-" sign
+//			printf("\nk = %d\n", k);
+
+		}
+		else
+		{
+			ft_put_n_chars(32, k);
+			ft_put_n_chars(48, l);
+			n = ft_putnbr(num);
+		}
+		n += l;
+		if (k > 0)
+			n += k;
+
+	}
 	return (n);
+}
+
+int		ft_put_backsp_str_minus(char *str, t_specif *sp)
+{
+	int n;
+	int l;
+
+	n = (int)ft_strlen(str);
+	if (sp->point && sp->decim < n)
+		l = sp->numb - sp->decim;
+	else
+		l = sp->numb - n;
+	if (l < 0)
+		l = 0;
+
+	if (sp->point && sp->decim < n)
+	{
+		write(1, str, sp->decim);
+		ft_put_n_chars(32, l);
+		return (l + sp->decim);
+	}
+	else
+	{
+		write(1, str, n);
+		ft_put_n_chars(32, l);
+		return (l + n);
+	}
+}
+
+int		ft_put_backsp_str(char *str, t_specif *sp)
+{
+	int n;
+	int l;
+
+	n = (int)ft_strlen(str);
+	if (sp->point && sp->decim < n)
+		l = sp->numb - sp->decim;
+	else
+		l = sp->numb - n;
+	if (l < 0)
+		l = 0;
+	ft_put_n_chars(32, l);
+	if (sp->point && sp->decim < n) //there is decimal point
+	{
+		write(1, str, sp->decim);
+		return (l + sp->decim);
+	} 	
+	else
+	{
+		write(1, str, n);
+		return (l + n);
+	}
 }
 
 int		ft_put_string(char *str, t_specif *sp)
 {
 	int k;
 	int n;
-
+	int l;
 
 	if (!str)
-		return (0);
-	n = (int)ft_strlen(str);
-	if (sp->point)
-		n = sp->decim;
-	k = sp->numb - n;
-	if (k > 0)
 	{
-		if (sp->minus)
-		{
-			write(1, str, n);
-			ft_put_n_chars(' ', k);
-		}
-		else
-		{
-			ft_put_n_chars(' ', k);
-			write(1, str, n);
-		}
-		return (sp->numb);
+		write(1, "(null)", 6);
+		return (6);
 	}
+	if (sp->minus)
+		return (ft_put_backsp_str_minus(str, sp));
 	else
-		write(1, str, n);
-	return (n);
+		return (ft_put_backsp_str(str, sp));
 }
