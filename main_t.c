@@ -18,11 +18,13 @@ int main()
 //"%10xAA\n", 42
 //"%#8xAA\n", 42
 
-//   ft_putnbr(-2147483648);
-	a = -2147483648;
- 	 c1 = printf("%015d\n", a);
-//  c2 = ft_printf("%08d\n", -2342);
-  //printf("c1 = %d, c2 = %d\n", c1, c2);
+  a =  2147483647;
+
+//  a = 83648;
+  
+ 	   c1 = printf("%#llx", 9223372036854775807);
+  c2 = ft_printf("%6d\n", a);
+  printf("c1 = %d, c2 = %d\n", c1, c2);
   // printf("char is %ld byte\n", sizeof(char));
   // printf("short is %ld byte\n", sizeof(short));
   // printf("uint is %ld byte\n", sizeof(uint));

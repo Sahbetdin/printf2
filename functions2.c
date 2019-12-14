@@ -178,6 +178,8 @@ int digits_in_base(int value, int base)
 {
 	int i;
 	i = 0;
+	if (value == 0)
+		return (1);
 	while (value)
 	{
 		value /= base;
@@ -201,25 +203,18 @@ int digits_in_base_unsigned(uint u_value, int base)
 	return (i);
 }
 
-
-int	ft_putnbr(int n)
+/*ONLY Positives */
+int	ft_putnbr_positive(int n)
 {
-	unsigned int	m;
 	int i;
 
-	m = (n < 0) ? (unsigned int)-n : (unsigned int)n;
 	i = (n < 0) ? 1 : 0;
-	if (n < 0)
-		ft_putchar('-');
-	if (m > 9)
-	{
-		i += ft_putnbr(m / 10);
-	}
-	ft_putchar(m % 10 + '0');
+	if (n > 9)
+		i += ft_putnbr_positive(n / 10);
+	ft_putchar(n % 10 + '0');
 	i++;
 	return (i);
 }
-
 
 int	ft_putnbr_u(unsigned int n)
 {
@@ -227,7 +222,7 @@ int	ft_putnbr_u(unsigned int n)
 
 	i = 0;
 	if (n > 9)
-		i += ft_putnbr(n / 10);
+		i += ft_putnbr_positive(n / 10);
 	ft_putchar(n % 10 + '0');
 	i++;
 	return (i);
@@ -329,7 +324,6 @@ void	set_zero(char *p, char *s, t_specif *sp)
 	while (*p && p < s)
 	{
 		if (*p == ' ' || *p == '\t' || *p == '+' || *p == '-' || *p == '#')
-//!!проверить, надо ли ПРПУСКАТЬ #!!!
  			p++;
 		else if (*p == '0')
 		{
@@ -422,8 +416,8 @@ and ptr_spec or (ptr_point?) as s */
 void	set_numb(char *p, char *s, t_specif *sp)
 {
 	while (*p && p < s && (*p == ' ' || *p == '\t' 
-		|| *p == '+' || *p == '-' || *p == '#'))
-		p++;
+		|| *p == '+' || *p == '-' || *p == '#' || *p == '0'))
+			p++;
 	sp->numb = ft_atoi(p);
 }
 

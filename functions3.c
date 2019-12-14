@@ -224,7 +224,7 @@ int get_exp(double a, t_specif *sp)
 	i = abs_v(i);
 	if (i < 10)
 		ft_putchar('0');
-	ft_putnbr(i);
+	ft_putnbr_positive(i);
 	return (i);
 }
 
@@ -250,8 +250,6 @@ int ft_put_integer_u(uint u_value, t_specif *sp)
 		n += ft_itoa_base_unsigned(u_value, 16, 0);
 	else if (sp->specif == 'X')
 		n += ft_itoa_base_unsigned(u_value, 16, 1);
-	else if (sp->specif == 'd')
-		n += ft_putnbr((int)u_value);
 	return (n);
 }
 
@@ -283,560 +281,131 @@ int ft_put_int_min(int num, t_specif *sp)
 	int k;
 	int dig;
 
-	dig = 10;
-	if (sp->numb && !sp->pointr456                                                                                                                                                                                                                )
+	dig = 11;
+	if (!sp->numb && !sp->point) //просто %d, % d
+		write(1, "-2147483648", 11);
+	else if (!sp->point)
 	{
-		k = (sp->numb > dig) ? sp->numb - dig : 0;
-		ft_put_n_chars(32, k);
-		write(1, "-", 1);
-		write(1, "2147483648", 10);
-
+		k = (sp->numb > dig) ? sp->numb - dig : 0; //кол-во нулей либо пробелов
+		if (sp->zero && !sp->minus) //нет '-' и есть '0'
+		{
+			write(1, "-", 1);
+			ft_put_n_chars(48, k - 1);
+			write(1, "2147483648", 10);
+		}
+		else if (!sp->minus)
+		{
+			ft_put_n_chars(32, k);
+			write(1, "-2147483648", 11);
+			dig += k;
+		}
+		else if (sp->minus)
+		{
+			k = (k > 1) ? k - 1 : 0;
+			write(1, "-2147483648", 11);
+			ft_put_n_chars(32, k);
+			dig += (sp->numb > 11) ? k + 1 : k;
+		}			
 	}
-	l = (sp->decim > dig) ? sp->decim - dig : 0;
-	k = (sp->decim > dig) ? sp->numb - sp->decim : sp->numb - dig;
-
-	write(1,)
-	return(8);
+	return(dig);
 }
 
+void ft_put_sign(int num)
+{
+	if (num == 1)
+		write(1, "-", 1);
+	else
+		write(1, "+", 1);
+}
 
 int ft_put_d(int num, t_specif *sp)
 {
 	int dig;
 	int l;
 	int k;
-	int
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	 n;
-
+	int n;
+	
 	dig = digits_in_base(num, 10);
+//	 printf("dig = %d\n", dig);
 
-	l = (sp->decim > dig) ? sp->decim - dig : 0;
-	k = (sp->decim > dig) ? sp->numb - sp->decim : sp->numb - dig;
+//	print_sp(sp);
+	// l = (sp->decim > dig) ? sp->decim - dig : 0;
+	// k = (sp->decim > dig) ? sp->numb - sp->decim : sp->numb - dig;
 
 	if (num == -2147483648)
 		return (ft_put_int_min(num, sp));
-
 	if (num < 0)
 	{
 		num = -num; //!INT_MIN
 		sp->sign = 1;
 	}
-
-	//print_sp(sp);
-	if (!sp->numb && !sp->point)
+	if (!sp->numb && !sp->point) //просто %d, % d для пол/отр чисел
 	{
-//		if (num < 0 || (num > 0 && sp->plus))
-
+		if ((sp->plus && num >= 0) || sp->sign)
+			ft_put_sign(sp->sign);
+		else if (sp->backsp && !sp->sign)
+			write(1, " ", 1);
+		if (sp->backsp || (sp->plus && num >= 0) || sp->sign)
+			dig++;
+		ft_putnbr_positive(num);
+		return (dig);
 	}
-
-	// if (num < 0)
-	// {
-	// 	num = -num; //!INT_MIN
-	// 	sp->sign = 1;
-	// }
-	// if (!sp->numb && !sp->point)
-	// {
-	// 	// if (sp->sign || (numb > 0 && sp->plus))
-	// 	// 	...
-
-	// }
+	else if (!sp->point) //!sp->sign means num > 0
+	// %6d, %10d, %06d, %010d для полож чисел
+	{
+		k = (sp->numb > dig) ? sp->numb - dig : 0; //кол-во нулей либо пробелов
+		if (sp->zero && !sp->minus) //нет '-' и есть '0'
+		{
+			if (sp->plus || sp->sign) //есть '+' либо число отриц
+			{// %0+8d
+				ft_put_sign(sp->sign);
+				ft_put_n_chars(48, k - 1);
+			}
+			else if (!sp->sign && !sp->backsp) //полож 
+				ft_put_n_chars(48, k);
+			else if (!sp->sign && sp->backsp)
+			{
+				write(1, " ", 1);
+				ft_put_n_chars(48, k - 1);	
+			}
+			ft_putnbr_positive(num);
+		}
+		else if (sp->backsp && !sp->minus) //есть ' ' и нет '-'
+		{
+			if (sp->plus || sp->sign)
+			{
+				ft_put_sign(num);
+				ft_put_n_chars(32, k - 1);
+			}
+			else if (!sp->sign)
+				ft_put_n_chars(32, k);
+			ft_putnbr_positive(num);
+		}
+		else if (!sp->minus)
+		{
+			if (sp->sign || sp->plus)
+				k--;
+			ft_put_n_chars(32, k);
+			if (sp->sign || sp->plus)
+				ft_put_sign(sp->sign);
+			ft_putnbr_positive(num);
+		}
+		else if (sp->minus)
+		{
+			if ((sp->backsp && !sp->sign) || sp->sign || (sp->plus && !sp->sign))
+				k = (k > 1) ? k - 1 : 0;
+			if (sp->backsp && !sp->sign)
+				write(1, " ", 1);
+			else if (sp->plus || sp->sign)
+				ft_put_sign(sp->sign);
+			ft_putnbr_positive(num);
+			ft_put_n_chars(32, k);
+		}			
+		return (sp->numb);
+	}
 
 
 	return (0);
-	// if ((sp->plus && numb >= 0) || numb < 0)
-	// 	dig++;
-// printf("\nl = %d, k = %d, dig = %d\n", l, k, dig);
-// if (k < 0)
-// 	k = 0;
-// if (sp->zero && !sp->minus)
-// {
-// 	l += k;
-// 	k = 0;
-// }
-// printf("\nl = %d, k = %d, dig = %d\n", l, k, dig);
-// return(0);
-// if (sp->backsp && k == 0)
-// 	k = 1;
-// if (((numb < 0 && k > 0) || sp->plus) && k > 0)
-// 	k--;
-// ft_put_n_chars(32, k);
-// if (sp->plus && numb >= 0)
-// 	write(1, "+", 1);
-// else if (numb < 0)
-// 	write(1, "-", 1);
-// ft_put_n_chars(48, l);
-	// if (numb == -2147483648)
-	// {
-	// 	ft_putnbr(numb/10);
-	// 	write(1, "8", 1);		
-	// }
-	// else
-	// 	ft_putnbr(numb);
-//	printf("\nl = %d, k = %d, dig = %d\n", l, k, dig);
-	return (dig + k + l);
 }
 
 int		ft_put_parsed_integer_u(uint num, t_specif *sp)
@@ -852,7 +421,7 @@ int		ft_put_parsed_integer_u(uint num, t_specif *sp)
 		dig = digits_in_base_unsigned(num, 8);
 	else if (sp->specif == 'x' || sp->specif == 'X')
 		dig = digits_in_base_unsigned(num, 16);
-	else if (sp->specif == 'd')
+	else if (sp->specif == 'd' || sp->specif == 'i')
 	{
 		return (ft_put_d((int)num, sp));
 	}

@@ -6,10 +6,8 @@ int	process_specifier(char *ptr, t_specif *sp, va_list ap)
 {
 	int i;
 
-	if (sp->specif == 'i')
-		return (ft_putnbr(va_arg(ap, int)));
-	else if (sp->specif == 'o' || sp->specif == 'u' || sp->specif == 'x' || 
-		sp->specif == 'X' || sp->specif == 'd')
+	if (sp->specif == 'o' || sp->specif == 'u' || sp->specif == 'x' || 
+		sp->specif == 'X' || sp->specif == 'd' || sp->specif == 'i')
 		return (ft_put_parsed_integer_u(va_arg(ap, uint), sp));
 	else if (sp->specif == 'f')
 		return (ft_put_whole_double(va_arg(ap, double), sp));
