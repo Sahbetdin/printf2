@@ -250,7 +250,593 @@ int ft_put_integer_u(uint u_value, t_specif *sp)
 		n += ft_itoa_base_unsigned(u_value, 16, 0);
 	else if (sp->specif == 'X')
 		n += ft_itoa_base_unsigned(u_value, 16, 1);
+	else if (sp->specif == 'd')
+		n += ft_putnbr((int)u_value);
 	return (n);
+}
+
+int		ft_put_prelimenaries(uint num, t_specif *sp)
+{
+	if (sp->hash && num)
+	{
+		if (sp->specif == 'o')
+		{
+			write(1, "0", 1);
+			return (1);
+		}
+		else if (sp->specif == 'x')
+			write(1, "0x", 2);
+		else if (sp->specif == 'X')
+			write(1, "0X", 2);
+		if (sp->specif == 'x' || sp->specif == 'X')
+			return (2);
+		else
+			return (0);
+	}
+	else
+		return (0);
+}
+
+int ft_put_int_min(int num, t_specif *sp)
+{
+	int l;
+	int k;
+	int dig;
+
+	dig = 10;
+	if (sp->numb && !sp->pointr456                                                                                                                                                                                                                )
+	{
+		k = (sp->numb > dig) ? sp->numb - dig : 0;
+		ft_put_n_chars(32, k);
+		write(1, "-", 1);
+		write(1, "2147483648", 10);
+
+	}
+	l = (sp->decim > dig) ? sp->decim - dig : 0;
+	k = (sp->decim > dig) ? sp->numb - sp->decim : sp->numb - dig;
+
+	write(1,)
+	return(8);
+}
+
+
+int ft_put_d(int num, t_specif *sp)
+{
+	int dig;
+	int l;
+	int k;
+	int
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	 n;
+
+	dig = digits_in_base(num, 10);
+
+	l = (sp->decim > dig) ? sp->decim - dig : 0;
+	k = (sp->decim > dig) ? sp->numb - sp->decim : sp->numb - dig;
+
+	if (num == -2147483648)
+		return (ft_put_int_min(num, sp));
+
+	if (num < 0)
+	{
+		num = -num; //!INT_MIN
+		sp->sign = 1;
+	}
+
+	//print_sp(sp);
+	if (!sp->numb && !sp->point)
+	{
+//		if (num < 0 || (num > 0 && sp->plus))
+
+	}
+
+	// if (num < 0)
+	// {
+	// 	num = -num; //!INT_MIN
+	// 	sp->sign = 1;
+	// }
+	// if (!sp->numb && !sp->point)
+	// {
+	// 	// if (sp->sign || (numb > 0 && sp->plus))
+	// 	// 	...
+
+	// }
+
+
+	return (0);
+	// if ((sp->plus && numb >= 0) || numb < 0)
+	// 	dig++;
+// printf("\nl = %d, k = %d, dig = %d\n", l, k, dig);
+// if (k < 0)
+// 	k = 0;
+// if (sp->zero && !sp->minus)
+// {
+// 	l += k;
+// 	k = 0;
+// }
+// printf("\nl = %d, k = %d, dig = %d\n", l, k, dig);
+// return(0);
+// if (sp->backsp && k == 0)
+// 	k = 1;
+// if (((numb < 0 && k > 0) || sp->plus) && k > 0)
+// 	k--;
+// ft_put_n_chars(32, k);
+// if (sp->plus && numb >= 0)
+// 	write(1, "+", 1);
+// else if (numb < 0)
+// 	write(1, "-", 1);
+// ft_put_n_chars(48, l);
+	// if (numb == -2147483648)
+	// {
+	// 	ft_putnbr(numb/10);
+	// 	write(1, "8", 1);		
+	// }
+	// else
+	// 	ft_putnbr(numb);
+//	printf("\nl = %d, k = %d, dig = %d\n", l, k, dig);
+	return (dig + k + l);
 }
 
 int		ft_put_parsed_integer_u(uint num, t_specif *sp)
@@ -267,122 +853,59 @@ int		ft_put_parsed_integer_u(uint num, t_specif *sp)
 	else if (sp->specif == 'x' || sp->specif == 'X')
 		dig = digits_in_base_unsigned(num, 16);
 	else if (sp->specif == 'd')
-		dig = digits_in_base((int)num, 10);
-	if (sp->point)
-		l = sp->decim - dig;
-	else
-		l = sp->numb - dig;
+	{
+		return (ft_put_d((int)num, sp));
+	}
+
+//dig is number of digits. Afterthat, it's number of printed characters
+//we compare it with sp->decim if it exists or with sp->numb otherwise
 	if (sp->hash && sp->specif == 'o')
-			l--;
+		dig = dig + 1;
 	else if (sp->hash && (sp->specif == 'x' || sp->specif == 'X'))
-			l -= 2;
-	if (l < 0)
-		l = 0;
+		dig = dig + 2;
+	l = (sp->decim > dig) ? sp->decim - dig : 0;
+	k = (sp->decim > dig) ? sp->numb - sp->decim : sp->numb - dig;
+	if (k < 0)
+		k = 0;
+	if (sp->zero && !sp->minus)
+	{
+		l += k;
+		k = 0;
+	}
+	n = 0;
 	if (sp->point && num == 0)
 	{
-
-		ft_put_n_chars(32, sp->numb - sp->decim);
-		ft_put_n_chars(48, sp->decim);
+		if (sp->specif == 'o' && sp->hash)
+		{
+			ft_put_n_chars(32, sp->numb - 1);
+			write(1, "0", 1);
+			return ((sp->numb > 0) ? sp->numb : 1);
+		}
+		else if (sp->specif == 'x' || sp->specif == 'X')
+		{
+			ft_put_n_chars(32, sp->numb - sp->decim);
+			ft_put_n_chars(48, sp->decim);
+			return ((sp->numb > sp->decim) ? sp->numb : sp->decim);
+		}
+		ft_put_n_chars(32, sp->numb);
 		return (sp->numb);
 	}
-????
-
-
-	printf("dig = %d, k = %d, l = %d\n", dig, k, l);
-	return (0);
-	k = sp->numb - dig - l;
-	n = 0;
-	
-	if (k <= 0)
+	if (!sp->minus)
 	{
-		printf("k = %d, l = %d\n", k, l);
-		if (sp->hash && sp->specif == 'o')
-		{
-			write(1, "0", 1);
-			n += 1; //можно было n++, но так оставил для наглядности
-			sp->numb -= 1;
-			ft_put_n_chars(32, sp->numb - dig);
-		}
-		else if (sp->hash && sp->specif == 'x' && num != 0)
-			write(1, "0x", 2);
-		else if (sp->hash && sp->specif == 'X')
-			write(1, "0X", 2);
-		if (sp->hash && (sp->specif == 'x' || sp->specif == 'X') && num != 0)
-			n += 2;
+		ft_put_n_chars(32, k);
+		n += ft_put_prelimenaries(num, sp);
+		ft_put_n_chars(48, l);
 		n += ft_put_integer_u(num, sp);
-		ft_put_n_chars(32, sp->numb - dig);
-//		if (sp->hash && sp->specif == 'o')
-//			return (sp->numb + 1);
 	}
 	else
 	{
-		if (sp->hash)
-		{
-			if (sp->specif == 'o' && l == 0) //было && l ==0
-				l++;
-			else if (sp->specif == 'x' || sp->specif == 'X')
-			{
-				k -= 2;
-				n += 2;
-			}	
-		}
-		if (sp->minus)
-		{
-			printf("k = %d, l = %d\n", k, l);
-			if (sp->hash && sp->specif == 'x')
-				write(1, "0x", 2);
-			else if (sp->hash && sp->specif == 'X')
-				write(1, "0X", 2);
-//			else if (sp->hash && sp->specif =='o')
-//				write(1, "0", 1);
-			ft_put_n_chars(48, l);
-			ft_put_integer_u(num, sp);
-			ft_put_n_chars(32, k);	
-			n += dig + l + k;
-		}
-		else
-		{
-			if (!sp->zero)
-				ft_put_n_chars(32, k);
-			if (sp->hash && sp->specif == 'x')
-				write(1, "0x", 2);
-			else if (sp->hash && sp->specif == 'X')
-				write(1, "0X", 2);
-			else if (sp->hash && sp->specif =='o')
-				write(1, "0", 1);
-			if (sp->zero)
-				ft_put_n_chars(48, k);
-			ft_put_integer_u(num, sp);
-			n += k + l + dig;
-		}
+		n += ft_put_prelimenaries(num, sp);
+		ft_put_n_chars(48, l);
+		n += ft_put_integer_u(num, sp);
+		ft_put_n_chars(32, k);		
 	}
-
-	if (sp->specif == 'd' || sp->specif == 'i')
-	{
-		if (l > 0)
-			k -= l;
-		if ((int)num < 0)
-		{
-			ft_put_n_chars(32, k - 1);
-			write(1, "-", 1);
-			ft_put_n_chars(48, l);
-			n = ft_putnbr(-num);
-			n++; //because of "-" sign
-//			printf("\nk = %d\n", k);
-
-		}
-		else
-		{
-			ft_put_n_chars(32, k);
-			ft_put_n_chars(48, l);
-			n = ft_putnbr(num);
-		}
-		n += l;
-		if (k > 0)
-			n += k;
-
-	}
-	return (n);
+//	print_sp(sp);
+	return (n + k + l);
 }
 
 int		ft_put_backsp_str_minus(char *str, t_specif *sp)
