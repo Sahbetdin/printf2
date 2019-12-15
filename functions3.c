@@ -290,8 +290,9 @@ int ft_put_int_min(int num, t_specif *sp)
 		if (sp->zero && !sp->minus) //нет '-' и есть '0'
 		{
 			write(1, "-", 1);
-			ft_put_n_chars(48, k - 1);
+			ft_put_n_chars(48, k);
 			write(1, "2147483648", 10);
+			dig += k;
 		}
 		else if (!sp->minus)
 		{
@@ -354,52 +355,78 @@ int ft_put_d(int num, t_specif *sp)
 	// %6d, %10d, %06d, %010d для полож чисел
 	{
 		k = (sp->numb > dig) ? sp->numb - dig : 0; //кол-во нулей либо пробелов
+
 		if (sp->zero && !sp->minus) //нет '-' и есть '0'
 		{
 			if (sp->plus || sp->sign) //есть '+' либо число отриц
 			{// %0+8d
 				ft_put_sign(sp->sign);
 				ft_put_n_chars(48, k - 1);
+				dig++;
 			}
 			else if (!sp->sign && !sp->backsp) //полож 
 				ft_put_n_chars(48, k);
 			else if (!sp->sign && sp->backsp)
 			{
+//				write(1, "JJ\n", 3);
+				k = (k == 0) ? 1 : k;
 				write(1, " ", 1);
-				ft_put_n_chars(48, k - 1);	
+				ft_put_n_chars(48, k - 1);
+				dig++;
 			}
 			ft_putnbr_positive(num);
+			
+			return ((sp->numb > dig) ? sp->numb : dig);
+
 		}
 		else if (sp->backsp && !sp->minus) //есть ' ' и нет '-'
 		{
-			if (sp->plus || sp->sign)
+
+			if (sp->sign) //убрал "sp->plus ||"
 			{
-				ft_put_sign(num);
 				ft_put_n_chars(32, k - 1);
+				ft_put_sign(sp->sign);
 			}
-			else if (!sp->sign)
-				ft_put_n_chars(32, k);
+			else // if (!sp->sign)
+			{
+				k = (k == 0) ? 1 : k;
+				ft_put_n_chars(32, k);	
+			}
+			dig++;
 			ft_putnbr_positive(num);
+			return ((sp->numb > dig) ? sp->numb : dig);
 		}
 		else if (!sp->minus)
 		{
 			if (sp->sign || sp->plus)
-				k--;
+			{
+				k = (k > 1) ? k - 1 : 0;
+//				k--;
+//				printf("k = %d\n", k);
+				dig++;
+			}
 			ft_put_n_chars(32, k);
 			if (sp->sign || sp->plus)
 				ft_put_sign(sp->sign);
 			ft_putnbr_positive(num);
+			
+			return ((sp->numb > dig) ? sp->numb : dig);
 		}
 		else if (sp->minus)
 		{
+
 			if ((sp->backsp && !sp->sign) || sp->sign || (sp->plus && !sp->sign))
+			{
 				k = (k > 1) ? k - 1 : 0;
+				dig++;
+			}
 			if (sp->backsp && !sp->sign)
 				write(1, " ", 1);
 			else if (sp->plus || sp->sign)
 				ft_put_sign(sp->sign);
 			ft_putnbr_positive(num);
 			ft_put_n_chars(32, k);
+			return ((sp->numb > dig) ? sp->numb : dig);
 		}			
 		return (sp->numb);
 	}
