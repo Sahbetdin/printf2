@@ -5,8 +5,8 @@ RM = /bin/rm -f
 LDFLAGS = -L.
 LDLIBS = -lft
 HDDIRS = -I.
-SRC = functions2.c printf_test_file2.c main1.c functions3.c
-
+SRC = process_sp.c put_d.c put_double.c \
+	put_hex_oct.c put_strings.c functions2.c
 OBJ = $(subst .c,.o,$(SRC))
 
 HEAD = test_header.h
@@ -17,13 +17,14 @@ $(NAME): $(OBJ)
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
 
+
 %.o: %.c
 	@$(CC) $< -c -o $@ -I.$(HEAD)
 
 clean:
-	$(RM) -f $(OBJ)
+	@$(RM) -f $(OBJ)
 
 fclean: clean
-	$(RM) -f $(NAME)
+	@$(RM) -f $(NAME)
 
 re: fclean all

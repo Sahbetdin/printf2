@@ -178,8 +178,10 @@ int digits_in_base(int value, int base)
 {
 	int i;
 	i = 0;
+
 	if (value == 0)
 		return (1);
+//	write(1, "HERE\n", 5);
 	while (value)
 	{
 		value /= base;
@@ -188,7 +190,9 @@ int digits_in_base(int value, int base)
 	return (i);
 }
 
-int digits_in_base_unsigned(uint u_value, int base)
+
+
+int digits_in_base_unsigned(unsigned long u_value, int base)
 {
 	int i;
 
@@ -203,7 +207,9 @@ int digits_in_base_unsigned(uint u_value, int base)
 	return (i);
 }
 
-/*ONLY Positives */
+
+
+/*ONLY Positives and zero*/
 int	ft_putnbr_positive(int n)
 {
 	int i;
@@ -216,18 +222,17 @@ int	ft_putnbr_positive(int n)
 	return (i);
 }
 
-int	ft_putnbr_u(unsigned int n)
-{
-	int i;
 
-	i = 0;
-	if (n > 9)
-		i += ft_putnbr_positive(n / 10);
-	ft_putchar(n % 10 + '0');
-	i++;
-	return (i);
-}
-
+//переделать putnbr_positive, чтобы было
+//без рекурсии
+// использовать для вывода short, char
+//делать cast в начале функции
+//long
+//long long
+//то есть принимать long long, а 
+//далее в зав-ти от specifier кастить
+//если hhd, lld, то дописывать d в конец выдачи
+//
 
 
 int        ft_putlong(long n)
@@ -258,225 +263,8 @@ int        ft_putlong(long n)
     return (i);
 }
 
-void print_sp(t_specif *sp)
-{
-	printf("spec: %c\n", sp->specif);
-	printf("zero: %d\n", sp->zero);
-	printf("point: %d\n", sp->point);
-	printf("numb: %d\n", sp->numb);
-	printf("decim: %d\n", sp->decim);
-	printf("plus: %d\n", sp->plus);
-	printf("minus: %d\n", sp->minus);
-	printf("backsp: %d\n", sp->backsp);
-	printf("sign: %d\n", sp->sign);
-	printf("hash: %d\n", sp->hash);
-	return ;
-}
-
-void	clear_spec(t_specif *sp)
-{
-	sp->specif = '\0';
-	sp->zero = 0;
-	sp->point = 0;
-	sp->numb = 0;
-	sp->decim = -1;
-	sp->plus = 0;
-	sp->minus = 0;
-	sp->backsp = 0;
-	sp->sign = 0;
-	sp->hash = 0;
-	return ;
-}
-
-/* При поиске % мы можем пропускать числа, точку, пробел и таб.
-Иначе если находим %, возвращаем указатель.
-Иначе возвращаем НУЛЬ.
-*/
-
-/*during the search we skip backspace, tab, any number, +, -, # 
-otherwise we return pointer to required letter or NULL */
-char *find_spec(char *p, t_specif *sp)
-{
-	char *lett;
-
-	lett = ft_strdup("diuoxXfFeEgGaAcspn%");
-	while (*p)
-	{
-		if (*p == ' ' || *p == '\t' || *p == '.' || (*p >= '0' && *p <= '9')
-		 || *p == '+' || *p == '-' || *p == '#')
- 			p++;
-		else if (ft_strchr(lett, *p))
-		{
-			sp->specif = *p;
-			return (p); 
-		}
-		else
-			return (NULL);
-	}
-	free(lett);
-	return (NULL);
-}
-
-/*we search between p and s-1 */
-/*we search before any letter or  */
-void	set_zero(char *p, char *s, t_specif *sp)
-{
-	while (*p && p < s)
-	{
-		if (*p == ' ' || *p == '\t' || *p == '+' || *p == '-' || *p == '#')
- 			p++;
-		else if (*p == '0')
-		{
-			sp->zero = *p;
-			return ; 
-		}
-		else
-			return ;
-	}
-	return ;
-}
-
-void	set_plus(char *p, char *s, t_specif *sp)
-{
-	while (*p && p < s)
-	{
-		if (*p == ' ' || *p == '\t' || *p == '#' || *p == '0' || *p == '-')
-//!!проверить по оригиналу, надо ли ПРПУСКАТЬ #!!!
- 			p++;
-		else if (*p == '+')
-		{
-			sp->plus = 1;
-			return ;
-		}
-		else
-			return ;
-	}
-	return ;
-}
-
-void	set_minus(char *p, char *s, t_specif *sp)
-{
-	while (*p && p < s)
-	{
-		if (*p == ' ' || *p == '\t' || *p == '#' || *p == '0' || *p == '+')
-//!!проверить по оригиналу, надо ли ПРПУСКАТЬ #!!!
- 			p++;
-		else if (*p == '-')
-		{
-			sp->minus = 1;
-			return ;
-		}
-		else
-			return ;
-	}
-	return ;
-}
 
 
-//!!!НАДО ИСКАТЬ НА ВСЕМ ПРОТЯЖЕНИИ ОТ p ДО p_spec
-void	set_backsp(char *p, char *s, t_specif *sp)
-{
-	while (*p && p < s)
-	{
-		if (*p == ' ')
-		{
-			sp->backsp = 1;
-			return ;
-		}
-		else
-			p++;
-
-	}
-	return ;
-}
-
-/*we search for point after we've searched for letter*/
-/*we search between p and s-1 */
-/*if found we set sp->point as 1 and return [pointer to '.'] */
-char *set_point(char *p, char *s, t_specif *sp)
-{
-	while (*p && p < s)
-	{
-		if (*p == ' ' || *p == '\t' || (*p >= '0' && *p <= '9') 
-		|| *p == '+' || *p == '-' || *p == '#')
-			p++;
-		else if (*p == '.')
-		{
-			sp->point = 1;
-			return (p);
-		}
-		else
-			return (NULL);
-	}
-	return (NULL);
-}
-
-/*we input pointer next after % as p
-and ptr_spec or (ptr_point?) as s */
-void	set_numb(char *p, char *s, t_specif *sp)
-{
-	while (*p && p < s && (*p == ' ' || *p == '\t' 
-		|| *p == '+' || *p == '-' || *p == '#' || *p == '0'))
-			p++;
-	sp->numb = ft_atoi(p);
-}
-
-/*works ONLY if point was found */
-void	set_decimal(char *p, t_specif *sp)
-{
-	sp->decim = ft_atoi(p);
-}
-
-void	set_hash(char *p, char *s, t_specif *sp)
-{
-	while (*p && p < s)
-	{
-		if (*p == '#')
-		{
-			sp->hash = 1;
-			return ;
-		}
-		else
-			p++;
-
-	}
-	return ;
-}
-
-//сначала ищем букву. Ту, которая нужна, то есть находится в массиве...
-// ищем ноль
-// ищем плюс/минус
-// ищем numb which is before.
-// ищем точку
-// ищем decimal part
-// ищем хэш
-char *parse_specifier(char *p, t_specif *sp)
-{
-	char *ptr_lett;
-	char *ptr_point;
-	char *ptr_zero;
-
-	clear_spec(sp);
-	if ((ptr_lett = find_spec(p, sp)))
-	{
-		set_zero(p, ptr_lett, sp);
-		set_plus(p, ptr_lett, sp);
-		set_minus(p, ptr_lett, sp);
-		set_numb(p, ptr_lett, sp);
-		set_backsp(p, ptr_lett, sp);
-		set_hash(p, ptr_lett, sp);
-		ptr_point = set_point(p, ptr_lett, sp);
-	//	printf("POINTER TO POINT %p\n", ptr_point);
-		if (ptr_point)
-			set_decimal(ptr_point + 1, sp);
-	}
-	else
-	{
-		ft_putstr("error");
-		ptr_lett = NULL;
-	}
-	return (ptr_lett);
-}
 
 /*
 for capitals use lett_type = 1;
@@ -526,18 +314,21 @@ for small letters use lett_type = 0;
 
 
 /*We use only for octal, thus no hex allowed*/
-int		ft_itoa_base_unsigned(uint u_value, int base, int lett_type)
+int		ft_itoa_base_unsigned(long u_value, int base, int lett_type)
 {
 	char	*s;
 	int		n;
 	int		i;
 	char	*letters;
 
+//write(1, "GO!\n", 4);
+//printf("%lx\n", u_value);
 	if (u_value == 0)
 	{
 		ft_putchar('0');
 		return (1);
 	}
+//write(1, "GO!\n", 4);
 	if (lett_type)
 		letters = ft_strdup("0123456789ABCDEF");
 	else 
