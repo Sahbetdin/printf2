@@ -13,7 +13,6 @@ int		ft_put_backsp_str_minus(char *str, t_specif *sp)
 		l = sp->numb - n;
 	if (l < 0)
 		l = 0;
-
 	if (sp->point && sp->decim < n)
 	{
 		write(1, str, sp->decim);
@@ -77,6 +76,34 @@ int		ft_put_percentage(t_specif *sp)
 	return (1);
 }
 
+//22Dec 2019
+int ft_put_null(t_specif *sp)
+{
+	int k;
+	int n;
+
+	if(sp->point)
+		k = sp->numb - sp->decim;
+	else
+		k = sp->numb - 6;
+	if (sp->minus)
+	{
+		if (sp->point)
+			write(1, "(null)", sp->decim);
+		else
+			write(1, "(null)", 6);
+		ft_put_n_chars(32, k);
+	}
+	else
+	{
+		ft_put_n_chars(32, k);
+		if (sp->point)
+			write(1, "(null)", sp->decim);
+		else
+			write(1, "(null)", 6);
+	}
+	return (0);
+}
 
 
 int		ft_put_string(char *str, t_specif *sp)
@@ -86,10 +113,7 @@ int		ft_put_string(char *str, t_specif *sp)
 	int l;
 
 	if (!str)
-	{
-		write(1, "(null)", 6);
-		return (6);
-	}
+		return (ft_put_null(sp));
 	if (sp->minus)
 		return (ft_put_backsp_str_minus(str, sp));
 	else
