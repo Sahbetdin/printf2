@@ -537,3 +537,27 @@ int		ft_put_parsed_integer_u(uint num, t_specif *sp)
 //	print_sp(sp);
 	return (n + k + l);
 }
+
+
+//old one
+// int		ft_put_prelimenaries(uint num, t_specif *sp)
+// {
+// 	if (sp->hash && num)
+// 	{
+// 		if (sp->specif == 'o')
+// 		{
+// 			write(1, "0", 1);
+// 			return (1);
+// 		}
+// 		else if (sp->specif == 'x')
+// 			write(1, "0x", 2);
+// 		else if (sp->specif == 'X')
+// 			write(1, "0X", 2);
+// 		if (sp->specif == 'x' || sp->specif == 'X')
+// 			return (2);
+// 		else
+// 			return (0);
+// 	}
+// 	else
+// 		return (0);
+// }

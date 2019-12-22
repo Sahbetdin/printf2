@@ -17,8 +17,8 @@ int main()
     // kl = 4294967254;
     // n = digits_in_base_unsigned(kl, 16);
     // printf("dig = %d ", n);
-     c1 = printf("%lldA\n", -9223372036854775808);
-  c2 = ft_printf("%lldA\n", -9223372036854775808);
+     c1 = printf("%15.10huA\n", (unsigned short)23423532);
+  c2 = ft_printf("%15.10huA\n", (unsigned short)23423532);
    //    c3 = printf("%08dA\n", -536);
    // c4 = ft_printf("%08dA\n", -536);
    //    c5 = printf("%08dA\n", 0);

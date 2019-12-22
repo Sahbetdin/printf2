@@ -258,10 +258,14 @@ int	process_specifier(char *ptr, t_specif *sp, va_list ap)
 	(sp->specif == 'l' && (sp->specif1 == 'x' || sp->specif1 == 'X')) ||
 	(sp->specif == 'l' && sp->specif1 == 'l' && (sp->specif2 == 'x' || sp->specif2 == 'X')) ||
 	(sp->specif == 'l' && sp->specif1 == 'o') ||
+	(sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'o') ||
 	(sp->specif == 'h' && sp->specif1 == 'x') ||
-	(sp->specif == 'h' && sp->specif1 == 'h' && (sp->specif2 == 'x' || sp->specif2 == 'X')))
+	(sp->specif == 'h' && sp->specif1 == 'o') ||
+	(sp->specif == 'h' && sp->specif1 == 'h' && (sp->specif2 == 'x' || sp->specif2 == 'X')) ||
+	(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'o') ||
+	(sp->specif == 'h' && sp->specif1 == 'u') ||
+	(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'u'))
 	{
-				
 		return (ft_put_x_o(va_arg(ap, ulong), sp));
 	}
 	else if (sp->specif == 'd' || sp->specif == 'i' ||

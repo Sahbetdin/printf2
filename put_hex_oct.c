@@ -1,27 +1,5 @@
 #include "test_header.h"
 
-//old one
-// int		ft_put_prelimenaries(uint num, t_specif *sp)
-// {
-// 	if (sp->hash && num)
-// 	{
-// 		if (sp->specif == 'o')
-// 		{
-// 			write(1, "0", 1);
-// 			return (1);
-// 		}
-// 		else if (sp->specif == 'x')
-// 			write(1, "0x", 2);
-// 		else if (sp->specif == 'X')
-// 			write(1, "0X", 2);
-// 		if (sp->specif == 'x' || sp->specif == 'X')
-// 			return (2);
-// 		else
-// 			return (0);
-// 	}
-// 	else
-// 		return (0);
-// }
 
 void	ft_put_prelimenaries(long num, t_specif *sp)
 {
@@ -47,9 +25,15 @@ int ft_put_integer_u(ulong u_value, t_specif *sp)
 
 	n = 0;
 	if (sp->specif == 'u' || (sp->specif == 'l' && sp->specif1 == 'u') ||
-	(sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'u'))
+	(sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'u') ||
+	(sp->specif == 'h' && sp->specif1 == 'u') ||
+	(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'u'))
 		n += ft_itoa_base_unsigned(u_value, 10, 0);
-	else if (sp->specif == 'o')
+	else if (sp->specif == 'o' ||
+	(sp->specif == 'h' && sp->specif1 == 'o') ||
+	(sp->specif == 'l' && sp->specif1 == 'o') ||
+	(sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'o') ||
+	(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'o'))
 		n += ft_itoa_base_unsigned(u_value, 8, 0);
 	else if (sp->specif == 'x' || 
 		(sp->specif == 'l' && sp->specif1 == 'x') ||
@@ -63,12 +47,10 @@ int ft_put_integer_u(ulong u_value, t_specif *sp)
 		(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'X'))
 		{
 		n += ft_itoa_base_unsigned(u_value, 16, 1);
-
 		}
+//		printf("\nn = %d\n", n);
 	return (n);
 }
-
-//(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'X')
 
 int ft_put_x_o(ulong num, t_specif *sp)
 {
@@ -83,13 +65,21 @@ int ft_put_x_o(ulong num, t_specif *sp)
 		num = (uint)num;
 	else if (sp->specif == 'h' && (sp->specif1 == 'x' || sp->specif1 == 'X'))
 		num = (short)num;
-	else if (sp->specif == 'h' && sp->specif1 == 'h' && (sp->specif2 == 'x' || sp->specif2 == 'X'))
-		num = (char)num;
+	else if (sp->specif == 'h' && sp->specif1 == 'h' && (sp->specif2 == 'x' || sp->specif2 == 'X' || sp->specif2 == 'o'))
+		num = (unsigned char)num;
+	else if (sp->specif == 'h' && (sp->specif1 == 'o' || sp->specif1 == 'u'))
+		num = (unsigned short)num;
 	
-	if (sp->specif == 'u' || (sp->specif == 'l' && sp->specif1 == 'u')
-	|| (sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'u'))
+	if (sp->specif == 'u' || (sp->specif == 'l' && sp->specif1 == 'u') ||
+		(sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'u') ||
+		(sp->specif == 'h' && sp->specif1 == 'u') ||
+		(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'u'))
 		dig = digits_in_base_unsigned(num, 10);
-	else if (sp->specif == 'o')
+	else if (sp->specif == 'o' ||
+		(sp->specif == 'l' && sp->specif1 == 'o') ||
+		(sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'o') ||
+		(sp->specif == 'h' && sp->specif1 == 'o') ||
+		(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'o'))
 		dig = digits_in_base_unsigned(num, 8);
 	else if (sp->specif == 'x' || sp->specif == 'X' ||
 		( (sp->specif == 'l' && (sp->specif1 == 'x' || sp->specif1 == 'X'))) ||
@@ -127,7 +117,7 @@ int ft_put_x_o(ulong num, t_specif *sp)
 			ft_put_prelimenaries(num, sp);
 			ft_put_n_chars(48, l);
 			if (num != 0)
-				ft_put_integer_u(num, sp);
+				n = ft_put_integer_u(num, sp);
 			ft_put_n_chars(32, k);
 		}
 		else
@@ -136,7 +126,7 @@ int ft_put_x_o(ulong num, t_specif *sp)
 			ft_put_prelimenaries(num, sp);
 			ft_put_n_chars(48, l);
 			if (num != 0)
-				ft_put_integer_u(num, sp);
+				n = ft_put_integer_u(num, sp);
 		}
 	}
 	else
@@ -151,7 +141,7 @@ int ft_put_x_o(ulong num, t_specif *sp)
 		if (sp->minus)
 		{
 			ft_put_prelimenaries(num, sp);
-			ft_put_integer_u(num, sp);
+			n = ft_put_integer_u(num, sp);
 			ft_put_n_chars(32, k);
 		}
 		else
@@ -169,9 +159,9 @@ int ft_put_x_o(ulong num, t_specif *sp)
 				ft_put_prelimenaries(num, sp);
 			}
 		//	printf("dig = %d, l = %d, k = %d\n",dig, l, k);
-			ft_put_integer_u(num, sp);
+			n = ft_put_integer_u(num, sp);
 		}
 	}
 //	print_sp(sp);
-	return (dig + k + l + sp->hash);
+	return (n + k + l + sp->hash);
 }
