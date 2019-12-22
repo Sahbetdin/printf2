@@ -77,7 +77,7 @@ int ft_put_int_min(int num, t_specif *sp)
 	return(dig);
 }
 
-int ft_put_d_withOUT_numb_point(int num, t_specif *sp)
+int ft_put_d_withOUT_numb_point(long long num, t_specif *sp)
 {
 	if (sp->plus && !sp->sign)
 		write(1, "+", 1);
@@ -90,29 +90,28 @@ int ft_put_d_withOUT_numb_point(int num, t_specif *sp)
 }
 
 
-int ft_put_d_with_numb_point(int num, t_specif *sp, int dig)
+int ft_put_d_with_numb_point(long long num, t_specif *sp, int dig)
 {
 	int l;
 	int k;
 
+	if (sp->point && num == 0)
+		dig = 0;
 	l = (sp->decim > dig) ? sp->decim - dig : 0;
-	k = (sp->decim > dig) ? sp->numb - sp->decim - (sp->sign || sp->plus): sp->numb - dig - (sp->sign || sp->plus);
+	k = (sp->decim > dig) ? sp->numb - sp->decim : sp->numb - dig;
+	k -= sp->sign || sp->plus;
 	if (k < 0)
 		k = 0;
-//	write(1, "FF\n", 3);
-	// if (sp->sign || sp->plus) // || sp->backsp
-	// 	k--; убрал в выше
 	if (sp->plus && !sp->sign && sp->minus)
 	{
 		write(1, "+", 1);
 		ft_put_n_chars(48, l);
-//		ft_putnbr_positive(num);
-		ft_put_long_long(num);
+		if (!(sp->point && num == 0))
+			ft_put_long_long(num);
 		ft_put_n_chars(32, k);
 	}
 	else if (sp->plus && !sp->sign && sp->zero)
 	{
-		//write(1, "PP\n", 3);
 		if (sp->point)
 		{
 			ft_put_n_chars(32, k);
@@ -124,53 +123,60 @@ int ft_put_d_with_numb_point(int num, t_specif *sp, int dig)
 			ft_put_n_chars(48, k);
 		}
 		ft_put_n_chars(48, l);
-		ft_put_long_long(num);
-		//ft_putnbr_positive(num);
+		if (!(sp->point && num == 0))
+			ft_put_long_long(num);
 	}
 	else if (sp->plus && !sp->sign)
 	{ //+6.5d, 232
 		ft_put_n_chars(32, k);
 		write(1, "+", 1);
 		ft_put_n_chars(48, l);
-		ft_put_long_long(num);
-//		ft_putnbr_positive(num);
+		if (!(sp->point && num == 0))
+			ft_put_long_long(num);
 	}
 	else if (!sp->plus && !sp->sign && sp->minus && sp->backsp)
 	{
 		k--;
 		write(1, " ", 1);
 		ft_put_n_chars(48, l);
-		ft_put_long_long(num);
-		//ft_putnbr_positive(num);
+		if (!(sp->point && num == 0))
+			ft_put_long_long(num);
 		ft_put_n_chars(32, k);
 	}
 	else if (!sp->plus && !sp->sign && sp->zero && sp->backsp)
 	{
-		k--;
 		write(1, " ", 1);
-		ft_put_n_chars(32, k);
-		ft_put_n_chars(48, l);
-		ft_put_long_long(num);
-//		ft_putnbr_positive(num);
+		if (k > 0)
+			k--;
+		if (sp->point)
+		{
+			ft_put_n_chars(32, k);
+			ft_put_n_chars(48, l);
+		}
+		else
+		{
+			ft_put_n_chars(48, k);
+		}
+		if (!(sp->point && num == 0))
+			ft_put_long_long(num);
 	}
 	else if (!sp->plus && !sp->sign && sp->minus)
 	{
 		ft_put_n_chars(48, l);
-		ft_put_long_long(num);
-		//ft_putnbr_positive(num);
+		if (!(sp->point && num == 0))
+			ft_put_long_long(num);
 		ft_put_n_chars(32, k);
 	}
 	else if (!sp->plus && !sp->sign && sp->backsp)
 	{ // % 5d
-	//		write(1, "CC\n", 3);
 		if (k < 1)
 			write(1, " ", 1);
 		else
 			ft_put_n_chars(32, k);
 		k--;
 		ft_put_n_chars(48, l);
-		ft_put_long_long(num);
-//		ft_putnbr_positive(num);
+		if (!(sp->point && num == 0))
+			ft_put_long_long(num);
 	}
 	else if (!sp->plus && !sp->sign && sp->zero)
 	{
@@ -181,8 +187,8 @@ int ft_put_d_with_numb_point(int num, t_specif *sp, int dig)
 		else
 			ft_put_n_chars(48, k);
 		ft_put_n_chars(48, l);
-		ft_put_long_long(num);
-//		ft_putnbr_positive(num);
+		if (!(sp->point && num == 0))
+			ft_put_long_long(num);
 	}
 	else if (sp->sign && sp->minus)
 	{
@@ -190,17 +196,10 @@ int ft_put_d_with_numb_point(int num, t_specif *sp, int dig)
 		write(1, "-", 1);
 		ft_put_n_chars(48, l);
 		ft_put_long_long(num);
-//		ft_putnbr_positive(num);
 		ft_put_n_chars(32, k);
 	}
 	else if (sp->sign && sp->zero) 
 	{
-//		write(1, "GG\n", 3);
-		// if (sp->point)
-		// 	ft_put_n_chars(32, k);
-		// else
-		// 	ft_put_n_chars(48, k);
-
 		if (sp->point)
 		{
 			ft_put_n_chars(32, k);
@@ -211,11 +210,8 @@ int ft_put_d_with_numb_point(int num, t_specif *sp, int dig)
 			write(1, "-", 1);
 			ft_put_n_chars(48, k);
 		}
-
-		// write(1, "-", 1);
 		ft_put_n_chars(48, l);
 		ft_put_long_long(num);
-//		ft_putnbr_positive(num);
 	}
 	else if (sp->sign && sp->backsp)
 	{
@@ -226,40 +222,57 @@ int ft_put_d_with_numb_point(int num, t_specif *sp, int dig)
 		write(1, "-", 1);
 		ft_put_n_chars(48, l);
 		ft_put_long_long(num);
-//		ft_putnbr_positive(num);
 	}
 	else
 	{
+	// printf("l = %d, k = %d, dig = %d, sp->sign = %d\n", l, k, dig, sp->sign);
+	//	write(1, "YY\n", 3);
 		ft_put_n_chars(32, k);
 		if (sp->sign)
 			write(1, "-", 1);
 		ft_put_n_chars(48, l);
-		if (!sp->numb && !sp->decim && num == 0)
-			dig--;
-		else
+		if (!(sp->point && num == 0))
 			ft_put_long_long(num);
-			//ft_putnbr_positive(num);
-
 	}
-	return (dig + (sp->sign || sp->plus) + (sp->backsp) + l + k);
+	return (dig + (sp->sign || sp->plus || sp->backsp) + l + k);
 }
 
-int ft_put_d(int num, t_specif *sp)
+int ft_put_d(long long num, t_specif *sp)
 {
 	int dig;
 	int l;
 	int k;
 	int n;
 
+//	printf("dig = %d\n", dig);
+
+	if (sp->specif == 'h')
+	{
+		if (sp->specif1 == 'd')
+			num = (short)num;
+		else if (sp->specif1 == 'h' && sp->specif2 == 'd')
+			num = (char)num;
+	}
+	else if (sp->specif == 'l')
+	{
+
+		if (sp->specif1 == 'd')
+			num = (long)num;
+		//printf("HERE %ld\n", num);
+		// ft_put_long_long(num);
+		// return (0);
+
+//		else if (sp->specif1 == 'l' && sp->specif2 == 'd')
+//			num = (long long)num; //необязательно, если делать все long long
+	}
+	else if (sp->specif == 'd' || sp->specif == 'i')
+		num = (int)num;
+
 
 	dig = digits_in_base(num, 10);
 	if (num == -2147483648)
 		return (ft_put_int_min(num, sp));
-//	printf("dig = %d\n", dig);
-
-	if (sp->specif == 'h' && sp->specif1 == 'd')
-		write(1, "YES!\n", 5);
-
+	
 	if (num < 0)
 	{
 		num = -num; //!INT_MIN
@@ -268,6 +281,10 @@ int ft_put_d(int num, t_specif *sp)
 	if (sp->numb || sp->point)
 		return (ft_put_d_with_numb_point(num, sp, dig));
 	else
+	{
+//		write(1, "RR\n", 3);
+
 		return (ft_put_d_withOUT_numb_point(num, sp) + dig);
+	}
 	return (0);
 }

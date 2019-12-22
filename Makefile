@@ -16,7 +16,8 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
-
+	@gcc main2.c $(NAME)
+	@./a.out
 
 %.o: %.c
 	@$(CC) $< -c -o $@ -I.$(HEAD)

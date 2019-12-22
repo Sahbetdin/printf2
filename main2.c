@@ -9,8 +9,8 @@ int main()
 //	printf("% 05dA\n", -536);
 //	printf("% 05dA\n", 0);
 
-      c1 = printf("%6.4hdA\n", (short)-536);
-   c2 = ft_printf("%6.4hdA\n", (short)-536);
+//      c1 = printf("%u\n", 4294967296);
+   c2 = ft_printf("%u\n", 4294967296);
    //    c3 = printf("%08dA\n", -536);
    // c4 = ft_printf("%08dA\n", -536);
    //    c5 = printf("%08dA\n", 0);

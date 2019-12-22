@@ -59,13 +59,14 @@ char *find_spec(char *p, t_specif *sp)
 			{
 				sp->specif1 = *(p + 1);
 				if (sp->specif1 == 'l')
-					sp->specif = *(p + 2);
+					sp->specif2 = *(p + 2);
 			}
 			else if (*p == 'h')
 			{
+			//	write(1, "H\n", 2);
 				sp->specif1 = *(p + 1);
 				if (sp->specif1 == 'h')
-					sp->specif = *(p + 2);
+					sp->specif2 = *(p + 2);
 			}
 			return (p); 
 		}
@@ -230,7 +231,11 @@ char *parse_specifier(char *p, t_specif *sp)
 		ptr_point = set_point(p, ptr_lett, sp);
 	//	printf("POINTER TO POINT %p\n", ptr_point);
 		if (ptr_point)
+		{
 			set_decimal(ptr_point + 1, sp);
+		}
+		else if (sp->specif == 'f')
+			sp->decim = 6;
 	}
 	else
 	{
@@ -246,15 +251,18 @@ int	process_specifier(char *ptr, t_specif *sp, va_list ap)
 {
 	int i;
 
-
 	if (sp->specif == 'o' || sp->specif == 'u' || sp->specif == 'x' || 
 		sp->specif == 'X' || (sp->specif == 'l' && sp->specif1 == 'x'))
 		{
 		return (ft_put_parsed_integer_u(va_arg(ap, long), sp));
 		}
 	else if (sp->specif == 'd' || sp->specif == 'i' ||
-		(sp->specif == 'h' && sp->specif1 == 'd'))
-		return (ft_put_d(va_arg(ap, int), sp));
+		(sp->specif == 'h' && sp->specif1 == 'd') || 
+		(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'd') ||
+		(sp->specif == 'l' && sp->specif1 == 'd') ||
+		(sp->specif == 'l' && sp->specif1 == 'l' && 
+			(sp->specif2 == 'd' || sp->specif2 == 'i')))
+		return (ft_put_d(va_arg(ap, long long), sp));
 	else if (sp->specif == 'f')
 		return (ft_put_whole_double(va_arg(ap, double), sp));
 	else if (sp->specif == 'F')
@@ -292,17 +300,20 @@ int     ft_printf(char *fmt, ...)
 		{
 			if ((s = parse_specifier(p + 1, sp)))
 			{
-
 			//	print_sp(sp);
 				//вызываем обработчик спарсенного
 				//printf(" ret bef = %d \n", ret);
 				ret += process_specifier(p + 1, sp, ap);
 				//printf(" ret = %d \n", ret);
 				if (sp->specif1)
-					p = s + 2;
+				{
+					if (sp->specif2)
+						p = s + 3;
+					else
+						p = s + 2;
+				}
 				else
 					p = s + 1;
-
 				continue;
 			}
 			else

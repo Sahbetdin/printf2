@@ -1,5 +1,4 @@
-	@gcc main2.c $(NAME)
-	@./a.out
+
 
 
 /*old*/

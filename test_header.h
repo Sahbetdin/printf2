@@ -6,6 +6,8 @@
 #include <stdarg.h>
 #include <string.h>
 #include <stdlib.h>
+#include <limits.h>
+
 
 typedef struct s_specif
 {
@@ -40,7 +42,7 @@ char	*ft_strdup(const char *s1);
 int		ft_cut_backspaces(const char *s);
 int		ft_atoi(const char *str);
 int		ft_atoi2(const char *str, char *end);
-int		digits_in_base(int value, int base);
+int		digits_in_base(long long value, int base);
 int		digits_in_base_unsigned(unsigned long u_value, int base);
 //int 	digits_in_base_unsigned(uint u_value, int base);
 int		ft_put_whole_double(double a, t_specif *sp);
@@ -69,5 +71,7 @@ int		ft_put_percentage(t_specif *sp);
 int		ft_put_parsed_integer_u(long num, t_specif *sp);
 int		ft_put_integer_u(long u_value, t_specif *sp);
 int		ft_put_string(char *str, t_specif *sp);
-int		ft_put_d(int num, t_specif *sp);
+int		ft_put_d(long long num, t_specif *sp);
+int		ft_put_d_withOUT_numb_point(long long num, t_specif *sp);
+int		ft_put_d_with_numb_point(long long num, t_specif *sp, int dig);
 #endif

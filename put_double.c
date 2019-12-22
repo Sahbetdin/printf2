@@ -24,6 +24,7 @@ int		ft_putdouble(double a, t_specif *sp)
 			if ((a - (long)a) * 10 > 4)
 				d += 1;
  		}
+// 		write(1, "JJ\n", 3);
 		ft_putchar(d + '0');
 		i++;
  		sp->decim--;
@@ -39,11 +40,9 @@ int ft_put_whole_double(double a, t_specif *sp)
 
 	if (a < 0)
 	{
-		sp->sign = '-';
+		sp->sign = 1;
 		a = -a;
 	}
-	else
-		sp->sign = '+';
 	d = a;
 	dig = digits_in_base(d, 10);
 	k = sp->numb - dig - 1 - sp->decim;
@@ -72,50 +71,50 @@ int ft_put_whole_double(double a, t_specif *sp)
 		ft_putdouble(a, sp);
 		return (sp->numb);
 	}
-	else if (sp->minus && sp->backsp && sp->sign == '+') //' ' is ignored when '+' is present
+	else if (sp->minus && sp->backsp && !sp->sign) //' ' is ignored when '+' is present
 	{
-		ft_putchar(' ');
+		write(1, " ", 1);
 		ft_putdouble(a, sp);
 		ft_put_n_chars(' ', k - 1);
 		return (sp->numb);
 	}
-	else if (sp->minus && sp->backsp && sp->sign == '-') 
+	else if (sp->minus && sp->backsp && sp->sign) 
 	{
-		ft_putchar('-');
+		write(1, "-", 1);
 		ft_putdouble(a, sp);
 		ft_put_n_chars(' ', k - 1);
 		return (sp->numb);
 	}
-	else if (sp->minus && sp->sign == '+')
+	else if (sp->minus && !sp->sign)
 	{	
 		ft_putdouble(a, sp);
 		ft_put_n_chars(' ', k);
 		return (sp->numb);
 	}
-	else if (sp->minus && sp->sign == '-')
+	else if (sp->minus && sp->sign)
 	{
-		ft_putchar('-');
+		write(1, "-", 1);
 		ft_putdouble(a, sp);
 		ft_put_n_chars(' ', k - 1);
 		return (sp->numb);
 }
-	else if (sp->backsp && sp->zero && sp->sign == '-')
+	else if (sp->backsp && sp->zero && !sp->sign)
 	{
-		ft_putchar('-');
+		write(1, "-", 1);
 		ft_put_n_chars('0', k - 1);
 		ft_putdouble(a, sp);
 		return (sp->numb);
 	}
 	else if (sp->backsp && sp->zero)
 	{
-		ft_putchar(' ');
+		write(1, " ", 1);
 		ft_put_n_chars('0', k - 1);
 		ft_putdouble(a, sp);
 		return (sp->numb);
 	}
-	else if (sp->zero && sp->sign == '-')
+	else if (sp->zero && sp->sign)
 	{
-		ft_putchar('-');
+		write(1, "-", 1);
 		ft_put_n_chars('0', k - 1);
 		ft_putdouble(a, sp);
 		return (sp->numb);
@@ -126,23 +125,24 @@ int ft_put_whole_double(double a, t_specif *sp)
 		ft_putdouble(a, sp);
 		return (sp->numb);
 	}
-	else if (sp->backsp && sp->sign == '-')
+	else if (sp->backsp && sp->sign)
 	{
 		ft_put_n_chars(' ', k - 1);
-		ft_putchar('-');
+		write(1, "-", 1);
 		ft_putdouble(a, sp);
 		return (sp->numb);
 	}
-	else if (sp->backsp && sp->sign == '+')
+	else if (sp->backsp && !sp->sign)
 	{
 		(k > 0) ? ft_put_n_chars(' ', k) : ft_put_n_chars(' ', 1);
 		ft_putdouble(a, sp);
 		return ((k > 0) ? sp->numb : sp->numb + 1);
 	}
-	else if (sp->sign == '-')
+	else if (sp->sign)
 	{
+//		write(1, "VV\n", 3);
 		ft_put_n_chars(' ', k - 1);
-		ft_putchar(sp->sign);
+		write(1, "-", 1);
 		ft_putdouble(a, sp);
 		return (sp->numb);
 	}
