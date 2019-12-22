@@ -18,17 +18,19 @@ void ft_put_long_long(long long num)
 	long long m;
 	int i;
 	int dig;
-
+	
 	m = num;
 	i = 0;
 	c = 1;
 
-	while (m > 9)
+	while (m > 9 || m < -9)
 	{
 		m /= 10;
 		c *= 10;
 		i++;
 	}
+	if (num < 0)
+		c = -c;
 	while (i >= 0)
 	{
 		dig = num / c;
@@ -86,7 +88,7 @@ int ft_put_d_withOUT_numb_point(long long num, t_specif *sp)
 	if (sp->sign)
 		write(1, "-", 1);
 	ft_put_long_long(num);
-	return ((sp->plus || sp->backsp) + sp->sign);
+	return (sp->plus || sp->backsp || sp->sign);
 }
 
 

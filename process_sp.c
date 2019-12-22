@@ -245,17 +245,25 @@ char *parse_specifier(char *p, t_specif *sp)
 	return (ptr_lett);
 }
 
-
-//надо сделать oct float!!
+//еще pointers распечатать!!!!!
+//надо сделать oct float bonus!!
 int	process_specifier(char *ptr, t_specif *sp, va_list ap)
 {
 	int i;
 
-	if (sp->specif == 'o' || sp->specif == 'u' || sp->specif == 'x' || 
-		sp->specif == 'X' || (sp->specif == 'l' && sp->specif1 == 'x'))
-		{
-		return (ft_put_parsed_integer_u(va_arg(ap, long), sp));
-		}
+	if (sp->specif == 'u' || sp->specif == 'x' 
+	|| sp->specif == 'X' || sp->specif == 'o' ||
+	(sp->specif == 'l' && sp->specif1 == 'u') ||
+	(sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'u') ||
+	(sp->specif == 'l' && (sp->specif1 == 'x' || sp->specif1 == 'X')) ||
+	(sp->specif == 'l' && sp->specif1 == 'l' && (sp->specif2 == 'x' || sp->specif2 == 'X')) ||
+	(sp->specif == 'l' && sp->specif1 == 'o') ||
+	(sp->specif == 'h' && sp->specif1 == 'x') ||
+	(sp->specif == 'h' && sp->specif1 == 'h' && (sp->specif2 == 'x' || sp->specif2 == 'X')))
+	{
+				
+		return (ft_put_x_o(va_arg(ap, ulong), sp));
+	}
 	else if (sp->specif == 'd' || sp->specif == 'i' ||
 		(sp->specif == 'h' && sp->specif1 == 'd') || 
 		(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'd') ||
@@ -279,6 +287,7 @@ int	process_specifier(char *ptr, t_specif *sp, va_list ap)
 		ft_putstr("AnoTher\n");
 	return (0);
 }
+
 
 int     ft_printf(char *fmt, ...)
 {

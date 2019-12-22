@@ -192,12 +192,12 @@ int digits_in_base(long long value, int base)
 
 
 
-int digits_in_base_unsigned(unsigned long u_value, int base)
+int digits_in_base_unsigned(ulong u_value, int base)
 {
 	int i;
 
 	i = 0;
-	if (!u_value)
+	if (u_value == 0)
 		return (1);
 	while (u_value)
 	{
@@ -263,77 +263,34 @@ int        ft_putlong(long n)
     return (i);
 }
 
-
-
-
-/*
-for capitals use lett_type = 1;
-for small letters use lett_type = 0; 
-*/
-// НЕ НУЖЕН!
-// int		ft_itoa_base(int value, int base, int lett_type)
-// {
-// 	char	*s;
-// 	int		n;
-// 	int		i;
-// 	char	*letters;
-// 	uint	new_value;
-
-// 	new_value = (uint)value;
-// 	n = digits_in_base(new_value, base);
-// 	if (lett_type)
-// 		letters = ft_strdup("0123456789ABCDEF");
-// 	else 
-// 		letters = ft_strdup("0123456789abcdef");
-// 	// if (value < 0)
-// 	// {
-// 	// 	ft_putstr("HERE\n");
-// 	// 	n += 1;
-// 	// }
-// 	s = (char *)malloc(sizeof(char) * (n + 1));
-// 	// if (value < 0)
-// 	// {
-// 	// 	ft_putstr("AND HERE\n");
-// 	// 	s[0] = '-';
-// 	// 	value = -value;
-// 	// }
-// 	s[n] = '\0';
-// 	i = n - 1;
-// 	while (new_value)
-// 	{
-// 		s[i] = letters[new_value % base];
-// 		new_value /= base;
-// 		i--;
-// 	}
-// 	free(letters);
-// 	ft_putstr(s);
-// 	free(s);
-// 	return (n);
-// }
-
-
-
-/*We use only for octal, thus no hex allowed*/
-int		ft_itoa_base_unsigned(long u_value, int base, int lett_type)
+int		ft_itoa_base_unsigned(ulong u_value, int base, int lett_type)
 {
 	char	*s;
 	int		n;
 	int		i;
 	char	*letters;
 
-//write(1, "GO!\n", 4);
+
 //printf("%lx\n", u_value);
 	if (u_value == 0)
 	{
 		ft_putchar('0');
 		return (1);
 	}
-//write(1, "GO!\n", 4);
+	// else if (sp->sign)
+	// 	write(1, "-", 1);
+// write(1, "GO!\n", 4);
 	if (lett_type)
 		letters = ft_strdup("0123456789ABCDEF");
 	else 
 		letters = ft_strdup("0123456789abcdef");
 	n = digits_in_base_unsigned(u_value, base);
+
+// write(1, "GO!\n", 4);
+	// write(1, "Z", 1);
+	// printf("\nn = %d\n", n);
+
+// write(1,"G", 1);
 	s = (char *)malloc(sizeof(char) * (n + 1));
 	s[n] = '\0';
 	i = n - 1;
@@ -343,6 +300,7 @@ int		ft_itoa_base_unsigned(long u_value, int base, int lett_type)
 		u_value /= base;
 		i--;
 	}
+	//  write(1, "R", 1);
 	ft_putstr(s);
 	free(letters);
 	free(s);
