@@ -1,11 +1,11 @@
 #include "test_header.h"
 
 
-void print_sp(t_specif *sp)
+void print_sp(t_s *sp)
 {
-	printf("spec: %c\n", sp->specif);
-	printf("spec1: %c\n", sp->specif1);
-	printf("spec2: %c\n", sp->specif2);
+	printf("spec: %c\n", sp->s);
+	printf("spec1: %c\n", sp->s1);
+	printf("spec2: %c\n", sp->s2);
 	printf("zero: %d\n", sp->zero);
 	printf("point: %d\n", sp->point);
 	printf("numb: %d\n", sp->numb);
@@ -18,11 +18,11 @@ void print_sp(t_specif *sp)
 	return ;
 }
 
-void	clear_spec(t_specif *sp)
+void	clear_spec(t_s *sp)
 {
-	sp->specif = '\0';
-	sp->specif1 = '\0';
-	sp->specif2 = '\0';
+	sp->s = '\0';
+	sp->s1 = '\0';
+	sp->s2 = '\0';
 	sp->zero = 0;
 	sp->point = 0;
 	sp->numb = 0;
@@ -42,11 +42,11 @@ void	clear_spec(t_specif *sp)
 
 /*during the search we skip backspace, tab, any number, +, -, # 
 otherwise we return pointer to required letter or NULL */
-char *find_spec(char *p, t_specif *sp)
+char *find_spec(char *p, t_s *sp)
 {
 	char *lett;
 
-	lett = ft_strdup("diuolhxXfFeEgGaAcspn%");
+	lett = ft_strdup("diuolhxXfFLeEgGaAcspn%");
 	while (*p)
 	{
 		if (*p == ' ' || *p == '\t' || *p == '.' || (*p >= '0' && *p <= '9')
@@ -54,20 +54,22 @@ char *find_spec(char *p, t_specif *sp)
  			p++;
 		else if (ft_strchr(lett, *p))
 		{
-			sp->specif = *p;
+			sp->s = *p;
 			if (*p == 'l')
 			{
-				sp->specif1 = *(p + 1);
-				if (sp->specif1 == 'l')
-					sp->specif2 = *(p + 2);
+				sp->s1 = *(p + 1);
+				if (sp->s1 == 'l')
+					sp->s2 = *(p + 2);
 			}
 			else if (*p == 'h')
 			{
 			//	write(1, "H\n", 2);
-				sp->specif1 = *(p + 1);
-				if (sp->specif1 == 'h')
-					sp->specif2 = *(p + 2);
+				sp->s1 = *(p + 1);
+				if (sp->s1 == 'h')
+					sp->s2 = *(p + 2);
 			}
+			else if (*p == 'L')
+				sp->s1 = *(p + 1);
 			return (p); 
 		}
 		else
@@ -79,7 +81,7 @@ char *find_spec(char *p, t_specif *sp)
 
 /*we search between p and s-1 */
 /*we search before any letter or  */
-void	set_zero(char *p, char *s, t_specif *sp)
+void	set_zero(char *p, char *s, t_s *sp)
 {
 	while (*p && p < s)
 	{
@@ -96,7 +98,7 @@ void	set_zero(char *p, char *s, t_specif *sp)
 	return ;
 }
 
-void	set_plus(char *p, char *s, t_specif *sp)
+void	set_plus(char *p, char *s, t_s *sp)
 {
 	while (*p && p < s)
 	{
@@ -117,7 +119,7 @@ void	set_plus(char *p, char *s, t_specif *sp)
 //	return ;
 }
 
-void	set_minus(char *p, char *s, t_specif *sp)
+void	set_minus(char *p, char *s, t_s *sp)
 {
 	while (*p && p < s)
 	{
@@ -137,7 +139,7 @@ void	set_minus(char *p, char *s, t_specif *sp)
 
 
 //!!!НАДО ИСКАТЬ НА ВСЕМ ПРОТЯЖЕНИИ ОТ p ДО p_spec
-void	set_backsp(char *p, char *s, t_specif *sp)
+void	set_backsp(char *p, char *s, t_s *sp)
 {
 	while (*p && p < s)
 	{
@@ -156,7 +158,7 @@ void	set_backsp(char *p, char *s, t_specif *sp)
 /*we search for point after we've searched for letter*/
 /*we search between p and s-1 */
 /*if found we set sp->point as 1 and return [pointer to '.'] */
-char *set_point(char *p, char *s, t_specif *sp)
+char *set_point(char *p, char *s, t_s *sp)
 {
 	while (*p && p < s)
 	{
@@ -176,7 +178,7 @@ char *set_point(char *p, char *s, t_specif *sp)
 
 /*we input pointer next after % as p
 and ptr_spec or (ptr_point?) as s */
-void	set_numb(char *p, char *s, t_specif *sp)
+void	set_numb(char *p, char *s, t_s *sp)
 {
 	while (*p && p < s && (*p == ' ' || *p == '\t' 
 		|| *p == '+' || *p == '-' || *p == '#' || *p == '0'))
@@ -185,12 +187,12 @@ void	set_numb(char *p, char *s, t_specif *sp)
 }
 
 /*works ONLY if point was found */
-void	set_decimal(char *p, t_specif *sp)
+void	set_decimal(char *p, t_s *sp)
 {
 	sp->decim = ft_atoi(p);
 }
 
-void	set_hash(char *p, char *s, t_specif *sp)
+void	set_hash(char *p, char *s, t_s *sp)
 {
 	while (*p && p < s)
 	{
@@ -213,7 +215,7 @@ void	set_hash(char *p, char *s, t_specif *sp)
 // ищем точку
 // ищем decimal part
 // ищем хэш
-char *parse_specifier(char *p, t_specif *sp)
+char *parse_sier(char *p, t_s *sp)
 {
 	char *ptr_lett;
 	char *ptr_point;
@@ -231,10 +233,8 @@ char *parse_specifier(char *p, t_specif *sp)
 		ptr_point = set_point(p, ptr_lett, sp);
 	//	printf("POINTER TO POINT %p\n", ptr_point);
 		if (ptr_point)
-		{
 			set_decimal(ptr_point + 1, sp);
-		}
-		else if (sp->specif == 'f')
+		else if (sp->s == 'f' || (sp->s == 'L' && sp->s1 == 'f'))
 			sp->decim = 6;
 	}
 	else
@@ -247,48 +247,57 @@ char *parse_specifier(char *p, t_specif *sp)
 
 //еще pointers распечатать!!!!!
 //надо сделать oct float bonus!!
-int	process_specifier(char *ptr, t_specif *sp, va_list ap)
+int	process_specifier(char *ptr, t_s *sp, va_list ap)
 {
 	int i;
+	int l;
+	int k;
 
-	if (sp->specif == 'u' || sp->specif == 'x' 
-	|| sp->specif == 'X' || sp->specif == 'o' ||
-	(sp->specif == 'l' && sp->specif1 == 'u') ||
-	(sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'u') ||
-	(sp->specif == 'l' && (sp->specif1 == 'x' || sp->specif1 == 'X')) ||
-	(sp->specif == 'l' && sp->specif1 == 'l' && (sp->specif2 == 'x' || sp->specif2 == 'X')) ||
-	(sp->specif == 'l' && sp->specif1 == 'o') ||
-	(sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'o') ||
-	(sp->specif == 'h' && sp->specif1 == 'x') ||
-	(sp->specif == 'h' && sp->specif1 == 'o') ||
-	(sp->specif == 'h' && sp->specif1 == 'h' && (sp->specif2 == 'x' || sp->specif2 == 'X')) ||
-	(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'o') ||
-	(sp->specif == 'h' && sp->specif1 == 'u') ||
-	(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'u'))
+	if (sp->s == 'u' || sp->s == 'x' 
+	|| sp->s == 'X' || sp->s == 'o' ||
+	(sp->s == 'l' && sp->s1 == 'u') ||
+	(sp->s == 'l' && sp->s1 == 'l' && sp->s2 == 'u') ||
+	(sp->s == 'l' && (sp->s1 == 'x' || sp->s1 == 'X')) ||
+	(sp->s == 'l' && sp->s1 == 'l' && (sp->s2 == 'x' || sp->s2 == 'X')) ||
+	(sp->s == 'l' && sp->s1 == 'o') ||
+	(sp->s == 'l' && sp->s1 == 'l' && sp->s2 == 'o') ||
+	(sp->s == 'h' && (sp->s1 == 'x' || sp->s1 == 'X')) ||
+	(sp->s == 'h' && sp->s1 == 'o') ||
+	(sp->s == 'h' && sp->s1 == 'h' && (sp->s2 == 'x' || sp->s2 == 'X')) ||
+	(sp->s == 'h' && sp->s1 == 'h' && sp->s2 == 'o') ||
+	(sp->s == 'h' && sp->s1 == 'u') ||
+	(sp->s == 'h' && sp->s1 == 'h' && sp->s2 == 'u'))
 	{
 		return (ft_put_x_o(va_arg(ap, ulong), sp));
 	}
-	else if (sp->specif == 'd' || sp->specif == 'i' ||
-		(sp->specif == 'h' && sp->specif1 == 'd') || 
-		(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'd') ||
-		(sp->specif == 'l' && sp->specif1 == 'd') ||
-		(sp->specif == 'l' && sp->specif1 == 'l' && 
-			(sp->specif2 == 'd' || sp->specif2 == 'i')))
+	else if (sp->s == 'd' || sp->s == 'i' ||
+		(sp->s == 'h' && (sp->s1 == 'd' || sp->s1 == 'i')) || 
+		(sp->s == 'h' && sp->s1 == 'h' && (sp->s2 == 'd' || sp->s2 == 'i')) ||
+		(sp->s == 'l' && (sp->s1 == 'd' || sp->s1 == 'i')) ||
+		(sp->s == 'l' && sp->s1 == 'l' && (sp->s2 == 'd' || sp->s2 == 'i')))
+	{
+		// write(1, "GL", 2);
 		return (ft_put_d(va_arg(ap, long long), sp));
-	else if (sp->specif == 'f')
-		return (ft_put_whole_double(va_arg(ap, double), sp));
-	else if (sp->specif == 'F')
-		printf("%F\n", va_arg(ap, double));
-	else if (sp->specif == 'e')
-		return (ft_putscientific(va_arg(ap, double), sp));
-	else if (sp->specif == 'c')
+	}
+	else if (sp->s == 'f' || sp->s == 'F')
+			return (ft_put_whole_double(va_arg(ap, double), sp));
+	else if (sp->s == 'L' && (sp->s1 == 'f' || sp->s1 == 'F'))
+			return (ft_put_LONG_double(va_arg(ap, long double), sp));
+		
+	// else if (sp->s == 'F')
+	// 	printf("%F\n", va_arg(ap, double));
+	// else if (sp->s == 'e')
+		// return (ft_putscientific(va_arg(ap, double), sp));
+	else if (sp->s == 'c')
 		return (ft_putchar_c(va_arg(ap, int), sp));
-	else if (sp->specif == 's')
+	else if (sp->s == 'p')
+		return (ft_put_p(va_arg(ap, long), sp));
+	else if (sp->s == 's')
 		return(ft_put_string(va_arg(ap, char *), sp));
-	else if (sp->specif == '%')
+	else if (sp->s == '%')
 		return (ft_put_percentage(sp));
 	else
-		ft_putstr("AnoTher\n");
+		ft_putstr("Could not process specifier\n");
 	return (0);
 }
 
@@ -300,10 +309,10 @@ int     ft_printf(char *fmt, ...)
 	int ret;
 	char *s;
 	char *lett;
-	t_specif *sp;
+	t_s *sp;
 
 
-	sp = (t_specif *)malloc(sizeof(t_specif));
+	sp = (t_s *)malloc(sizeof(t_s));
 	va_start(ap, fmt);
 	p = fmt;
 	ret = 0;
@@ -311,16 +320,16 @@ int     ft_printf(char *fmt, ...)
 	{
 		if (*p == '%')
 		{
-			if ((s = parse_specifier(p + 1, sp)))
+			if ((s = parse_sier(p + 1, sp)))
 			{
-			//	print_sp(sp);
+				// print_sp(sp);
 				//вызываем обработчик спарсенного
 				//printf(" ret bef = %d \n", ret);
 				ret += process_specifier(p + 1, sp, ap);
 				//printf(" ret = %d \n", ret);
-				if (sp->specif1)
+				if (sp->s1)
 				{
-					if (sp->specif2)
+					if (sp->s2)
 						p = s + 3;
 					else
 						p = s + 2;

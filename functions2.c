@@ -6,7 +6,7 @@ int	ft_putchar(char c)
 	return (1);
 }
 
-void	ft_put_zeros_backsp(t_specif *sp)
+void	ft_put_zeros_backsp(t_s *sp)
 {
 	if (sp->numb > 1)
 	{
@@ -20,7 +20,7 @@ void	ft_put_zeros_backsp(t_specif *sp)
 		sp->numb = 1;
 }
 
-int	ft_putchar_c(char c, t_specif *sp)
+int	ft_putchar_c(char c, t_s *sp)
 {
 	int k;
 	if (sp->minus)
@@ -230,7 +230,7 @@ int	ft_putnbr_positive(int n)
 //long
 //long long
 //то есть принимать long long, а 
-//далее в зав-ти от specifier кастить
+//далее в зав-ти от sier кастить
 //если hhd, lld, то дописывать d в конец выдачи
 //
 

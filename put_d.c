@@ -43,7 +43,7 @@ void ft_put_long_long(long long num)
 }
 
 
-int ft_put_int_min(int num, t_specif *sp)
+int ft_put_int_min(int num, t_s *sp)
 {
 	int l;
 	int k;
@@ -79,7 +79,7 @@ int ft_put_int_min(int num, t_specif *sp)
 	return(dig);
 }
 
-int ft_put_d_withOUT_numb_point(long long num, t_specif *sp)
+int ft_put_d_withOUT_numb_point(long long num, t_s *sp)
 {
 	if (sp->plus && !sp->sign)
 		write(1, "+", 1);
@@ -92,7 +92,7 @@ int ft_put_d_withOUT_numb_point(long long num, t_specif *sp)
 }
 
 
-int ft_put_d_with_numb_point(long long num, t_specif *sp, int dig)
+int ft_put_d_with_numb_point(long long num, t_s *sp, int dig)
 {
 	int l;
 	int k;
@@ -239,42 +239,33 @@ int ft_put_d_with_numb_point(long long num, t_specif *sp, int dig)
 	return (dig + (sp->sign || sp->plus || sp->backsp) + l + k);
 }
 
-int ft_put_d(long long num, t_specif *sp)
+
+
+
+int ft_put_d(long long num, t_s *sp)
 {
 	int dig;
 	int l;
 	int k;
 	int n;
 
-//	printf("dig = %d\n", dig);
-
-	if (sp->specif == 'h')
+	if (sp->s == 'h')
 	{
-		if (sp->specif1 == 'd')
+		if (sp->s1 == 'd' || sp->s1 == 'i')
 			num = (short)num;
-		else if (sp->specif1 == 'h' && sp->specif2 == 'd')
+		else if (sp->s1 == 'h' && (sp->s2 == 'd' || sp->s2 == 'i'))
 			num = (char)num;
 	}
-	else if (sp->specif == 'l')
+	else if (sp->s == 'l')
 	{
-
-		if (sp->specif1 == 'd')
+		if (sp->s1 == 'd')
 			num = (long)num;
-		//printf("HERE %ld\n", num);
-		// ft_put_long_long(num);
-		// return (0);
-
-//		else if (sp->specif1 == 'l' && sp->specif2 == 'd')
-//			num = (long long)num; //необязательно, если делать все long long
 	}
-	else if (sp->specif == 'd' || sp->specif == 'i')
+	else if (sp->s == 'd' || sp->s == 'i')
 		num = (int)num;
-
-
 	dig = digits_in_base(num, 10);
 	if (num == -2147483648)
-		return (ft_put_int_min(num, sp));
-	
+		return (ft_put_int_min(num, sp));	
 	if (num < 0)
 	{
 		num = -num; //!INT_MIN
@@ -283,10 +274,6 @@ int ft_put_d(long long num, t_specif *sp)
 	if (sp->numb || sp->point)
 		return (ft_put_d_with_numb_point(num, sp, dig));
 	else
-	{
-//		write(1, "RR\n", 3);
-
 		return (ft_put_d_withOUT_numb_point(num, sp) + dig);
-	}
 	return (0);
 }

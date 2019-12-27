@@ -1,50 +1,71 @@
 #include "test_header.h"
 
 
-void	ft_put_prelimenaries(long num, t_specif *sp)
+void	ft_put_prelimenaries(long num, t_s *sp)
 {
 	if (sp->hash)
 	{
-		if (sp->specif == 'o')
+		// if (sp->s == 'o' || 
+		// 	(sp->s == 'h' && sp->s1 == 'o') ||
+		// 	(sp->s == 'h' && sp->s1 == 'h' && sp->s2 == 'o') ||
+		// 	(sp->s == 'l' && sp->s1 == 'o') || 
+		// 	(sp->s == 'l' && sp->s1 == 'l' && sp->s2 == 'o'))
+		// 	write(1, "0", 1);
+		// else if (sp->s == 'x' ||
+		// (sp->s == 'l' && sp->s1 == 'l' && sp->s2 == 'x') ||
+		// (sp->s == 'h' && sp->s1 == 'h' && sp->s2 == 'x'))
+		// 	write(1, "0x", 2);
+		// else if (sp->s == 'X'||
+		// (sp->s == 'l' && sp->s1 == 'l' && sp->s2 == 'X') ||
+		// (sp->s == 'h' && sp->s1 == 'h' && sp->s2 == 'X'))
+		// 	write(1, "0X", 2);
+		if (sp->hash == 1)
 			write(1, "0", 1);
-		else if (sp->specif == 'x' ||
-		(sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'x') ||
-		(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'x'))
-			write(1, "0x", 2);
-		else if (sp->specif == 'X'||
-		(sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'X') ||
-		(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'X'))
+		else if ((sp->s == 'x' || 
+			(sp->s == 'h' && sp->s1 == 'x') ||
+			(sp->s == 'l' && sp->s1 == 'x') ||			
+			(sp->s == 'h' && sp->s1 == 'h' && sp->s2 == 'x') ||
+			(sp->s == 'l' && sp->s1 == 'l' && sp->s2 == 'x')) && 
+			sp->hash == 2)
+			write(1, "0x", 2);	
+		else if ((sp->s == 'X' || 
+			(sp->s == 'h' && sp->s1 == 'X') ||
+			(sp->s == 'l' && sp->s1 == 'X') ||
+			(sp->s == 'h' && sp->s1 == 'h' && sp->s2 == 'X') ||
+			(sp->s == 'l' && sp->s1 == 'l' && sp->s2 == 'X')) && 
+			sp->hash == 2)
 			write(1, "0X", 2);
 	}
 }
 
 
-int ft_put_integer_u(ulong u_value, t_specif *sp)
+int ft_put_integer_u(ulong u_value, t_s *sp)
 {
 	int n;
 
 	n = 0;
-	if (sp->specif == 'u' || (sp->specif == 'l' && sp->specif1 == 'u') ||
-	(sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'u') ||
-	(sp->specif == 'h' && sp->specif1 == 'u') ||
-	(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'u'))
+	if (sp->s == 'u' || (sp->s == 'l' && sp->s1 == 'u') ||
+	(sp->s == 'l' && sp->s1 == 'l' && sp->s2 == 'u') ||
+	(sp->s == 'h' && sp->s1 == 'u') ||
+	(sp->s == 'h' && sp->s1 == 'h' && sp->s2 == 'u'))
 		n += ft_itoa_base_unsigned(u_value, 10, 0);
-	else if (sp->specif == 'o' ||
-	(sp->specif == 'h' && sp->specif1 == 'o') ||
-	(sp->specif == 'l' && sp->specif1 == 'o') ||
-	(sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'o') ||
-	(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'o'))
+	else if (sp->s == 'o' ||
+	(sp->s == 'h' && sp->s1 == 'o') ||
+	(sp->s == 'l' && sp->s1 == 'o') ||
+	(sp->s == 'l' && sp->s1 == 'l' && sp->s2 == 'o') ||
+	(sp->s == 'h' && sp->s1 == 'h' && sp->s2 == 'o'))
 		n += ft_itoa_base_unsigned(u_value, 8, 0);
-	else if (sp->specif == 'x' || 
-		(sp->specif == 'l' && sp->specif1 == 'x') ||
-		(sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'x') ||
-		(sp->specif == 'h' && sp->specif1 == 'x') ||
-		(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'x'))
+	else if (sp->s == 'x' || 
+		(sp->s == 'l' && sp->s1 == 'x') ||
+		(sp->s == 'l' && sp->s1 == 'l' && sp->s2 == 'x') ||
+		(sp->s == 'h' && sp->s1 == 'x') ||
+		(sp->s == 'h' && sp->s1 == 'h' && sp->s2 == 'x'))
 		n += ft_itoa_base_unsigned(u_value, 16, 0);
-	else if (sp->specif == 'X' ||
-		(sp->specif == 'l' && sp->specif1 == 'X') ||
-		(sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'X') ||
-		(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'X'))
+	else if (sp->s == 'X' ||
+		(sp->s == 'l' && sp->s1 == 'X') ||
+		(sp->s == 'l' && sp->s1 == 'l' && sp->s2 == 'X') ||
+		(sp->s == 'h' && sp->s1 == 'X') ||
+		(sp->s == 'h' && sp->s1 == 'h' && sp->s2 == 'X'))
 		{
 		n += ft_itoa_base_unsigned(u_value, 16, 1);
 		}
@@ -52,66 +73,77 @@ int ft_put_integer_u(ulong u_value, t_specif *sp)
 	return (n);
 }
 
-int ft_put_x_o(ulong num, t_specif *sp)
+int ft_put_x_o(ulong num, t_s *sp)
 {
 	int n;
 	int dig;
 	int l;
 	int k;
-//casting first depending on specifiers.
+//casting first depending on siers.
 //by default ulong is used
-	if (sp->specif == 'u' ||sp->specif == 'o' ||
-		sp->specif == 'x' || sp->specif == 'X')
+	if (sp->s == 'u' ||sp->s == 'o' ||
+		sp->s == 'x' || sp->s == 'X')
 		num = (uint)num;
-	else if (sp->specif == 'h' && (sp->specif1 == 'x' || sp->specif1 == 'X'))
-		num = (short)num;
-	else if (sp->specif == 'h' && sp->specif1 == 'h' && (sp->specif2 == 'x' || sp->specif2 == 'X' || sp->specif2 == 'o'))
+	else if (sp->s == 'h' && (sp->s1 == 'x' || sp->s1 == 'X'))
+		num = (unsigned short)num;
+	else if (sp->s == 'h' && sp->s1 == 'h' && (sp->s2 == 'x' || sp->s2 == 'X' || sp->s2 == 'o'))
 		num = (unsigned char)num;
-	else if (sp->specif == 'h' && (sp->specif1 == 'o' || sp->specif1 == 'u'))
+	else if (sp->s == 'h' && (sp->s1 == 'o' || sp->s1 == 'u'))
 		num = (unsigned short)num;
 	
-	if (sp->specif == 'u' || (sp->specif == 'l' && sp->specif1 == 'u') ||
-		(sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'u') ||
-		(sp->specif == 'h' && sp->specif1 == 'u') ||
-		(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'u'))
+	if (sp->s == 'u' || (sp->s == 'l' && sp->s1 == 'u') ||
+		(sp->s == 'l' && sp->s1 == 'l' && sp->s2 == 'u') ||
+		(sp->s == 'h' && sp->s1 == 'u') ||
+		(sp->s == 'h' && sp->s1 == 'h' && sp->s2 == 'u'))
 		dig = digits_in_base_unsigned(num, 10);
-	else if (sp->specif == 'o' ||
-		(sp->specif == 'l' && sp->specif1 == 'o') ||
-		(sp->specif == 'l' && sp->specif1 == 'l' && sp->specif2 == 'o') ||
-		(sp->specif == 'h' && sp->specif1 == 'o') ||
-		(sp->specif == 'h' && sp->specif1 == 'h' && sp->specif2 == 'o'))
+	else if (sp->s == 'o' ||
+		(sp->s == 'l' && sp->s1 == 'o') ||
+		(sp->s == 'l' && sp->s1 == 'l' && sp->s2 == 'o') ||
+		(sp->s == 'h' && sp->s1 == 'o') ||
+		(sp->s == 'h' && sp->s1 == 'h' && sp->s2 == 'o'))
 		dig = digits_in_base_unsigned(num, 8);
-	else if (sp->specif == 'x' || sp->specif == 'X' ||
-		( (sp->specif == 'l' && (sp->specif1 == 'x' || sp->specif1 == 'X'))) ||
-		(sp->specif == 'l' && sp->specif1 == 'l' && (sp->specif2 == 'x' || sp->specif2 == 'X'))
-		|| (sp->specif == 'h' && sp->specif1 == 'x') ||
-		(sp->specif == 'h' && sp->specif1 == 'h' && (sp->specif2 == 'x' || sp->specif2 == 'X')))
+	else if (sp->s == 'x' || sp->s == 'X' ||
+		( (sp->s == 'l' && (sp->s1 == 'x' || sp->s1 == 'X'))) ||
+		(sp->s == 'l' && sp->s1 == 'l' && (sp->s2 == 'x' || sp->s2 == 'X'))
+		|| (sp->s == 'h' && (sp->s1 == 'x' || sp->s1 == 'X')) ||
+		(sp->s == 'h' && sp->s1 == 'h' && (sp->s2 == 'x' || sp->s2 == 'X')))
 		dig = digits_in_base_unsigned(num, 16);
 	// printf("dig = %d\n", dig);
 	
 	if (sp->hash)
 	{
-		if (sp->specif == 'x' || sp->specif == 'X' ||
-		(sp->specif == 'l' && sp->specif1 == 'l' && (sp->specif2 == 'x' || sp->specif2 == 'X')) ||
-		(sp->specif == 'h' && sp->specif1 == 'h' && (sp->specif2 == 'x' || sp->specif2 == 'X')))
+		if (sp->s == 'x' || sp->s == 'X' ||
+		(sp->s == 'h' && (sp->s1 == 'x' || sp->s1 == 'X')) ||
+		(sp->s == 'l' && (sp->s1 == 'x' || sp->s1 == 'X')) ||
+		(sp->s == 'l' && sp->s1 == 'l' && (sp->s2 == 'x' || sp->s2 == 'X')) ||
+		(sp->s == 'h' && sp->s1 == 'h' && (sp->s2 == 'x' || sp->s2 == 'X')))
 			sp->hash = 2;
 		if (num == 0 && (!sp->point || sp->hash == 2))
 			sp->hash = 0;
 		
 	}
-	// printf("dig = %d, l = %d, k = %d\n",dig, l, k);
+	// printf("dig = %d, l = %d, k = %d, sp->hash = %d\n",dig, l, k, sp->hash);
 	
 	if (sp->point)
 	{
 		if (num == 0)
 			dig = 0;
 		l = (sp->decim > dig) ? sp->decim - dig : 0;
+		if (l > 2 && sp->hash == 1)
+			l--;
+		if (l == 0 && sp->hash == 1)
+		{
+			sp->hash = 0;
+			l = 1;
+		}
 		k = (sp->numb > sp->decim) ? sp->numb: sp->decim;
 //			if (num != 0)
 		k -= dig + l + sp->hash;
 		if (k < 0)
 			k = 0;
 		// printf("dig = %d, l = %d, k = %d\n",dig, l, k);
+
+
 		if (sp->minus)
 		{
 			ft_put_prelimenaries(num, sp);
@@ -131,12 +163,14 @@ int ft_put_x_o(ulong num, t_specif *sp)
 	}
 	else
 	{
+
 	// printf("sp->numb = %d\n", sp->numb);
 		l = 0;
 		k = (sp->numb > dig) ? sp->numb - dig : 0;
 		k -= sp->hash;
 		if (k < 0)
 			k = 0;
+		// printf("dig = %d, l = %d, k = %d, sp->hash = %d\n",dig, l, k, sp->hash);
 		
 		if (sp->minus)
 		{
@@ -156,7 +190,12 @@ int ft_put_x_o(ulong num, t_specif *sp)
 			else
 			{
 				ft_put_n_chars(32, k);
+
+				// write(1, "FF\n", 3);
+
 				ft_put_prelimenaries(num, sp);
+				// write(1, "FF\n", 3);
+				
 			}
 		//	printf("dig = %d, l = %d, k = %d\n",dig, l, k);
 			n = ft_put_integer_u(num, sp);

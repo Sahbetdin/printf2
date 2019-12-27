@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include "test_header.h"
 
 typedef unsigned int uint;
 
@@ -15,42 +13,43 @@ typedef union
 } float_cast;
 
 
-int	ft_putnbr(int n)
-{
-	unsigned int	m;
-	int i;
-	char u;
+// int	ft_putnbr(int n)
+// {
+// 	unsigned int	m;
+// 	int i;
+// 	char u;
 
-	m = (n < 0) ? (unsigned int)-n : (unsigned int)n;
-	i = (n < 0) ? 1 : 0;
-	if (n < 0)
-		write(1, "-", 1);
-	if (m > 9)
-	{
-		i += ft_putnbr(m / 10);
-	}
-	u = (char )(m % 10 + 48);
-	write(1, &u, 1);
-	i++;
-	return (i);
-}
+// 	m = (n < 0) ? (unsigned int)-n : (unsigned int)n;
+// 	i = (n < 0) ? 1 : 0;
+// 	if (n < 0)
+// 		write(1, "-", 1);
+// 	if (m > 9)
+// 	{
+// 		i += ft_putnbr(m / 10);
+// 	}
+// 	u = (char )(m % 10 + 48);
+// 	write(1, &u, 1);
+// 	i++;
+// 	return (i);
+// }
 
 /*works with negatives, too.*/
-int digits_in_base(int value, int base)
-{
-	int i;
+// int digits_in_base(int value, int base)
+// {
+// 	int i;
 
-	i = 0;
-	while (value)
-	{
-		value /= base;
-		i++;
-	}
-	return (i);
-}
+// 	i = 0;
+// 	while (value)
+// 	{
+// 		value /= base;
+// 		i++;
+// 	}
+// 	return (i);
+// }
 
-/*распечатвывает память */
-void	print_arithmetic(uint *s, int n)
+/*распечатывает память */
+//void	print_arithmetic(uint *s, int n)
+void	print_memory(uint *s, int n)
 {
 	int i;
 	char u;
@@ -201,7 +200,6 @@ uint *add_to_arithmetic(uint *s, int n, uint b)
 /*
 adds two numbers which are in long arithmetics 
 */
-
 uint *add_arithmetics(uint *a, uint *b, int n)
 {
 	int i;
@@ -341,7 +339,6 @@ uint *divide_by_2(uint *s, int n)
 		
 		i--;
 	}
-
 	return (s);
 }
 
@@ -391,7 +388,7 @@ int main(void)
 	uint flag;
 
 //поработать с этим!!!
-	d1.f = 0.01;
+	d1.f = 0.201268;
 	sign = d1.parts.sign;
 	exp = d1.parts.exponent - 127;
 	mant = d1.parts.mantissa;

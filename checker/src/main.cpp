@@ -60,7 +60,7 @@ static void	usage()
 			"  -d: debug mode\n"
 			"  -v: verbose (debug mode but only for failed tests)\n"
 			"  -h: display help\n"
-			"  -f <fname>: output in the specified file\n");
+			"  -f <fname>: output in the sied file\n");
 	printf("supported converters: \"" SUPPORTED_CONVERTERS "\"\n");
 	exit(-1);
 }

@@ -19,7 +19,7 @@ you can configure the path of your printf with the var PRINTFDIR in the Makefile
   -r: disable speed test  
   -d: debug mode  
   -h: display help  
-  -f \<fname>: output in the specified file  
+  -f \<fname>: output in the sied file  
 
 ## Test System
 

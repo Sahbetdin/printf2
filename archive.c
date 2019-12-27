@@ -25,7 +25,7 @@
 // 		write(1, "+", 1);
 // }
 
-// int ft_put_d_zero(t_specif *sp)
+// int ft_put_d_zero(t_s *sp)
 // {
 // 	int l;
 // 	int k;
@@ -64,7 +64,7 @@
 
 
 
-// int ft_put_d_with_numb_only(int num, t_specif *sp, int dig)
+// int ft_put_d_with_numb_only(int num, t_s *sp, int dig)
 // {
 // 	int k;
 
@@ -154,7 +154,7 @@
 // }
 
 
-// int ft_put_d1(int num, t_specif *sp)
+// int ft_put_d1(int num, t_s *sp)
 // {
 // 	int dig;
 // 	int l;
@@ -455,34 +455,34 @@
 // }
 
 /*except decimals*/
-int		ft_put_parsed_integer_u(uint num, t_specif *sp)
+int		ft_put_parsed_integer_u(uint num, t_s *sp)
 {
 	int		k;
 	int		l;
 	int		dig;
 	int		n;
 	
-	if (sp->specif == 'u')
+	if (sp->s == 'u')
 		dig = digits_in_base_unsigned(num, 10);
-	else if (sp->specif == 'o')
+	else if (sp->s == 'o')
 		dig = digits_in_base_unsigned(num, 8);
-	else if (sp->specif == 'x' || sp->specif == 'X' ||
-		(sp->specif == 'l' && sp->specif1 == 'x'))
+	else if (sp->s == 'x' || sp->s == 'X' ||
+		(sp->s == 'l' && sp->s1 == 'x'))
 	{
 		dig = digits_in_base_unsigned(num, 16);
 	}
 
 
-	// else if (sp->specif == 'd' || sp->specif == 'i')
+	// else if (sp->s == 'd' || sp->s == 'i')
 	// {
 	// 	return (ft_put_d((int)num, sp));
 	// }
 
 //dig is number of digits. Afterthat, it's number of printed characters
 //we compare it with sp->decim if it exists or with sp->numb otherwise
-	if (sp->hash && sp->specif == 'o')
+	if (sp->hash && sp->s == 'o')
 		dig = dig + 1;
-	else if (sp->hash && (sp->specif == 'x' || sp->specif == 'X'))
+	else if (sp->hash && (sp->s == 'x' || sp->s == 'X'))
 		dig = dig + 2;
 	l = (sp->decim > dig) ? sp->decim - dig : 0;
 	k = (sp->decim > dig) ? sp->numb - sp->decim : sp->numb - dig;
@@ -497,13 +497,13 @@ int		ft_put_parsed_integer_u(uint num, t_specif *sp)
 	
 	if (sp->point && num == 0)
 	{
-		if (sp->specif == 'o' && sp->hash)
+		if (sp->s == 'o' && sp->hash)
 		{
 			ft_put_n_chars(32, sp->numb - 1);
 			write(1, "0", 1);
 			return ((sp->numb > 0) ? sp->numb : 1);
 		}
-		else if (sp->specif == 'x' || sp->specif == 'X')
+		else if (sp->s == 'x' || sp->s == 'X')
 		{
 				
 			ft_put_n_chars(32, sp->numb - sp->decim);
@@ -540,20 +540,20 @@ int		ft_put_parsed_integer_u(uint num, t_specif *sp)
 
 
 //old one
-// int		ft_put_prelimenaries(uint num, t_specif *sp)
+// int		ft_put_prelimenaries(uint num, t_s *sp)
 // {
 // 	if (sp->hash && num)
 // 	{
-// 		if (sp->specif == 'o')
+// 		if (sp->s == 'o')
 // 		{
 // 			write(1, "0", 1);
 // 			return (1);
 // 		}
-// 		else if (sp->specif == 'x')
+// 		else if (sp->s == 'x')
 // 			write(1, "0x", 2);
-// 		else if (sp->specif == 'X')
+// 		else if (sp->s == 'X')
 // 			write(1, "0X", 2);
-// 		if (sp->specif == 'x' || sp->specif == 'X')
+// 		if (sp->s == 'x' || sp->s == 'X')
 // 			return (2);
 // 		else
 // 			return (0);

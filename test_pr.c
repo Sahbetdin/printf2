@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <limits.h>
+#include <float.h>
 
 int main()
 {
 	// printf("%lx\n", LONG_MAX);
-	printf("%5hd\n", (short)-655);
+//	printf("%.3f\n", (float)45.123500000000001);
+	printf("%.1f",76.749);
 
     // printf("%lu\n", sizeof(int)); // some compilers print 8
     // printf("%lu\n", sizeof(short));

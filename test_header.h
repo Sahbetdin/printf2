@@ -9,11 +9,11 @@
 #include <limits.h>
 
 
-typedef struct s_specif
+typedef struct s_s
 {
-	char	specif;
-	char	specif1;
-	char	specif2;
+	char	s;
+	char	s1;
+	char	s2;
 	int		zero;
 	int		point;
 	int		numb;
@@ -23,19 +23,40 @@ typedef struct s_specif
 	int		backsp;
 	char	sign;
 	int		hash;
-}				t_specif;
+}				t_s;
+typedef unsigned char uchar;
 typedef unsigned int uint;
 typedef unsigned long ulong;
 
+typedef union
+{
+	double dbl;
+	struct {
+		long mantissa: 52;
+		uint exponent: 11;
+		uchar sign: 1;
+	} parts;
+} u_double;
+
+typedef union
+{
+	long double l_dbl;
+	struct {
+		long mantissa: 64;
+		uint exponent: 15;
+		uchar sign: 1;
+	} parts;
+} u_long_dbl;
+
 int		ft_putchar(char c);
-int		ft_putchar_c(char c, t_specif *sp);
-void	ft_put_zeros_backsp(t_specif *sp);
-int		ft_put_backsp_str_minus(char *str, t_specif *sp);
-int		ft_put_backsp_str(char *str, t_specif *sp);
+int		ft_putchar_c(char c, t_s *sp);
+void	ft_put_zeros_backsp(t_s *sp);
+int		ft_put_backsp_str_minus(char *str, t_s *sp);
+int		ft_put_backsp_str(char *str, t_s *sp);
 size_t	ft_strlen(const char *s);
 int		ft_putstr(char const *s);
 int		ft_putnbr_positive(int n);
-void	ft_put_sign(int num);
+// void	ft_put_sign(long num); ее пока нет
 //int		ft_putnbr_u(unsigned int n);
 char	*ft_strchr(const char *s, int c);
 int		ft_printf(char *fmt, ...);
@@ -45,33 +66,55 @@ int		ft_atoi(const char *str);
 int		ft_atoi2(const char *str, char *end);
 int		digits_in_base(long long value, int base); //потом оставить long 
 int		digits_in_base_unsigned(ulong u_value, int base);
-int		ft_put_whole_double(double a, t_specif *sp);
-int		ft_putdouble(double a, t_specif *sp);
-int		ft_putscientific(double a, t_specif *sp);
+int		ft_put_whole_double(double a, t_s *sp);
+int		ft_putdouble(double a, t_s *sp);
+int		ft_putscientific(double a, t_s *sp);
 int		ft_putlong(long n);
-void	print_sp(t_specif *sp);
-void	clear_spec(t_specif *sp);
-char	*find_spec(char *p, t_specif *sp);
-void	set_zero(char *p, char *s, t_specif *sp);
-void	set_sign(char *p, char *s, t_specif *sp);
-char	*set_point(char *p, char *s, t_specif *sp);
-void	set_numb(char *p, char *s, t_specif *sp);
-void	set_decimal(char *p, t_specif *sp);
-void	set_backsp(char *p, char *s, t_specif *sp);
-void	set_hash(char *p, char *s, t_specif *sp);
-char	*parse_specifier(char *p, t_specif *sp);
-int		ft_put_int_min(int num, t_specif *sp);
+void	print_sp(t_s *sp);
+void	clear_spec(t_s *sp);
+char	*find_spec(char *p, t_s *sp);
+void	set_zero(char *p, char *s, t_s *sp);
+void	set_sign(char *p, char *s, t_s *sp);
+char	*set_point(char *p, char *s, t_s *sp);
+void	set_numb(char *p, char *s, t_s *sp);
+void	set_decimal(char *p, t_s *sp);
+void	set_backsp(char *p, char *s, t_s *sp);
+void	set_hash(char *p, char *s, t_s *sp);
+char	*parse_sier(char *p, t_s *sp);
+int		ft_put_int_min(int num, t_s *sp);
 void	ft_put_long_long(long long num);
 int		abs_v(int num);
 int		ft_itoa_base_unsigned(ulong u_value, int base, int lett_type);
 void	ft_put_n_chars(char c, int n);
-int		ft_put_percentage(t_specif *sp);
-int		ft_put_parsed_integer_u(uint num, t_specif *sp);
-int		ft_put_integer_u(ulong u_value, t_specif *sp);
-int		ft_put_string(char *str, t_specif *sp);
-int		ft_put_d(long long num, t_specif *sp);
-int		ft_put_d_withOUT_numb_point(long long num, t_specif *sp);
-int		ft_put_d_with_numb_point(long long num, t_specif *sp, int dig);
-int		ft_put_x_o(ulong num, t_specif *sp);
-void	ft_put_prelimenaries(long num, t_specif *sp);
+int		ft_put_percentage(t_s *sp);
+int		ft_put_parsed_integer_u(uint num, t_s *sp);
+int		ft_put_integer_u(ulong u_value, t_s *sp);
+int		ft_put_string(char *str, t_s *sp);
+int		ft_put_d(long long num, t_s *sp);
+int		ft_put_d_withOUT_numb_point(long long num, t_s *sp);
+int		ft_put_d_with_numb_point(long long num, t_s *sp, int dig);
+int		ft_put_x_o(ulong num, t_s *sp);
+void	ft_put_prelimenaries(long num, t_s *sp);
+
+void	print_memory(uint *s);
+int		print_double_whole_part(uint *s);
+int		print_double_decimal_part(uint *s, int n);
+uint	*power_of_2(uint pow, int n);
+uint	*divide_by_2(uint *s);
+uint	*divide_by_minus_2(uint *s, int n);
+uint	*add_arithmetics(uint *a, uint *b);
+uint	*set_arithmetic_zeros(int n);
+uint	*add_arithmetics_minus(uint *a, uint *b);
+uint	*set_whole_part(u_double *N);
+void	normalize(uint *a, uint *s, int dig);
+int		put_double_NEW(double x, t_s *sp);
+
+int		ft_put_LONG_double(long double x, t_s *sp);
+
+void	print_binary_uint(uint num);
+void	print_binary_ulong(ulong num);
+
+int		ft_put_p(long num, t_s *sp);
+
+
 #endif

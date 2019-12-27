@@ -28,7 +28,7 @@ int	main()
 	// c2 = ft_printf("%s\n", "goodie");
 
 //	clear_spec(ttt);
-//	ttt->specif = '1';
+//	ttt->s = '1';
 //	printf("\n\norig: %d, my: %d\n", c1, c2);
 	return (0);
 }

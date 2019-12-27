@@ -5,8 +5,11 @@ RM = /bin/rm -f
 LDFLAGS = -L.
 LDLIBS = -lft
 HDDIRS = -I.
-SRC = process_sp.c put_d.c put_double.c \
-	put_hex_oct.c put_strings.c functions2.c
+SRC = process_sp.c put_d.c \
+	put_hex_oct.c put_strings.c functions2.c \
+	put_double.c two.c print_double.c arithm.c \
+	put_long_dbl.c put_p.c
+	
 OBJ = $(subst .c,.o,$(SRC))
 
 HEAD = test_header.h

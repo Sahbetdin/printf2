@@ -1,6 +1,6 @@
 #include "test_header.h"
 
-int		ft_put_percentage(t_specif *sp)
+int		ft_put_percentage(t_s *sp)
 {
 	if (sp->minus)
 	{
@@ -22,7 +22,7 @@ int		ft_put_percentage(t_specif *sp)
 	return (1);
 }
 
-// int		ft_put_backsp_str_minus(char *str, t_specif *sp)
+// int		ft_put_backsp_str_minus(char *str, t_s *sp)
 // {
 // 	int n;
 // 	int l;
@@ -50,7 +50,7 @@ int		ft_put_percentage(t_specif *sp)
 
 
 
-// int		ft_put_backsp_str(char *str, t_specif *sp)
+// int		ft_put_backsp_str(char *str, t_s *sp)
 // {
 // 	int n;
 // 	int l;
@@ -78,7 +78,7 @@ int		ft_put_percentage(t_specif *sp)
 
 
 //22Dec 2019
-int ft_put_null(t_specif *sp)
+int ft_put_null(t_s *sp)
 {
 	int k;
 	int n;
@@ -107,7 +107,7 @@ int ft_put_null(t_specif *sp)
 }
 
 
-// int		ft_put_string(char *str, t_specif *sp)
+// int		ft_put_string(char *str, t_s *sp)
 // {
 // 	int k;
 // 	int n;
@@ -121,7 +121,7 @@ int ft_put_null(t_specif *sp)
 // 		return (ft_put_backsp_str(str, sp));
 // }
 
-int		ft_put_string(char *str, t_specif *sp)
+int		ft_put_string(char *str, t_s *sp)
 {
 	int k;
 	int n;
