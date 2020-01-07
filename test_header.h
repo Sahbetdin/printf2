@@ -48,6 +48,13 @@ typedef union
 	} parts;
 } u_long_dbl;
 
+typedef struct s_long
+{
+	uint *whole;
+	uint *decimal;
+	ulong flag;
+} t_long;
+
 int		ft_putchar(char c);
 int		ft_putchar_c(char c, t_s *sp);
 void	ft_put_zeros_backsp(t_s *sp);
@@ -81,7 +88,8 @@ void	set_decimal(char *p, t_s *sp);
 void	set_backsp(char *p, char *s, t_s *sp);
 void	set_hash(char *p, char *s, t_s *sp);
 char	*parse_sier(char *p, t_s *sp);
-int		ft_put_int_min(int num, t_s *sp);
+//int		ft_put_int_min(int num, t_s *sp);
+int		ft_put_int_min_with_spec(int num, t_s *sp);
 void	ft_put_long_long(long long num);
 int		abs_v(int num);
 int		ft_itoa_base_unsigned(ulong u_value, int base, int lett_type);
@@ -115,6 +123,9 @@ void	print_binary_uint(uint num);
 void	print_binary_ulong(ulong num);
 
 int		ft_put_p(long num, t_s *sp);
+
+int put_scientific_gr_1(uint *a, uint *s, t_s *sp);
+int put_scientific_less_1(uint *a, uint *s, t_s *sp);
 
 
 #endif

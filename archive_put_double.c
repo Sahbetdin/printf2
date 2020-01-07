@@ -150,32 +150,35 @@ int put_scientific_less_1(uint *a, uint *s, t_s *sp)
 	return(0);
 }
 
-//for exp > 1023 creates only whole part.
-//otherwise creates 
-t_long *create_long_whole(u_double *num_union_f)
+t_long *create_long(double x, t_s *sp)
 {
 	t_long *lng;
+	u_double num;
 	double	log2;
+	uint	*a; //this will be n digit for 2^exp which is max exponent
 	uint	*b;
+	uint	*s;
 	uint	exp;
 	int		n;
 
 	lng = (t_long *)malloc(sizeof(t_long));
+
+	num.dbl = x;
 	log2 = 0.30103;
 	lng->whole = NULL;
 	b = NULL;
 	lng->decimal = NULL;
 	lng->flag = 1UL << 51;
-	if (num_union_f->parts.exponent >= 1023)
+	if (num.parts.exponent >= 1023)
 	{
-		exp = num_union_f->parts.exponent - 1023;
+		exp = num.parts.exponent - 1023;
 		n = log2 * exp + 3; //3 for reliability
 		lng->whole = power_of_2(exp, n); //malloc used
 		b = power_of_2(exp, n); //malloc used
 		while (exp > 0)
 		{
 			divide_by_2(b);
-			if (lng->flag & num_union_f->parts.mantissa)
+			if (lng->flag & num.parts.mantissa)
 				add_arithmetics(lng->whole, b);
 			lng->flag = lng->flag >> 1;
 			exp--;
@@ -184,39 +187,13 @@ t_long *create_long_whole(u_double *num_union_f)
 		b = NULL;
 	}
 	else
-	{	
-		exp = 1023 - num_union_f->parts.exponent;
+	{
+		n = 52;
+		exp = 1023 - num.parts.exponent;
 		if (!(lng->whole = (uint *)malloc(sizeof(uint) * 2)))
 			return (0);
 		lng->whole[0] = 1;
 		lng->whole[1] = 0;
-	}
-	return (lng);
-}
-
-
-// uint	*a; //this will be n digit for 2^exp which is max exponent
-// uint	*s;
-
-
-t_long *create_long(double x, t_s *sp)
-{
-	t_long *lng;
-	u_double num;
-//	double	log2; //rid
-	uint	*b;
-	uint	exp;
-	int		n;
-
-	num.dbl = x;
-	lng = create_long_whole(&num);
-	if (!lng)
-		return (NULL);
-	b = NULL;
-	if (num.parts.exponent < 1023)
-	{
-		n = 52;
-		exp = 1023 - num.parts.exponent;
 		b = divide_by_minus_2(NULL, n);
 		while (exp > 1)
 		{
@@ -244,39 +221,126 @@ t_long *create_long(double x, t_s *sp)
 	return (lng);
 }
 
-void free_long_arithm(t_long *lng)
-{
-	free(lng->whole);
-	free(lng->decimal);
-	free(lng);
-}
-
 int		put_double_NEW(double x, t_s *sp)
 {
 	int n; //number of digits. thus this amount is allocated
 	int count;
 	int dig;
 	t_long *lng;
+	// uint	exp; //rid
+	// ulong	flag; //rid
 
 	count = 0;
-	if (!(lng = create_long(x, sp)))
-		return (0);
+//		return (0);
+
+	lng = create_long(x, sp);
+
+/*
+	log2 = 0.30103;
+	num.dbl = x;
+	a = NULL;
+	b = NULL;
+	s = NULL;
+	flag = 1UL << 51;
+	if (num.parts.exponent >= 1023)
+	{
+		exp = num.parts.exponent - 1023;
+		n = log2 * exp + 3; //3 for reliability
+		a = power_of_2(exp, n); //malloc used
+		b = power_of_2(exp, n); //malloc used
+		while (exp > 0)
+		{
+			divide_by_2(b);
+			if (flag & num.parts.mantissa)
+				add_arithmetics(a, b);
+			flag = flag >> 1;
+			exp--;
+		}
+		free(b);
+		b = NULL;
+	}
+	else
+	{
+		n = 52;
+		exp = 1023 - num.parts.exponent;
+		if (!(a = (uint *)malloc(sizeof(uint) * 2)))
+			return (0);
+		a[0] = 1;
+		a[1] = 0;
+		b = divide_by_minus_2(NULL, n);
+		while (exp > 1)
+		{
+			divide_by_minus_2(b, n);
+			exp--;
+		}
+		s = set_arithmetic_zeros(n);
+		add_arithmetics_minus(s, b);
+	}
+	n = (sp->decim > 52) ? sp->decim + 4 : 52;
+	if (!s)
+		s = set_arithmetic_zeros(n);
+	if (b)
+		divide_by_minus_2(b, n);
+	else
+		b = divide_by_minus_2(NULL, n);
+	while (flag)
+	{
+		if (flag & num.parts.mantissa)
+			add_arithmetics_minus(s, b);
+		divide_by_minus_2(b, n);
+		flag = flag >> 1;
+	}
+*/
+
+	// if ((sp->s == 'e' || sp->s == 'E') && x >= 1)
+	// 	return (put_scientific_gr_1(a, s, sp));
+	// else if (sp->s == 'e' || sp->s == 'E')
+	// 	return (put_scientific_less_1(a, s, sp));
 	if ((sp->s == 'e' || sp->s == 'E') && x >= 1)
 		return (put_scientific_gr_1(lng->whole, lng->decimal, sp));
 	else if (sp->s == 'e' || sp->s == 'E')
 		return (put_scientific_less_1(lng->whole, lng->decimal, sp));
+
+
+	// normalize(a, s, sp->decim);
 	normalize(lng->whole, lng->decimal, sp->decim);
+
+
+	// count += print_double_whole_part(a);
 	count += print_double_whole_part(lng->whole);
+
+	// if (!sp->hash && sp->decim == 0 && sp->point)
+	// {
+	// 	free(a);
+	// 	free(b);
+	// 	free(s);
+	// 	return (count); 
+	// }
 	if (!sp->hash && sp->decim == 0 && sp->point)
 	{
-		free_long_arithm(lng);
+		free(lng->whole);
+		// free(b); //rid
+		free(lng->decimal);
 		return (count); 
 	}
+
+
+
 	write(1, ".", 1);
 	count++;
+	
+	// print_double_decimal_part(s, sp->decim);
 	print_double_decimal_part(lng->decimal, sp->decim);
+
+
 	count += dig;
-	free_long_arithm(lng);
+
+	// free(a);
+	free(lng->whole);
+//	free(b); //rid
+	// free(s);
+	free(lng->decimal);
+	free(lng);
 	return (count); 
 }
 
@@ -322,7 +386,6 @@ int check_double_inf(double a, t_s *sp)
 //puts f, F, e, E, Lf
 int ft_put_all_double(double a, t_s *sp)
 {
-
 	if (sp->s == 'f' || sp->s == 'F' || sp->s == 'e' || sp->s == 'E')
 		return (put_double_NEW(a, sp));
 	else if (sp->s == 'L' && sp->s1 == 'f')
@@ -346,6 +409,14 @@ int ft_put_whole_double(double a, t_s *sp)
 		sp->sign = 1;
 		a = -a;
 	}
+
+	// print_sp(sp);
+	// if (sp->point)
+	// 	dig = sp->decim;
+	// else
+	// 	dig = 6;
+	// if (sp->s == 'e' || sp->s == 'E') //check if we need scientific notation
+	// 	return (put_double_NEW(a, sp));
 	dig = digits_in_base((long)a, 10);
 	if (!(sp->numb || sp->decim))
 	{

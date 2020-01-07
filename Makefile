@@ -14,6 +14,8 @@ OBJ = $(subst .c,.o,$(SRC))
 
 HEAD = test_header.h
 
+.PHONY: all clean fclean re
+
 all: $(NAME)
 
 $(NAME): $(OBJ)
@@ -24,6 +26,7 @@ $(NAME): $(OBJ)
 
 %.o: %.c
 	@$(CC) $< -c -o $@ -I.$(HEAD)
+#	@gcc -I $(HEAD) -o $@ -c $<
 
 clean:
 	@$(RM) -f $(OBJ)

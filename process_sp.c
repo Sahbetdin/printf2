@@ -234,7 +234,8 @@ char *parse_sier(char *p, t_s *sp)
 	//	printf("POINTER TO POINT %p\n", ptr_point);
 		if (ptr_point)
 			set_decimal(ptr_point + 1, sp);
-		else if (sp->s == 'f' || (sp->s == 'L' && sp->s1 == 'f'))
+		else if (sp->s == 'f' || sp->s == 'e' || sp->s == 'F' || sp->s == 'E' 
+			|| (sp->s == 'L' && sp->s1 == 'f'))
 			sp->decim = 6;
 	}
 	else
@@ -279,7 +280,8 @@ int	process_specifier(char *ptr, t_s *sp, va_list ap)
 		// write(1, "GL", 2);
 		return (ft_put_d(va_arg(ap, long long), sp));
 	}
-	else if (sp->s == 'f' || sp->s == 'F')
+	else if (sp->s == 'f' || sp->s == 'F' ||
+			sp->s == 'e' || sp->s == 'E')
 			return (ft_put_whole_double(va_arg(ap, double), sp));
 	else if (sp->s == 'L' && (sp->s1 == 'f' || sp->s1 == 'F'))
 			return (ft_put_LONG_double(va_arg(ap, long double), sp));

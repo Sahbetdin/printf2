@@ -561,3 +561,38 @@ int		ft_put_parsed_integer_u(uint num, t_s *sp)
 // 	else
 // 		return (0);
 // }
+
+
+
+/*PUTS ONLY POSITIVE NUMBERS! */
+int		ft_putdouble(double a, t_s *sp)
+{
+	long	d; //the same 'a' but rounded
+	int		i;
+
+	d = a;
+//	printf("\n d is %lu \n", d);
+	i = ft_putlong(d);
+	ft_putchar('.');
+	i++;
+	// printf("i = %d\n", i);
+//	ft_putchar('\n');
+ 	while (sp->decim > 0)
+ 	{
+ 		printf("bef %.10f ", a);
+ 		a = (a - d) * 10 + 1.0e-9;
+ 		printf(", %.10f, %ld, %f \n", a, (long)a, (a - (long)a) * 10);
+		d = a;
+ 		if (sp->decim == 1)
+ 		{
+			if ((a - (long)a) * 10 > 5)
+				d += 1;
+ 		}
+// 		write(1, "JJ\n", 3);
+		ft_putchar(d + '0');
+		i++;
+ 		sp->decim--;
+ 	}
+	return (i);
+}
+

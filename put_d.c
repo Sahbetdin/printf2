@@ -22,7 +22,6 @@ void ft_put_long_long(long long num)
 	m = num;
 	i = 0;
 	c = 1;
-
 	while (m > 9 || m < -9)
 	{
 		m /= 10;
@@ -39,15 +38,43 @@ void ft_put_long_long(long long num)
 		c /= 10;
 		i--;
 	}
-	return ;
 }
 
+//k zeros or backsp
+int ft_put_int_min(int num, int k, t_s *sp)
+{
+	int dig;
 
-int ft_put_int_min(int num, t_s *sp)
+	dig = 0;
+	if (sp->zero && !sp->minus) //нет '-' и есть '0'
+	{
+		write(1, "-", 1);
+		ft_put_n_chars(48, k);
+		write(1, "2147483648", 10);
+		dig += k;
+	}
+	else if (!sp->minus)
+	{
+		ft_put_n_chars(32, k);
+		write(1, "-2147483648", 11);
+		dig += k;
+	}
+	else if (sp->minus)
+	{
+		k = (k > 1) ? k - 1 : 0;
+		write(1, "-2147483648", 11);
+		ft_put_n_chars(32, k);
+		dig += (sp->numb > 11) ? k + 1 : k;
+	}
+	return (dig);
+}
+
+int ft_put_int_min_with_spec(int num, t_s *sp)
 {
 	int l;
 	int k;
 	int dig;
+					// write(1, "GL", 2);
 
 	dig = 11;
 	if (!sp->numb && !sp->point) //просто %d, % d
@@ -55,6 +82,8 @@ int ft_put_int_min(int num, t_s *sp)
 	else if (!sp->point)
 	{
 		k = (sp->numb > dig) ? sp->numb - dig : 0; //кол-во нулей либо пробелов
+		dig += ft_put_int_min(num, k, sp);
+////
 		if (sp->zero && !sp->minus) //нет '-' и есть '0'
 		{
 			write(1, "-", 1);
@@ -74,9 +103,36 @@ int ft_put_int_min(int num, t_s *sp)
 			write(1, "-2147483648", 11);
 			ft_put_n_chars(32, k);
 			dig += (sp->numb > 11) ? k + 1 : k;
-		}			
+		}
+////
 	}
-	return(dig);
+	else
+	{
+		l = sp->decim - dig + 1; //кол-во нулей либо пробелов
+		if (l < 0)
+			l = 0;
+		k = (sp->decim > dig) ? sp->numb - sp->decim : sp->numb - dig;
+		if (sp->minus)
+		{
+			write(1, "-", 1);
+			ft_put_n_chars(48, l);
+			write(1, "2147483648", 10);			
+			ft_put_n_chars(32, k);
+		}
+		else
+		{
+			ft_put_n_chars(32, k);
+			write(1, "-", 1);
+			ft_put_n_chars(48, l);
+			write(1, "2147483648", 10);			
+		}
+		dig += l + k;
+		// printf("\nk = %d, l = %d\n", k, l);
+
+		// write(1, "GL", 2);
+	}
+
+	return (dig);
 }
 
 int ft_put_d_withOUT_numb_point(long long num, t_s *sp)
@@ -265,12 +321,13 @@ int ft_put_d(long long num, t_s *sp)
 		num = (int)num;
 	dig = digits_in_base(num, 10);
 	if (num == -2147483648)
-		return (ft_put_int_min(num, sp));	
+		return (ft_put_int_min_with_spec(num, sp));	
 	if (num < 0)
 	{
 		num = -num; //!INT_MIN
 		sp->sign = 1;
 	}
+
 	if (sp->numb || sp->point)
 		return (ft_put_d_with_numb_point(num, sp, dig));
 	else
