@@ -122,7 +122,9 @@ int put_scientific_gr_1(uint *a, uint *s, t_s *sp)
 		k -= 1 + sp->decim;
 	if (k < 0)
 		k = 0;
-	// printf("k = %d\n", k);
+	// if (sp->backsp && k == 0)
+	// 	k = 1;
+	printf("k = %d\n", k);
 	if (sp->zero)
 	{
 		ft_put_sign(sp);
@@ -134,7 +136,10 @@ int put_scientific_gr_1(uint *a, uint *s, t_s *sp)
 		ft_put_sign(sp);
 	}
 
-
+//
+///	...
+// void ft_put_e_whole_only(uint *a, int i, t_s *sp, int m1)
+// {
 	ft_putchar(a[i] + '0');
 	if (sp->decim > 0)
 		write(1, ".", 1);
@@ -144,6 +149,8 @@ int put_scientific_gr_1(uint *a, uint *s, t_s *sp)
 		ft_putchar(a[i] + '0');
 		i--;
 	}
+// }
+//
 	i = 1;
 	while (i <= -m1)
 	{
@@ -200,6 +207,9 @@ int put_scientific_less_1(uint *a, uint *s, t_s *sp)
 	// printf("s[exp_] = %d\n", s[exp_]);
 	// print_memory(a);
 	// print_memory(s);
+
+int exp_, s, a[1], flag
+return flag
 	if (exp_ == 1 && s[exp_] == 0 && a[1] == 1)
 	{
 		ft_putchar('1');
@@ -213,11 +223,11 @@ int put_scientific_less_1(uint *a, uint *s, t_s *sp)
 	}
 	else
 		ft_putchar(s[exp_] + '0');
-//now we can work with exp_
 	if (exp_ < 10)
 		dig_exp_ = 1;
 	else
 		dig_exp_ = digits_in_base(exp_, 10);
+//now we can work with exp_
 	k = sp->numb - (dig_exp_ + 2 + sp->decim);
 	if (k < 0)
 		k = 0;
