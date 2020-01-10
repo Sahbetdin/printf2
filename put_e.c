@@ -75,13 +75,33 @@ void ft_put_e_plus(char ch)
 		write(1, "E+", 2);
 }
 
-void ft_put_e_minus(char ch)
+int		ft_put_e_plus00(char ch)
+{
+	if (ch == 'e')
+		write(1, "e+00", 4);
+	else if (ch == 'E')
+		write(1, "E+00", 4);
+	return (4);
+}
+
+void	ft_put_e_minus(char ch)
 {
 	if (ch == 'e')
 		write(1, "e-", 2);
 	else if (ch == 'E')
 		write(1, "E-", 2);
 }
+
+void	ft_add_e_exp_dig(int exp_)
+{
+	if (exp_ < 10)
+	{
+		write(1, "0", 1);
+		ft_putchar(exp_ + '0');
+	}
+	else
+		ft_putnbr_positive(exp_);
+}	
 
 int put_scientific_gr_1(uint *a, uint *s, t_s *sp)
 {
@@ -177,6 +197,23 @@ int put_scientific_gr_1(uint *a, uint *s, t_s *sp)
 		return (3 + digits_in_base(exp_, 10) + count);
 }
 
+//help function
+void ft_put_e_whole(int *addr_exp_, uint *s, uint a, int *addr_flag)
+{
+	if (*addr_exp_ == 1 && s[*addr_exp_] == 0 && a == 1) //????
+	{
+		ft_putchar('1');
+		*addr_exp_ = 0;
+		*addr_flag = 1;
+	}
+	else if (s[*addr_exp_ - 1] == 1)
+	{
+		ft_putchar('1');
+		*addr_exp_ = *addr_exp_ - 1;
+	}
+	else
+		ft_putchar(s[*addr_exp_] + '0');
+}
 
 int put_scientific_less_1(uint *a, uint *s, t_s *sp)
 {
@@ -186,7 +223,6 @@ int put_scientific_less_1(uint *a, uint *s, t_s *sp)
 	int	count;
 	int dig_exp_;
 	int k;
-
 
 	flag = 0;
 	count = 0;
@@ -208,64 +244,47 @@ int put_scientific_less_1(uint *a, uint *s, t_s *sp)
 	// print_memory(a);
 	// print_memory(s);
 
-int exp_, s, a[1], flag
-return flag
-	if (exp_ == 1 && s[exp_] == 0 && a[1] == 1)
-	{
-		ft_putchar('1');
-		exp_ = 0;
-		flag = 1;
-	}
-	else if (s[exp_ - 1] == 1)
-	{
-		ft_putchar('1');
-		exp_--;
-	}
-	else
-		ft_putchar(s[exp_] + '0');
-	if (exp_ < 10)
-		dig_exp_ = 1;
-	else
-		dig_exp_ = digits_in_base(exp_, 10);
+
+	if (exp_ < 100)
+		dig_exp_ = 2;
+	else if (exp_ < 1000)
+		dig_exp_ = 3;
 //now we can work with exp_
-	k = sp->numb - (dig_exp_ + 2 + sp->decim);
+	k = sp->numb - (dig_exp_ + 3 + sp->point);
+	if (sp->point)
+	k -= sp->decim + (sp->plus || sp->sign);
 	if (k < 0)
 		k = 0;
+
+	if (!sp->zero)
+		ft_put_n_chars(32, k);	
+	if (sp->sign)
+		write(1, "-", 1);
+	else if (sp->plus)
+		write(1, "+", 1);
+
+	if (sp->zero)
+		ft_put_n_chars(48, k);
+	// printf("dig_exp_ = %d\n", dig_exp_);
 	// printf("k = %d\n", k);
+
 ///
+	// print_memory(s);
+
+	// ft_put_e_whole(&exp_, s, a[1], &flag);
 	write(1, ".", 1);
 	count += 2; // whole part 1 digit + "."
 	i = exp_;
 	while (++i <= exp_ + sp->decim)
 		ft_putchar(s[i] + '0');
-	count += sp->decim;
+	if (sp->decim > 0)
+		count += sp->decim;
 	if (flag)
-	{
-		if (sp->s == 'e')
-			write(1, "e+00", 4);
-		else if (sp->s == 'E')
-			write(1, "E+00", 4);
-		return (count + 4);	
-	}
+		return (count += ft_put_e_plus00(sp->s));
 	else 
-	{	
 		ft_put_e_minus(sp->s);
-		// if (sp->s == 'e')
-		// 	write(1, "e-", 2);
-		// else if (sp->s == 'E')
-		// 	write(1, "E-", 2);
-	}
-	count += 2;
-	if (exp_ < 10)
-	{
-		write(1, "0", 1);
-		ft_putchar(exp_ + '0');
-		count++;
-	}
-	else
-		ft_putnbr_positive(exp_);
-
-	return(count + dig_exp_);
+	ft_add_e_exp_dig(exp_);
+	return(count + k + dig_exp_ + 2 + (sp->plus || sp->sign));
 }
 
 int ft_if_sci(double a, t_s *sp)
