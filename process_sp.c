@@ -281,7 +281,6 @@ int	process_specifier(char *ptr, t_s *sp, va_list ap)
 		(sp->s == 'l' && (sp->s1 == 'd' || sp->s1 == 'i')) ||
 		(sp->s == 'l' && sp->s1 == 'l' && (sp->s2 == 'd' || sp->s2 == 'i')))
 	{
-		// write(1, "GL", 2);
 		return (ft_put_d(va_arg(ap, long long), sp));
 	}
 	else if (sp->s == 'f' || sp->s == 'F' ||

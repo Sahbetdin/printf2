@@ -65,6 +65,7 @@ int check_DLNG_inf(u_long_dbl *num_DBL, t_s *sp)
 {
 	int i;
 	int k;
+	
 
 	k = sp->numb - 3 - (int)num_DBL->parts.sign;
 	ft_put_n_chars(32, k);

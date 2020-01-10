@@ -101,7 +101,68 @@ void	ft_add_e_exp_dig(int exp_)
 	}
 	else
 		ft_putnbr_positive(exp_);
-}	
+}
+
+int ft_set_k_for_e(t_s *sp, int exp_, int *d)
+{
+	int k;
+
+	if (exp_ < 100)
+		*d = 2;
+	else if (exp_ < 1000)
+		*d = 3;
+	k = sp->numb - (*d + 3 + sp->point);
+	if (sp->point)
+	k -= sp->decim + (sp->plus || sp->sign);
+	if (k < 0)
+		k = 0;
+	if (k == 0 && sp->backsp)
+		k = 1;
+	if (!sp->zero)
+		ft_put_n_chars(32, k);
+	if (sp->zero && !sp->minus)
+		ft_put_n_chars(48, k);
+	return (k);
+}
+
+//help function for writing whole part in ..gr1
+void ft_put_e_whole_gr(uint *a, int *addr_i, t_s *sp, int m1)
+{
+	ft_putchar(a[*addr_i] + '0');
+	if (sp->decim > 0)
+		write(1, ".", 1);
+	*addr_i = *addr_i - 1;
+	while (*addr_i >= m1 && *addr_i > 0)
+	{
+		ft_putchar(a[*addr_i] + '0');
+		*addr_i = *addr_i - 1;
+	}
+}
+
+void	ft_put_e_decim_gr(uint *s, int m1)
+{
+	int i;
+
+	i = 1;
+	while (i <= -m1)
+	{
+		ft_putchar(s[i] + '0');
+		i++;
+	}
+}
+
+void	ft_put_e_exp_gr(int exp_, int *addr_m1)
+{
+	if (exp_ < 10)
+	{
+		write(1, "0", 1);
+		ft_putchar(exp_ + '0');
+		*addr_m1 = *addr_m1 + 1;
+	}
+	else
+		ft_putnbr_positive(exp_);
+}
+
 
 int put_scientific_gr_1(uint *a, uint *s, t_s *sp)
 {
@@ -112,89 +173,44 @@ int put_scientific_gr_1(uint *a, uint *s, t_s *sp)
 	int k;
 	int count;
 
+	count = 0;
 	i = a[0];
 	while (i && a[i] == 0)
 		i--;
 	exp_ = i - 1;
-	// printf("exp = %d\n", exp);
 	m1 = (exp_ >= sp->decim) ? i - sp->decim : exp_ - sp->decim;
-	// print_memory(a);
-	// print_memory(s);
-	// printf("m1 = %d\n", m1);
 	normalize_sci(a, s, m1);
-	// print_memory(a);
-	// print_memory(s);
-
 	if (a[i + 1] != 0)
 	{
 		exp_++;
 		i++;
 		m1++;
 	}
-
-//now work with exp_
-	if (exp_ < 10)
-		dig_exp_ = 1;
-	else
-		dig_exp_ = digits_in_base(exp_, 10);
-	k = sp->numb - (dig_exp_ + 3 + (sp->plus || sp->sign));
-	if (sp->decim > 0)
-		k -= 1 + sp->decim;
-	if (k < 0)
-		k = 0;
-	// if (sp->backsp && k == 0)
-	// 	k = 1;
-	printf("k = %d\n", k);
-	if (sp->zero)
+	// write(1, "T", 1);
+	if (sp->minus)
 	{
 		ft_put_sign(sp);
-		ft_put_n_chars(48, k);
+		ft_put_e_whole_gr(a, &i, sp, m1);
+		ft_put_e_decim_gr(s, m1);
+		ft_put_e_plus(sp->s);
+		ft_put_e_exp_gr(exp_, &m1);
+		k = ft_set_k_for_e(sp, exp_, &dig_exp_);
 	}
 	else
 	{
-		ft_put_n_chars(32, k);
+		k = ft_set_k_for_e(sp, exp_, &dig_exp_);
 		ft_put_sign(sp);
+		ft_put_e_whole_gr(a, &i, sp, m1);
+		ft_put_e_decim_gr(s, m1);
+		ft_put_e_plus(sp->s);
+		ft_put_e_exp_gr(exp_, &m1);
 	}
+	// write(1, "G", 1);
 
-//
-///	...
-// void ft_put_e_whole_only(uint *a, int i, t_s *sp, int m1)
-// {
-	ft_putchar(a[i] + '0');
+	count = k + (sp->plus || sp->sign) + 3 + dig_exp_;
 	if (sp->decim > 0)
-		write(1, ".", 1);
-	i--;
-	while (i >= m1 && i > 0)
-	{
-		ft_putchar(a[i] + '0');
-		i--;
-	}
-// }
-//
-	i = 1;
-	while (i <= -m1)
-	{
-		ft_putchar(s[i] + '0');
-		i++;
-	}
-	ft_put_e_plus(sp->s);
-
-	//optimize this:
-	if (exp_ < 10)
-	{
-		write(1, "0", 1);
-		ft_putchar(exp_ + '0');
-		m1++;		
-	}
-	else
-		ft_putnbr_positive(exp_);
-	count = (sp->plus || sp->sign) + k + (sp->point && sp->decim);
-	if (sp->decim > 0)
-		count += sp->decim;
-	if (exp_ < 10)
-		return (6 + count);
-	else
-		return (3 + digits_in_base(exp_, 10) + count);
+		count += sp->decim + 1;
+	return (count);
 }
 
 //help function
@@ -224,6 +240,7 @@ int put_scientific_less_1(uint *a, uint *s, t_s *sp)
 	int dig_exp_;
 	int k;
 
+	// write(1, "R", 1);
 	flag = 0;
 	count = 0;
 	if (sp->sign)
@@ -232,108 +249,42 @@ int put_scientific_less_1(uint *a, uint *s, t_s *sp)
 		count++;
 	}
 	i = s[0];
-	// print_memory(a);
-	// print_memory(s);
 	i = 1;
 	while (i <= s[0] && s[i] == 0)
 		i++;
 	exp_ = i;
 	normalize_sci(a, s, -(exp_ + sp->decim));
-	// printf("exp_ = %d\n", exp_);
-	// printf("s[exp_] = %d\n", s[exp_]);
-	// print_memory(a);
-	// print_memory(s);
 
+	k = ft_set_k_for_e(sp, exp_, &dig_exp_);
 
-	if (exp_ < 100)
-		dig_exp_ = 2;
-	else if (exp_ < 1000)
-		dig_exp_ = 3;
-//now we can work with exp_
-	k = sp->numb - (dig_exp_ + 3 + sp->point);
-	if (sp->point)
-	k -= sp->decim + (sp->plus || sp->sign);
-	if (k < 0)
-		k = 0;
-
-	if (!sp->zero)
-		ft_put_n_chars(32, k);	
-	if (sp->sign)
-		write(1, "-", 1);
-	else if (sp->plus)
-		write(1, "+", 1);
-
-	if (sp->zero)
-		ft_put_n_chars(48, k);
-	// printf("dig_exp_ = %d\n", dig_exp_);
-	// printf("k = %d\n", k);
-
-///
-	// print_memory(s);
-
-	// ft_put_e_whole(&exp_, s, a[1], &flag);
-	write(1, ".", 1);
-	count += 2; // whole part 1 digit + "."
+	ft_put_e_whole(&exp_, s, a[1], &flag);
+	if (sp->decim > 0)
+		write(1, ".", 1);
+	if (sp->decim > 0)
+		count += 1 + sp->decim; //  "."
 	i = exp_;
 	while (++i <= exp_ + sp->decim)
 		ft_putchar(s[i] + '0');
-	if (sp->decim > 0)
-		count += sp->decim;
 	if (flag)
 		return (count += ft_put_e_plus00(sp->s));
 	else 
 		ft_put_e_minus(sp->s);
 	ft_add_e_exp_dig(exp_);
-	return(count + k + dig_exp_ + 2 + (sp->plus || sp->sign));
-}
-
-int ft_if_sci(double a, t_s *sp)
-{
-	t_long *lng;
-
-	if (!(lng = create_long(a, sp)))
-		return (0);
-	// print_memory(lng->decimal);
-//	normalize_sci(lng->whole, lng->decimal, sp->decim);
-	// print_memory(lng->whole);
-	// print_memory(lng->decimal);
-	if (a >= 1)
-	 	return (put_scientific_gr_1(lng->whole, lng->decimal, sp));
-	else
-		return (put_scientific_less_1(lng->whole, lng->decimal, sp));
+	return(count + k + dig_exp_ + 3 + (sp->plus || sp->sign));
 }
 
 int ft_put_sci(double a, t_s *sp)
 {
 	int k;
 	int n;
-//здесь
-//сделать флаги для "е"
+	t_long *lng;
 
-	// n = 1 + (sp->plus || sp->backsp || sp->sign);
-	// k = (sp->numb > n) ? sp->numb - n : 0;
-
-	// if (!(sp->numb || sp->decim))
-	// {
-	// 	if (sp->plus && !sp->sign)
-	// 		write(1, "+", 1);
-	// 	else if (sp->backsp && !sp->sign)
-	// 		write(1, " ", 1);
-	// 	if (sp->sign)
-	// 		write(1, "-", 1);
-	// 	return ((sp->plus || sp->backsp || sp->sign) + ft_if_sci(a, sp)); 
-	// }
-	// else
-	// {
-		// if (sp->zero)
-		// 	ft_put_n_chars(48, k);
-		// else
-		// 	ft_put_n_chars(32, k);
-		// if (sp->sign)
-		// 	write(1, "-", 1);
-		// write(1, "JJ", 2);
-		return (ft_if_sci(a, sp));
-	// }
+	if (!(lng = create_long(a, sp)))
+		return (0);
+	if (a >= 1)
+	 	return (put_scientific_gr_1(lng->whole, lng->decimal, sp));
+	else
+		return (put_scientific_less_1(lng->whole, lng->decimal, sp));
 }
 
 

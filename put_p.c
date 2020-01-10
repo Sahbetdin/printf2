@@ -3,6 +3,7 @@
 int set_k_for_pointers(long num, t_s *sp)
 {
 	int k;
+	int dig;
 	
 	if (num == 0)
 	{
@@ -13,11 +14,12 @@ int set_k_for_pointers(long num, t_s *sp)
 	}
 	else
 	{
+		dig = digits_in_base(num, 16) + 2;
 		if (sp->point)
-			k = (sp->decim > 12) ? sp->numb - sp->decim - 2 : sp->numb - 14;
+			k = (sp->decim > dig - 2) ? sp->numb - sp->decim - 2 : sp->numb - dig;
 			// k = (sp->numb - 14 > sp->decim) ? sp->numb - sp->decim - 14 : 0;
 		else
-			k = (sp->numb > 14) ? sp->numb - 14 : 0;
+			k = (sp->numb > dig) ? sp->numb - dig : 0;
 	}
 	return (k);
 }
@@ -32,9 +34,6 @@ int ft_put_p(long num, t_s *sp)
 	l = 0;
 	if (sp->point)
 		l = (sp->decim > 12) ? sp->decim - 12 : 0;
-	// if (sp->point)
-	// 	l = (sp->decim > 1) ? sp->decim - 1 : 0;
-	// printf("k = %d, l = %d\n", k, l);
 	if (sp->minus)
 	{
 		write(1, "0x", 2);

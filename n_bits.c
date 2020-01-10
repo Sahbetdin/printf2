@@ -353,9 +353,7 @@ uint *divide_by_minus_2(uint *s, int n)
 		s = (uint *)malloc(sizeof(int) * n);
 		s[0] = 5;
 		while (++i < n)
-			s[i] = 0;
-//		printf("%u\n", s[1]);
-		
+			s[i] = 0;		
 	}
 	else
 	{
