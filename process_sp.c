@@ -70,10 +70,14 @@ char *find_spec(char *p, t_s *sp)
 			}
 			else if (*p == 'L')
 				sp->s1 = *(p + 1);
+			free(lett);
 			return (p); 
 		}
 		else
+		{
+			free(lett);
 			return (NULL);
+		}
 	}
 	free(lett);
 	return (NULL);
@@ -299,7 +303,7 @@ int	process_specifier(char *ptr, t_s *sp, va_list ap)
 	else if (sp->s == '%')
 		return (ft_put_percentage(sp));
 	else
-		ft_putstr("Could not process specifier\n");
+		ft_putstr("Could not process specifier_");
 	return (0);
 }
 
@@ -340,11 +344,11 @@ int     ft_printf(char *fmt, ...)
 					p = s + 1;
 				continue;
 			}
-			else
-			{
-				ft_putstr("error");
-				return (-1);
-			}
+			// else
+			// {
+			// 	ft_putstr("error");
+			// 	return (-1);
+			// }
 		}
 		else
 		{

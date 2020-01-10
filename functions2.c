@@ -174,7 +174,7 @@ int			ft_atoi2(const char *str, char *end)
 	return (sign * res);
 }
 
-int digits_in_base(long long value, int base)
+int digits_in_base(long value, int base)
 {
 	int i;
 	i = 0;
@@ -189,8 +189,6 @@ int digits_in_base(long long value, int base)
 	}
 	return (i);
 }
-
-
 
 int digits_in_base_unsigned(ulong u_value, int base)
 {

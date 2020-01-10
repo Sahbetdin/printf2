@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <float.h>
 
 
 typedef struct s_s
@@ -55,6 +56,7 @@ typedef struct s_long
 	ulong flag;
 } t_long;
 
+int		ft_printf(char *fmt, ...);
 int		ft_putchar(char c);
 int		ft_putchar_c(char c, t_s *sp);
 void	ft_put_zeros_backsp(t_s *sp);
@@ -66,12 +68,11 @@ int		ft_putnbr_positive(int n);
 // void	ft_put_sign(long num); ее пока нет
 //int		ft_putnbr_u(unsigned int n);
 char	*ft_strchr(const char *s, int c);
-int		ft_printf(char *fmt, ...);
 char	*ft_strdup(const char *s1);
 int		ft_cut_backspaces(const char *s);
 int		ft_atoi(const char *str);
 int		ft_atoi2(const char *str, char *end);
-int		digits_in_base(long long value, int base); //потом оставить long 
+int		digits_in_base(long value, int base);
 int		digits_in_base_unsigned(ulong u_value, int base);
 int		ft_put_whole_double(double a, t_s *sp);
 int		ft_putdouble(double a, t_s *sp);
@@ -103,7 +104,7 @@ int		ft_put_d_withOUT_numb_point(long long num, t_s *sp);
 int		ft_put_d_with_numb_point(long long num, t_s *sp, int dig);
 int		ft_put_x_o(ulong num, t_s *sp);
 void	ft_put_prelimenaries(long num, t_s *sp);
-
+//f, F, Lf, e, E
 void	print_memory(uint *s);
 int		print_double_whole_part(uint *s);
 int		print_double_decimal_part(uint *s, int n);
@@ -116,16 +117,24 @@ uint	*add_arithmetics_minus(uint *a, uint *b);
 uint	*set_whole_part(u_double *N);
 void	normalize(uint *a, uint *s, int dig);
 int		put_double_NEW(double x, t_s *sp);
-
 int		ft_put_LONG_double(long double x, t_s *sp);
-
+void	free_long_arithm(t_long *lng);
+int		ft_put_whole_double(double a, t_s *sp);
+int		ft_put_f_double(double a, t_s *sp);
+t_long *create_long(double x, t_s *sp);
+//help functions
 void	print_binary_uint(uint num);
 void	print_binary_ulong(ulong num);
-
+//inf
+int		put_inf(t_s *sp);
+int		put_DLNG_inf(t_s *sp);
+int		check_double_inf(double a, t_s *sp);
+int		check_DLNG_inf(u_long_dbl *num_DBL, t_s *sp);
+//p
 int		ft_put_p(long num, t_s *sp);
-
-int put_scientific_gr_1(uint *a, uint *s, t_s *sp);
-int put_scientific_less_1(uint *a, uint *s, t_s *sp);
-
-
+//e
+int		put_scientific_gr_1(uint *a, uint *s, t_s *sp);
+int		put_scientific_less_1(uint *a, uint *s, t_s *sp);
+int		ft_put_sci(double a, t_s *sp);
+int		ft_if_sci(double a, t_s *sp);
 #endif

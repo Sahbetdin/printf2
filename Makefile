@@ -8,7 +8,8 @@ HDDIRS = -I.
 SRC = process_sp.c put_d.c \
 	put_hex_oct.c put_strings.c functions2.c \
 	put_double.c two.c print_double.c arithm.c \
-	put_long_dbl.c put_p.c
+	put_long_dbl.c put_p.c put_e.c put_f1.c \
+	check_inf_nan.c
 	
 OBJ = $(subst .c,.o,$(SRC))
 

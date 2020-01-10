@@ -1,150 +1,143 @@
 #include "test_header.h"
 
-
-
-int		ft_put_LONG_double(long double x, t_s *sp)
+t_long *create_DLNG_whole_pre(void)
 {
-	//
+	t_long *lng2;
 
-	u_long_dbl num;
-	double log2;
-	int n; //number of digits. thus this amount is allocated
-	uint *a; //this will be n digit for 2^exp which is max exponent
+	lng2 = (t_long *)malloc(sizeof(t_long));
+	lng2->flag = 1UL << 62;
+	lng2->whole = NULL;
+	return (lng2);
+}
+
+uint *ft_temp_b_DLNG(uint exp, int n)
+{
 	uint *b;
-	uint *s;
-	int count;
-	int dig;
 
-	uint	exp;
-	ulong	flag;
-
-	count = 0;
-	log2 = 0.30103;
-
-	num.l_dbl = x;
-	a = NULL;
-	b = NULL;
-	s = NULL;
-	flag = 1UL << 62;
-	// print_binary_uint(num.parts.exponent);
-	// print_binary_ulong(num.parts.mantissa);
-	// printf("mant = %lu\n", num.parts.mantissa);
-
-	// printf("exp = %d\n", exp);
-	// printf("parts.exp = %u\n", num.parts.exponent);
-//	printf("sign = %lu\n", num.parts.sign);
-
-
-//16383
-	if (num.parts.exponent >= 16383)
+	if (exp >= 16383)
 	{
-		// write(1, "JJ\n", 3);
-		exp = num.parts.exponent - 16383;
-		// printf("exp = %d\n", exp);
-		n = log2 * exp + 3; //3 for reliability
-		//	printf("n = %d\n", n);
-		a = power_of_2(exp, n); //malloc used
+		exp = exp - 16383;
 		b = power_of_2(exp, n); //malloc used
 
-		// print_memory(a);
-
-		while (exp > 0)
-		{
-			divide_by_2(b);
-			if (flag & num.parts.mantissa)
-				add_arithmetics(a, b);
-			flag = flag >> 1;
-			exp--;
-		}
-
-		// count += print_double_whole_part(a);
-//		printf("count = %d\n", count);
-		free(b);
-		b = NULL;
-	//	b = divide_by_minus_2(NULL, 52);
-	// }
 	}
-	else //(num.parts.exponent == 1022)
+	else
 	{
-		n = 64;
-		exp = 16383 - num.parts.exponent;
-		if (!(a = (uint *)malloc(sizeof(uint) * 2)))
-			return (0);
-		a[0] = 1;
-		a[1] = 0;
+		exp = 16383 - exp;
 		b = divide_by_minus_2(NULL, n);
 		while (exp > 1)
 		{
 			divide_by_minus_2(b, n);
 			exp--;
 		}
-		s = set_arithmetic_zeros(n);
-		add_arithmetics_minus(s, b);
 	}
+	return (b);
+}
 
-	n = (sp->decim > 64) ? sp->decim + 4 : 64;
-	if (!s)
-		s = set_arithmetic_zeros(n);
-	if (b)
+
+void	create_DLNG_whole(t_long *lng2, u_long_dbl *num_DBL, uint *b, int n)
+{
+	int exp;
+
+	if (num_DBL->parts.exponent >= 16383)
 	{
-		divide_by_minus_2(b, n);
-	}
-	else
-		b = divide_by_minus_2(NULL, n);
-	// write(1, "FR\n", 3);
-	// print_memory(b);
-	// flag = flag >> 1;
-	while (flag)
-	{
-		// ft_putnbr_positive(i);
-		// write(1, "\n", 1);
-		// print_binary_ulong(flag);
-		// print_binary_ulong(num.parts.mantissa);
-		// print_memory(s);
-		// print_memory(s);
-		if (flag & num.parts.mantissa)
+		exp = num_DBL->parts.exponent - 16383;
+		lng2->whole = power_of_2(exp, n); //malloc used
+		while (exp > 0)
 		{
-			// write(1, "YES", 3);
-			add_arithmetics_minus(s, b);
-
+			divide_by_2(b);
+			if (lng2->flag & num_DBL->parts.mantissa)
+				add_arithmetics(lng2->whole, b);
+			lng2->flag = lng2->flag >> 1;
+			exp--;
 		}
-		// write(1, "\n", 1);
-		divide_by_minus_2(b, n);
-		flag = flag >> 1;
+		free(b);
 	}
-
-	if (sp->point)
-		dig = sp->decim;
 	else
-		dig = 6;
+	{
+		exp = 16383 - num_DBL->parts.exponent;
+		if (!(lng2->whole = (uint *)malloc(sizeof(uint) * 2)))
+			return ;
+		lng2->whole[0] = 1;
+		lng2->whole[1] = 0;
+	}
+}
 
-	normalize(a, s, dig);
+void	create_DLNG_decimal(t_long *lng2, u_long_dbl *num_DBL, uint *b, int n)
+{
+	if (num_DBL->parts.exponent >= 16383)
+		b = divide_by_minus_2(NULL, n);
+	lng2->decimal = set_arithmetic_zeros(n);
+	if (num_DBL->parts.exponent < 16383)
+	{
+		add_arithmetics_minus(lng2->decimal, b);
+		divide_by_minus_2(b, n);
+	}
+	while (lng2->flag)
+	{
+		if (lng2->flag & num_DBL->parts.mantissa)
+			add_arithmetics_minus(lng2->decimal, b);
+		divide_by_minus_2(b, n);
+		lng2->flag = lng2->flag >> 1;
+	}
+}
+
+//made for decreasing line number for function ft_put_LONG_double
+int ft_put_DLNG_minus_sign(long double x, int c)
+{
 	if (x < 0)
 	{
 		write(1, "-", 1);
-		count++;
+		c++;
 	}
+	return (c);
+}
 
-	count += print_double_whole_part(a);
+t_long *ft_create_DLNG(int d, u_long_dbl *num_DBL)
+{
+	t_long *lng2;
+	int n;
+	uint *b;
 
-	if (!sp->hash && dig == 0)
+	lng2 = create_DLNG_whole_pre();
+	n = (d > 64) ? d + 4 : 64;
+	b = ft_temp_b_DLNG(num_DBL->parts.exponent, n);
+	create_DLNG_whole(lng2, num_DBL, b, n);
+	create_DLNG_decimal(lng2, num_DBL, b, n);
+	free(b);
+	return (lng2);
+}
+
+int		ft_put_LONG_double(long double x, t_s *sp)
+{
+	u_long_dbl num;
+	t_long *lng2;
+	int n; //number of digits. thus this amount is allocated
+	uint *b;
+	int count;
+
+	count = 0;
+	num.l_dbl = x;
+	// print_binary_uint(num.parts.sign);
+	// print_binary_uint(num.parts.exponent);
+	// print_binary_uint(num.parts.mantissa);
+
+	if ((n = check_DLNG_inf(&num, sp)))
+		return (n);
+
+	lng2 = ft_create_DLNG(sp->decim, &num);
+	normalize(lng2->whole, lng2->decimal, sp->decim);
+	ft_put_DLNG_minus_sign(x, count);
+	count += print_double_whole_part(lng2->whole);
+	if (!sp->hash && sp->decim == 0)
 	{
-		free(a);
-		free(b);
-		free(s);
+		free_long_arithm(lng2);
 		return (count); 
 	}	
-
 	write(1, ".", 1);
 	count++;
-
-	print_double_decimal_part(s, dig);
-	count += dig;
-
-	free(a);
-	free(b);
-	free(s);
-
+	print_double_decimal_part(lng2->decimal, sp->decim);
+	count += sp->decim;
+	free_long_arithm(lng2);
 	return (count); 
 }
 

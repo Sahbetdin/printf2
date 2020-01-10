@@ -8,6 +8,18 @@ int main()
     unsigned int kl;
     char z;
     long zz;
+    char a01;
+    unsigned char a02;
+    short a03;
+    unsigned short a04;
+    int a05;
+    unsigned int a06;
+    long a07;
+    unsigned long a08;
+    long long a09;
+    unsigned long long a10;
+    char *a11;
+    void *a12;
 
 //	char str[] = "goingGLOB";
 	// printf("%+-5dA\n", 543);
@@ -18,8 +30,11 @@ int main()
     // kl = 4294967254;
     // n = digits_in_base_unsigned(kl, 16);
     // printf("dig = %d ", n);
-    c1 = printf("%20.10fA\n", 45642.314399999999);
-c2  = ft_printf("%20.10fA\n", 45642.314399999999);
+    // c1 = printf("%.400fA\n", 0.1243741999999e-306);
+    // c1 = printf("%.400fA\n", 0.1243741999999e-306);
+c1  =    printf("%10.3eA\n", 0.002399999999999);
+c2  = ft_printf("%10.3eA\n", 0.002399999999999);
+
 
 //9.99999999999 ПРОБЛЕМА!!!!
 
