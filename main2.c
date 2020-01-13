@@ -5,21 +5,6 @@ int main()
 {
 
 	int c1, c2, c3, c4, c5, c6, n;
-    unsigned int kl;
-    char z;
-    long zz;
-    char a01;
-    unsigned char a02;
-    short a03;
-    unsigned short a04;
-    int a05;
-    unsigned int a06;
-    long a07;
-    unsigned long a08;
-    long long a09;
-    unsigned long long a10;
-    char *a11;
-    void *a12;
 
 //	char str[] = "goingGLOB";
 	// printf("%+-5dA\n", 543);
@@ -33,6 +18,12 @@ int main()
 //      c1 = printf("% .1eA\n", 0.99983423e-4);
 //   c2 = ft_printf("% .1eA\n", 0.99983423e-4);
 
+// ft_printf("%V", -1024.0);
+
+
+   c1 = printf("%015LfA\n", 3565.34l); 
+c2 = ft_printf("%015LfA\n", 3565.34l);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
 
 //9.99999999999 ПРОБЛЕМА!!!!
 //543.239567865l
@@ -53,8 +44,8 @@ int main()
 //     c1 = printf("%.0LfA\n", LDBL_MIN);
 // c2  = ft_printf("%.0LfA\n", LDBL_MIN);
 
-    // c1 = printf("%V\n", 2.34);
-c2  = ft_printf("%W\n", 0.2l);
+//     // c1 = printf("%V\n", 2.34);
+// c2  = ft_printf("%W\n", 0.2l);
 
 
 

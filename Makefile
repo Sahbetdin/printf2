@@ -8,10 +8,11 @@ HDDIRS = -I.
 SRC = process_sp.c put_d.c \
 	put_hex_oct.c put_strings.c functions2.c \
 	put_double.c two.c print_double.c arithm.c \
-	put_long_dbl.c put_p.c put_e.c put_f1.c \
+	put_long_dbl.c put_p.c put_ee.c put_f1.c \
 	check_inf_nan.c
 	
 OBJ = $(subst .c,.o,$(SRC))
+#OBJ = $(SRC:.c=.o)
 
 HEAD = test_header.h
 
@@ -20,14 +21,17 @@ HEAD = test_header.h
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	@ar rc $(NAME) $(OBJ)
+#	@ar rc $(NAME) $(OBJ)
+	@ar rc $@ $^
 	@ranlib $(NAME)
-	@gcc main_LD.c $(NAME)
-	@./a.out
 
 %.o: %.c
 	@$(CC) $< -c -o $@ -I.$(HEAD)
 #	@gcc -I $(HEAD) -o $@ -c $<
+
+test: all
+	@gcc main_e.c $(NAME)
+	@./a.out
 
 clean:
 	@$(RM) -f $(OBJ)

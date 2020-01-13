@@ -1,79 +1,186 @@
 #include "test_header.h"
 
 
-void test_printf_d()
+void test_printf_Lf()
 {
 	int c1, c2;
-	double a[5] = {3648.987656734853121, -3648.987656734853121, 0.000002342, -0.000002342, 0.0};
+	double dl[2] = {364.8, -364.8};
 	int i;
 
 
-	printf("\n|-----------i = %d------------|\n", i);
-	printf("|            TEST %%e           |\n");
-	printf("|-------------------------------|\n");
-	for (i = 0; i < 5; i++)
+	for (i = 0; i < 2; i++)
 	{
-	   c1 = printf("%e ", a[i]); c2 = ft_printf("%e ", a[i]);
+//	%%Lf |\t
+	   c1 = printf("%e\n", dl[i]); c2 = ft_printf("%e\n", dl[i]);
 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//    c1 = printf("% e\n", dl[i]); c2 = ft_printf("% e\n", dl[i]);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//    c1 = printf("%+e\n", dl[i]); c2 = ft_printf("%+e\n", dl[i]);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
 	}
 
+// 	for (i = 0; i < 2; i++)
+// 	{
+// 	printf("\n|----------i = %d-----------|\n", i);
+// 	printf("|     TEST %%e  with sp->numb  |\n");
+// 	printf("|----------LONG DOUBLE---------|\n");
+// /*1*/	c1 = printf("|%2e\n", dl[i]); c2 = ft_printf("|%2e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// /*2*/	c1 = printf("|%6e\n", dl[i]); c2 = ft_printf("|%6e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// /*3*/	c1 = printf("|% 2e\n", dl[i]); c2 = ft_printf("|% 2e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// /*4*/	c1 = printf("|% 6e\n", dl[i]); c2 = ft_printf("|% 6e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// /*5*/	c1 = printf("|%+2e\n", dl[i]); c2 = ft_printf("|%+2e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// /*6*/	c1 = printf("|%+6e\n", dl[i]); c2 = ft_printf("|%+6e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// /*7*/	c1 = printf("|%-2e\n", dl[i]); c2 = ft_printf("|%-2e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// /*8*/	c1 = printf("|%-6e\n", dl[i]); c2 = ft_printf("|%-6e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// /*9*/	c1 = printf("|%02e\n", dl[i]); c2 = ft_printf("|%02e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// /*10*/	c1 = printf("|%06e\n", dl[i]); c2 = ft_printf("|%06e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// /*11*/	c1 = printf("|% 02e\n", dl[i]); c2 = ft_printf("|% 02e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// /*12*/	c1 = printf("|% 06e\n", dl[i]); c2 = ft_printf("|% 06e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// 	printf("----------------------\n");
+// 	}
 
-	printf("\n|-----------i = %d------------|\n", i);
-	printf("|            TEST %%.e           |\n");
-	printf("|-------------------------------|\n");
-	for (i = 0; i < 5; i++)
-	{
-	   c1 = printf("%.8e ", a[i]); c2 = ft_printf("%.8e ", a[i]);
-	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
-	}
+// for (i = 0; i < 2; i++)
+// 	{
+// 	printf("\n|-----------i = %d------------|\n", i);
+// 	printf("|     TEST %%e\nwith  sp->numb  |\n");
+// 	printf("|-------------------------------|\n");
+// 	   c1 = printf("%8e\n", dl[i]); c2 = ft_printf("%8e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// 	   c1 = printf("%15e\n", dl[i]); c2 = ft_printf("%15e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// 	   c1 = printf("% 8e\n", dl[i]); c2 = ft_printf("% 8e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// 	   c1 = printf("% 15e\n", dl[i]); c2 = ft_printf("% 15e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// 	   c1 = printf("%+8e\n", dl[i]); c2 = ft_printf("%+8e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// 	   c1 = printf("%+15e\n", dl[i]); c2 = ft_printf("%+15e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// 	   c1 = printf("%-8e\n", dl[i]); c2 = ft_printf("%-8e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// 	   c1 = printf("%-15e\n", dl[i]); c2 = ft_printf("%-15e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// 	   c1 = printf("%08e\n", dl[i]); c2 = ft_printf("%08e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// 	   c1 = printf("%015e\n", dl[i]); c2 = ft_printf("%015e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// 	   c1 = printf("% 08e\n", dl[i]); c2 = ft_printf("% 08e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// 	      c1 = printf("% 015e\n", dl[i]); 
+// 	   c2 = ft_printf("% 015e\n", dl[i]);
+// 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+// 	}
+
+	// for (i = 0; i < 2; i++)
+	// {
+	// printf("\n|-----------i = %d------------|\n", i);
+	// printf("|      TEST %%NUMB && POINT     |\n");
+	// printf("|-------------------------------|\n");
+	//       c1 = printf("%.e\n", dl[i]); 
+	//    c2 = ft_printf("%.e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//       c1 = printf("%2.e\n", dl[i]); 
+	//    c2 = ft_printf("%2.e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//       c1 = printf("%2.2e\n", dl[i]); 
+	//    c2 = ft_printf("%2.2e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//       c1 = printf("%2.4e\n", dl[i]); 
+	//    c2 = ft_printf("%2.4e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//       c1 = printf("%2.8e\n", dl[i]); 
+	//    c2 = ft_printf("%2.8e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//       c1 = printf("%4.e\n", dl[i]); 
+	//    c2 = ft_printf("%4.e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//       c1 = printf("%4.2e\n", dl[i]); 
+	//    c2 = ft_printf("%4.2e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//       c1 = printf("%4.4e\n", dl[i]); 
+	//    c2 = ft_printf("%4.4e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//       c1 = printf("%4.8e\n", dl[i]); 
+	//    c2 = ft_printf("%4.8e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//       c1 = printf("%6.e\n", dl[i]); 
+	//    c2 = ft_printf("%6.e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//       c1 = printf("%6.2e\n", dl[i]); 
+	//    c2 = ft_printf("%6.2e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//       c1 = printf("%6.4e\n", dl[i]); 
+	//    c2 = ft_printf("%6.4e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//       c1 = printf("%6.8e\n", dl[i]); 
+	//    c2 = ft_printf("%6.8e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//       c1 = printf("%8.e\n", dl[i]); 
+	//    c2 = ft_printf("%8.e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//       c1 = printf("%8.2e\n", dl[i]); 
+	//    c2 = ft_printf("%8.2e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//       c1 = printf("%8.4e\n", dl[i]); 
+	//    c2 = ft_printf("%8.4e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//       c1 = printf("%8.6e\n", dl[i]); 
+	//    c2 = ft_printf("%8.6e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	//       c1 = printf("%8.8e\n", dl[i]); 
+	//    c2 = ft_printf("%8.8e\n", dl[i]);
+	// printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	// printf("\n----------------------\n");
+	// }
 
 }
 
 
 int main()
 {
-    char *tmp;
-    int c1;
-    int c2;
-    uint p;
-    int a;
-    int i;
+	int c1, c2;
+	int i;
 
-   // p = 1110000;
-//"%5d",0
-//"%10xAA\n", 42
-//"%#8xAA\n", 42
- 
+	// test_printf_Lf();
+	//    c1 = printf("%e\n", 0.0078454);
+	// c2 = ft_printf("%e\n", 0.0078454);	
+	// printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
 
-    p = 0;
-	a = 0;
-	if (p == 0)
-		test_printf_d();
-	else
-	{
-    	   c1 = printf("%xA\n", -42); 
-		c2 = ft_printf("%xA\n", -42);
-    	
+	//    c1 = printf("%.3e\n", 0.0078454);
+	// c2 = ft_printf("%.3e\n", 0.0078454);	
+	// printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+
+	//    c1 = printf("%.e\n", .12);
+	// c2 = ft_printf("%.e\n", .12);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+
+	//    c1 = printf("%10e\n", 1.0/0.0);
+	// c2 = ft_printf("%10e\n", 1.0/0.0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+
+//Lf
+	//    c1 = printf("%Lf\n", -0.999999l);
+	// c2 = ft_printf("%Lf\n", -0.999999l);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+
+	   c1 = printf("%.0Lf\n", LDBL_MIN);
+	c2 = ft_printf("%.0Lf\n", LDBL_MIN);
+	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
 
 
 
-		printf("c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
-	}
 
-	//c1 = digits_in_base_unsigned(4294967296, 16);
-
-  // printf("char is %ld byte\n", sizeof(char));
-  // printf("short is %ld byte\n", sizeof(short));
-  // printf("uint is %ld byte\n", sizeof(uint));
-  // printf("long is %ld byte\n", sizeof(long));
-  // printf("long long is %ld byte\n", sizeof(long long));
-  // printf("long long int is %ld byte\n", sizeof(long long int));
-
-//    printf("%7.-1f", 5.5657842);
-//    printf("%  0 9.3f", 56.54562);
-//    printf("%               0.50%");
-
-  //  tmp = ft_strchr("diuoxXfFeEgGaAcspn%", 'd');
- 
-    return (0);
+	return (0);
 }

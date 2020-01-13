@@ -39,9 +39,10 @@ int check_double_inf(double a, t_s *sp)
 	int k;
 
 	num.dbl = a;
+	
 	if (num.parts.exponent == 2047)
 	{
-		k = sp->numb - 3 - (int)num.parts.sign;
+		k = (sp->numb > 3 + (int)num.parts.sign) ? sp->numb - 3 - (int)num.parts.sign : 0;		
 		ft_put_n_chars(32, k);
 		i = 0;
 		if (a < 0)

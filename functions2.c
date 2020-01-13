@@ -92,6 +92,8 @@ char	*ft_strdup(const char *s1)
 	size_t	i;
 	size_t	n;
 
+
+
 	i = 0;
 	p = (char *)s1;
 	while (p[++i])
@@ -147,17 +149,18 @@ int			ft_atoi(const char *str)
 	return (sign * res);
 }
 
-
 int			ft_atoi2(const char *str, char *end)
 {
 	int			i;
 	long long	res;
 	long long	sign;
 
+
+
 	res = 0;
 	i = 0;
 	sign = 1;
-	i += ft_cut_backspaces(&str[i]);
+	i += ft_cut_backspaces (&str[i]);
 	if (str[i] == '-')
 		sign = -1;
 	if (str[i] == '+' || str[i] == '-')

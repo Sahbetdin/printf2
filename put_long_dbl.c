@@ -69,7 +69,7 @@ int ft_create_n_temp(uint exp_, int d)
 	else
 	{
 		exp_ = 16383 - exp_;
-		n = 3.6 * (log2 * exp_ + 4); //4 for reliability
+		n = (log2 * exp_ + 4) * 3; //4 for reliability
 	}
 	return (n);
 }
@@ -132,10 +132,14 @@ int		ft_put_LONG_only(long double x, t_s *sp)
 
 	count = 0;
 	num.l_dbl = x;
+
 	lng2 = ft_create_LONG_whole(x);	
+
 	ft_create_LONG_decimal(lng2, &num, sp->decim);
 	dig = (sp->point > 0) ? sp->decim : 6;
+	// print_memory(lng2->decimal);
 	normalize(lng2->whole, lng2->decimal, sp->decim);
+//	print_memory(lng2->decimal);
 	count += print_double_whole_part(lng2->whole);
 	if (!sp->hash && sp->decim == 0)
 	{
@@ -154,6 +158,8 @@ int ft_dig_LONG(long double a)
 {
 	int i;
 
+	if (a < 1)
+		return (1);
 	i = 0;
 	while (a >= 1)
 	{
@@ -174,39 +180,51 @@ int		ft_put_LONG_double(long double x, t_s *sp)
 		sp->sign = 1;
 		x = -x;
 	}
-
 	dig = ft_dig_LONG(x);
 //	printf("dig = %d\n", dig);
-	if (sp->backsp && sp->zero)
-		sp->zero = 0;
-
 	k = (sp->numb > dig) ? sp->numb - dig : 0;
 	if (sp->decim > 0)
 		k -= sp->decim + 1;
-//	printf("k = %d\n", k);
 	k -= (sp->plus || sp->sign);
 	if (k < 0)
 		k = 0;
 	if (k == 0 && sp->backsp && !sp->sign)
 		k = 1;
+//	printf("k = %d\n", k);
 //узнаем что возвр
 	count = dig + k + (sp->plus || sp->sign);
 	// printf("count = %d\n", count);
 	if (sp->decim > 0)
 		count += sp->decim + 1;
-//
-	if (sp->zero)
+//	printf("count = %d\n", count);
+
+	if (sp->minus)
 	{
-		ft_put_sign(sp);
-		ft_put_n_chars(48, k);
-		ft_put_LONG_only(x, sp);
+			ft_put_sign(sp);
+			ft_put_LONG_only(x, sp);
+			ft_put_n_chars(32, k);
 	}
 	else
 	{
-		ft_put_n_chars(32, k);
-		ft_put_sign(sp);
-		ft_put_LONG_only(x, sp);
+		if (sp->zero && sp->backsp && !sp->plus && !sp->sign)
+		{
+			write(1, " ", 1);
+			ft_put_n_chars(48, k - 1);
+			ft_put_LONG_only(x, sp);
+		}
+		else if (sp->zero)
+		{		
+			ft_put_sign(sp);
+			ft_put_n_chars(48, k);
+			ft_put_LONG_only(x, sp);
+		}
+		else
+		{
+			ft_put_n_chars(32, k);
+			ft_put_sign(sp);
+			ft_put_LONG_only(x, sp);
+		}
 	}
-
+	
 	return (count);
 }

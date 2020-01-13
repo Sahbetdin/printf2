@@ -11,9 +11,6 @@ void normalize_sci(uint *a, uint *s, int j)
 	if (j < 0)
 	{
 		i = -j;
-		// printf("i = %d\n", i);
-		// printf("s[i] = %d\n", s[i]);
-		// printf("s[i + 1] = %d\n", s[i + 1]);
 		if (s[i + 1] > 4)
 		{
 			s[i]++;
@@ -55,8 +52,6 @@ void normalize_sci(uint *a, uint *s, int j)
 			i++;
 		}
 	}
-	// print_memory(s);
-	// printf("j = %d\n", j);
 }
 
 void ft_put_sign(t_s *sp)
@@ -254,9 +249,7 @@ int put_scientific_less_1(uint *a, uint *s, t_s *sp)
 		i++;
 	exp_ = i;
 	normalize_sci(a, s, -(exp_ + sp->decim));
-
 	k = ft_set_k_for_e(sp, exp_, &dig_exp_);
-
 	ft_put_e_whole(&exp_, s, a[1], &flag);
 	if (sp->decim > 0)
 		write(1, ".", 1);

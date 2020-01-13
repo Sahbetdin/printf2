@@ -63,7 +63,6 @@ char *find_spec(char *p, t_s *sp)
 			}
 			else if (*p == 'h')
 			{
-			//	write(1, "H\n", 2);
 				sp->s1 = *(p + 1);
 				if (sp->s1 == 'h')
 					sp->s2 = *(p + 2);
