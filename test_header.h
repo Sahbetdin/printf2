@@ -123,8 +123,9 @@ int		ft_put_whole_double(double a, t_s *sp);
 int		ft_put_f_double(double a, t_s *sp);
 t_long *create_long(double x, t_s *sp);
 //help functions
-void	print_binary_uint(uint num);
-void	print_binary_ulong(ulong num);
+void	print_binary_uint(uint num, int dig);
+void	print_binary_ulong(ulong num, int dig);
+
 //inf
 int		put_inf(t_s *sp);
 int		put_DLNG_inf(t_s *sp);
@@ -137,4 +138,10 @@ int		put_scientific_gr_1(uint *a, uint *s, t_s *sp);
 int		put_scientific_less_1(uint *a, uint *s, t_s *sp);
 int		ft_put_sci(double a, t_s *sp);
 int		ft_if_sci(double a, t_s *sp);
+//sign
+void	ft_put_sign(t_s *sp);
+//memory print
+int		ft_memory_float(double a, t_s *sp);
+int		ft_memory_LDBL(long double a, t_s *sp);
+
 #endif

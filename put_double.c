@@ -116,6 +116,7 @@ t_long *create_long(double x, t_s *sp)
 	int		n;
 
 	num.dbl = x;
+
 	if (!(lng = create_long_whole(&num)))
 		return (NULL);
 	n = (sp->decim > 52) ? sp->decim + 600 : 52;
@@ -150,11 +151,21 @@ int		put_double_NEW(double x, t_s *sp)
 	int count;
 	int dig;
 	t_long *lng;
-
 	count = 0;
+
+
 	if (!(lng = create_long(x, sp)))
 		return (0);
+
+	// print_sp(sp);
+	// print_memory(lng->decimal);
+
 	normalize(lng->whole, lng->decimal, sp->decim);
+
+	// print_memory(lng->decimal);
+	// write(1, "H", 1);
+	// return (0);
+
 	count += print_double_whole_part(lng->whole);
 	if (!sp->hash && sp->decim == 0 && sp->point)
 	{
@@ -173,10 +184,37 @@ int		put_double_NEW(double x, t_s *sp)
 int ft_put_f_double(double a, t_s *sp)
 {
 
-	if (sp->s == 'f' || sp->s == 'F')
+	if (sp->s == 'f' || sp->s == 'F' || (sp->s == 'l' && sp->s1 == 'f'))
 		return (put_double_NEW(a, sp));
 	else if (sp->s == 'L' && sp->s1 == 'f')
 		return (ft_put_LONG_double(a, sp));
 	else
 		return (0);
 }
+
+int		ft_memory_float(double a, t_s *sp)
+{
+	u_double num;
+	num.dbl = a;
+	write(1, "sign:     ", 10);
+	print_binary_uint(num.parts.sign, 0);
+	write(1, "exponent: ", 10);
+	print_binary_uint(num.parts.exponent, 10);
+	write(1, "mantissa: ", 10);
+	print_binary_ulong(num.parts.mantissa, 51);
+	return (94);
+}
+
+int		ft_memory_LDBL(long double a, t_s *sp)
+{
+	u_long_dbl num;
+	num.l_dbl = a;
+	write(1, "sign:     ", 10);
+	print_binary_uint(num.parts.sign, 0);
+	write(1, "exponent: ", 10);
+	print_binary_uint(num.parts.exponent, 10);
+	write(1, "mantissa: ", 10);
+	print_binary_ulong(num.parts.mantissa, 63);
+	return (0);
+}
+

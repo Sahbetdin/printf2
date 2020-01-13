@@ -46,7 +46,7 @@ char *find_spec(char *p, t_s *sp)
 {
 	char *lett;
 
-	lett = ft_strdup("diuolhxXfFLeEgGaAcspn%");
+	lett = ft_strdup("diuolhxXfFLeEgGaAcspnVW%");
 	while (*p)
 	{
 		if (*p == ' ' || *p == '\t' || *p == '.' || (*p >= '0' && *p <= '9')
@@ -239,12 +239,12 @@ char *parse_sier(char *p, t_s *sp)
 		if (ptr_point)
 			set_decimal(ptr_point + 1, sp);
 		else if (sp->s == 'f' || sp->s == 'e' || sp->s == 'F' || sp->s == 'E' 
-			|| (sp->s == 'L' && sp->s1 == 'f'))
+			|| ((sp->s == 'L' || sp->s == 'l') && sp->s1 == 'f'))
 			sp->decim = 6;
 	}
 	else
 	{
-		ft_putstr("error");
+		// ft_putstr("error");
 		ptr_lett = NULL;
 	}
 	return (ptr_lett);
@@ -268,10 +268,8 @@ int	process_specifier(char *ptr, t_s *sp, va_list ap)
 	(sp->s == 'l' && sp->s1 == 'l' && sp->s2 == 'o') ||
 	(sp->s == 'h' && (sp->s1 == 'x' || sp->s1 == 'X')) ||
 	(sp->s == 'h' && sp->s1 == 'o') ||
-	(sp->s == 'h' && sp->s1 == 'h' && (sp->s2 == 'x' || sp->s2 == 'X')) ||
-	(sp->s == 'h' && sp->s1 == 'h' && sp->s2 == 'o') ||
-	(sp->s == 'h' && sp->s1 == 'u') ||
-	(sp->s == 'h' && sp->s1 == 'h' && sp->s2 == 'u'))
+	(sp->s == 'h' && sp->s1 == 'h' && (sp->s2 == 'x' || sp->s2 == 'X' || sp->s2 == 'o' || sp->s2 == 'u')) ||
+	(sp->s == 'h' && sp->s1 == 'u'))
 	{
 		return (ft_put_x_o(va_arg(ap, ulong), sp));
 	}
@@ -284,9 +282,9 @@ int	process_specifier(char *ptr, t_s *sp, va_list ap)
 		return (ft_put_d(va_arg(ap, long long), sp));
 	}
 	else if (sp->s == 'f' || sp->s == 'F' ||
-			sp->s == 'e' || sp->s == 'E')
+			sp->s == 'e' || sp->s == 'E' || (sp->s == 'l' && sp->s1 == 'f'))
 			return (ft_put_whole_double(va_arg(ap, double), sp));
-	else if (sp->s == 'L' && (sp->s1 == 'f' || sp->s1 == 'F'))
+	else if ((sp->s == 'L') && (sp->s1 == 'f' || sp->s1 == 'F'))
 			return (ft_put_LONG_double(va_arg(ap, long double), sp));
 		
 	// else if (sp->s == 'F')
@@ -301,8 +299,13 @@ int	process_specifier(char *ptr, t_s *sp, va_list ap)
 		return(ft_put_string(va_arg(ap, char *), sp));
 	else if (sp->s == '%')
 		return (ft_put_percentage(sp));
-	else
-		ft_putstr("Could not process specifier_");
+	else if (sp->s == 'V')
+		return (ft_memory_float(va_arg(ap, double), sp));
+	else if (sp->s == 'W')
+		return (ft_memory_LDBL(va_arg(ap, long double), sp));
+	// else
+		// ft_putstr("Could not process specifier_");
+		// ft_putstr("Could not process specifier_");
 	return (0);
 }
 

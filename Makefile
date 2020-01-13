@@ -22,7 +22,7 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	@ar rc $(NAME) $(OBJ)
 	@ranlib $(NAME)
-	@gcc main2.c $(NAME)
+	@gcc main_LD.c $(NAME)
 	@./a.out
 
 %.o: %.c

@@ -86,7 +86,7 @@ int ft_put_x_o(ulong num, t_s *sp)
 		num = (uint)num;
 	else if (sp->s == 'h' && (sp->s1 == 'x' || sp->s1 == 'X'))
 		num = (unsigned short)num;
-	else if (sp->s == 'h' && sp->s1 == 'h' && (sp->s2 == 'x' || sp->s2 == 'X' || sp->s2 == 'o'))
+	else if (sp->s == 'h' && sp->s1 == 'h' && (sp->s2 == 'x' || sp->s2 == 'X' || sp->s2 == 'o' || sp->s2 == 'u'))
 		num = (unsigned char)num;
 	else if (sp->s == 'h' && (sp->s1 == 'o' || sp->s1 == 'u'))
 		num = (unsigned short)num;
@@ -109,7 +109,7 @@ int ft_put_x_o(ulong num, t_s *sp)
 		(sp->s == 'h' && sp->s1 == 'h' && (sp->s2 == 'x' || sp->s2 == 'X')))
 		dig = digits_in_base_unsigned(num, 16);
 	// printf("dig = %d\n", dig);
-	
+	// printf("dig = %d, l = %d, k = %d\n",dig, l, k);
 	if (sp->hash)
 	{
 		if (sp->s == 'x' || sp->s == 'X' ||
@@ -123,7 +123,6 @@ int ft_put_x_o(ulong num, t_s *sp)
 		
 	}
 	// printf("dig = %d, l = %d, k = %d, sp->hash = %d\n",dig, l, k, sp->hash);
-	
 	if (sp->point)
 	{
 		if (num == 0)
@@ -190,12 +189,9 @@ int ft_put_x_o(ulong num, t_s *sp)
 			else
 			{
 				ft_put_n_chars(32, k);
-
 				// write(1, "FF\n", 3);
-
 				ft_put_prelimenaries(num, sp);
 				// write(1, "FF\n", 3);
-				
 			}
 		//	printf("dig = %d, l = %d, k = %d\n",dig, l, k);
 			n = ft_put_integer_u(num, sp);

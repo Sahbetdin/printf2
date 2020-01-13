@@ -58,41 +58,36 @@ int print_double_decimal_part(uint *s, int n)
 		write(1, &u, 1);
 		i++;
 	}
+	// write(1, "PP", 2);
 	return (n);
 }
 
 
-void print_binary_uint(uint num)
+void print_binary_uint(uint num, int dig)
 {
 	uint flag;
-	int count;
-	count = 0;
-
-	flag = 1 << 31;
-	while (flag && count < 40)
+	if (dig > 31 || dig < 0)
+		return ;
+	flag = 1 << dig;
+	while (flag)
 	{
 		if (flag & num)
 			write(1, "1", 1);
 		else
 			write(1, "0", 1);
-		// printf("flag = %u\n", flag);
-		// count++;
 		flag = flag >> 1;
-
-		// printf("flag = %u\n", flag);
-		// count++;
-		// flag = flag >> 1;
-
 	}
 	write(1, "\n", 1);
 }
 
 
-void print_binary_ulong(ulong num)
+void print_binary_ulong(ulong num, int dig)
 {
 	ulong flag;
 
-	flag = 1LU << 63;
+	if (dig > 63 || dig < 0)
+		return ;
+	flag = 1LU << dig;
 	while (flag)
 	{
 		if (flag & num)
