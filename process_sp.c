@@ -226,7 +226,7 @@ char *parse_sier(char *p, t_s *sp)
 
 	clear_spec(sp);
 	if ((ptr_lett = find_spec(p, sp)))
-	{
+	{		
 		set_zero(p, ptr_lett, sp);
 		set_plus(p, ptr_lett, sp);
 		set_minus(p, ptr_lett, sp);
@@ -249,14 +249,9 @@ char *parse_sier(char *p, t_s *sp)
 	return (ptr_lett);
 }
 
-//еще pointers распечатать!!!!!
-//надо сделать oct float bonus!!
-int	process_specifier(char *ptr, t_s *sp, va_list ap)
-{
-	int i;
-	int l;
-	int k;
 
+int process_x_o(t_s *sp)
+{
 	if (sp->s == 'u' || sp->s == 'x' 
 	|| sp->s == 'X' || sp->s == 'o' ||
 	(sp->s == 'l' && sp->s1 == 'u') ||
@@ -269,27 +264,39 @@ int	process_specifier(char *ptr, t_s *sp, va_list ap)
 	(sp->s == 'h' && sp->s1 == 'o') ||
 	(sp->s == 'h' && sp->s1 == 'h' && (sp->s2 == 'x' || sp->s2 == 'X' || sp->s2 == 'o' || sp->s2 == 'u')) ||
 	(sp->s == 'h' && sp->s1 == 'u'))
-	{
-		return (ft_put_x_o(va_arg(ap, ulong), sp));
-	}
-	else if (sp->s == 'd' || sp->s == 'i' ||
+		return (1);
+	else
+		return (0);
+
+}
+
+int process_integers(t_s *sp)
+{
+	if (sp->s == 'd' || sp->s == 'i' ||
 		(sp->s == 'h' && (sp->s1 == 'd' || sp->s1 == 'i')) || 
 		(sp->s == 'h' && sp->s1 == 'h' && (sp->s2 == 'd' || sp->s2 == 'i')) ||
 		(sp->s == 'l' && (sp->s1 == 'd' || sp->s1 == 'i')) ||
 		(sp->s == 'l' && sp->s1 == 'l' && (sp->s2 == 'd' || sp->s2 == 'i')))
-	{
+		return (1);
+	else
+		return (0);
+}
+
+//надо сделать oct float bonus!!
+int	process_specifier(char *ptr, t_s *sp, va_list ap)
+{
+	int i;
+	int l;
+	int k;
+
+	if (process_x_o(sp))
+		return (ft_put_x_o(va_arg(ap, ulong), sp));
+	else if (process_integers(sp))
 		return (ft_put_d(va_arg(ap, long long), sp));
-	}
-	else if (sp->s == 'f' || sp->s == 'F' ||
-			sp->s == 'e' || sp->s == 'E' || (sp->s == 'l' && sp->s1 == 'f'))
-			return (ft_put_whole_double(va_arg(ap, double), sp));
-	else if ((sp->s == 'L') && (sp->s1 == 'f' || sp->s1 == 'F'))
+	else if (sp->s == 'f' || sp->s == 'F' || sp->s == 'e' || sp->s == 'E' || (sp->s == 'l' && sp->s1 == 'f'))
+		return (ft_put_whole_double(va_arg(ap, double), sp));
+	else if ((sp->s == 'L') && (sp->s1 == 'f' || sp->s1 == 'F' || sp->s1 == 'e' || sp->s1 == 'E'))
 			return (ft_put_LONG_double(va_arg(ap, long double), sp));
-		
-	// else if (sp->s == 'F')
-	// 	printf("%F\n", va_arg(ap, double));
-	// else if (sp->s == 'e')
-		// return (ft_putscientific(va_arg(ap, double), sp));
 	else if (sp->s == 'c')
 		return (ft_putchar_c(va_arg(ap, int), sp));
 	else if (sp->s == 'p')
@@ -302,9 +309,6 @@ int	process_specifier(char *ptr, t_s *sp, va_list ap)
 		return (ft_memory_float(va_arg(ap, double), sp));
 	else if (sp->s == 'W')
 		return (ft_memory_LDBL(va_arg(ap, long double), sp));
-	// else
-		// ft_putstr("Could not process specifier_");
-		// ft_putstr("Could not process specifier_");
 	return (0);
 }
 
@@ -318,7 +322,6 @@ int     ft_printf(char *fmt, ...)
 	char *lett;
 	t_s *sp;
 
-
 	sp = (t_s *)malloc(sizeof(t_s));
 	va_start(ap, fmt);
 	p = fmt;
@@ -329,6 +332,8 @@ int     ft_printf(char *fmt, ...)
 		{
 			if ((s = parse_sier(p + 1, sp)))
 			{
+						// return (0);
+
 				// print_sp(sp);
 				//вызываем обработчик спарсенного
 				//printf(" ret bef = %d \n", ret);

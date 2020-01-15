@@ -122,6 +122,7 @@ void	free_long_arithm(t_long *lng);
 int		ft_put_whole_double(double a, t_s *sp);
 int		ft_put_f_double(double a, t_s *sp);
 t_long *create_long(double x, t_s *sp);
+int		ft_put_whole_sci(double x, t_s *sp);
 //help functions
 void	print_binary_uint(uint num, int dig);
 void	print_binary_ulong(ulong num, int dig);
@@ -134,10 +135,37 @@ int		check_DLNG_inf(u_long_dbl *num_DBL, t_s *sp);
 //p
 int		ft_put_p(long num, t_s *sp);
 //e
-int		put_scientific_gr_1(uint *a, uint *s, t_s *sp);
-int		put_scientific_less_1(uint *a, uint *s, t_s *sp);
-int		ft_put_sci(double a, t_s *sp);
-int		ft_if_sci(double a, t_s *sp);
+void ft_put_exp(t_s *sp, int dig);
+int ft_put_exp_value(int exp_);
+void normalize_sci(uint *s, int d);
+uint *create_one_array_e(t_long *lng);
+int ft_find_exp(t_long *lng);
+void ft_fill_in_one_arr_e(uint *arr, t_long *lng, int j);
+int ft_put_value_in_e(uint *arr, t_s *sp, int j);
+int ft_put_e_zero(t_s *sp);
+int ft_put_sci(double x, t_s *sp);
+int ft_dig_db(double a);
+int ft_get_k_for_e(double x, t_s *sp);
+int ft_put_whole_sci(double x, t_s *sp);
+
+
+//Le
+int ft_put_sci_LDBL(long double x, t_s *sp);
+int ft_dig_LONG(long double a);
+int ft_get_k_for_e_LDBL(long double x, t_s *sp);
+int ft_put_whole_sci_LDBL(long double x, t_s *sp);
+
+t_long	*ft_create_LONG_pre(u_long_dbl *num_DBL);
+t_long	*ft_create_LONG_whole(u_long_dbl *num_DBL);
+int ft_create_n_temp(uint exp_, int d);
+uint *ft_create_b_temp(uint exp_, int d, int n);
+void	ft_create_LONG_decimal(t_long *lng2, u_long_dbl *num_DBL, int d);
+int		ft_put_LONG_only(u_long_dbl *num_DBL, t_s *sp);
+int ft_dig_LDBL(long double a);
+void	ft_put_from_specif_LDBL_minus(u_long_dbl *num_DBL, t_s *sp, int k);
+void	ft_put_from_specif_LDBL(u_long_dbl *num_DBL, t_s *sp, int k);
+int		ft_put_LONG_double(long double x, t_s *sp);
+
 //sign
 void	ft_put_sign(t_s *sp);
 //memory print

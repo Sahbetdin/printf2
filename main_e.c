@@ -153,27 +153,29 @@ int main()
 	int c1, c2;
 	int i;
 
-	// test_printf_Lf();
-	   c1 = printf("%e\n", 12340.0078454);
-	c2 = ft_printf("%e\n", 12340.0078454);	
-	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+
+	// // test_printf_Lf();
+	//    c1 = printf("% 12.3Le\n", 1.0l/3120.0);
+	// c2 = ft_printf("% 12.3Le\n", 1.0l/3120.0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+
+	//    c1 = printf("%23.46Le\n", 1.0l/3120.0);
+	// c2 = ft_printf("%23.46Le\n", 1.0l/3120.0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
 
 	//    c1 = printf("%.3e\n", 0.0078454);
 	// c2 = ft_printf("%.3e\n", 0.0078454);	
 	// printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
 
-	//    c1 = printf("%e\n", DBL_MAX/1.e290);
-	// c2 = ft_printf("%e\n", DBL_MAX/1.e290);
-	// printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
-
-	//    c1 = printf("%e\n", 12.345341e295);
-	// c2 = ft_printf("%e\n", 12.345341e295);
+	   c1 = printf("%LfA\n", 0.0l);
+	c2 = ft_printf("%LfA\n", 0.0l);
+	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
 
 //узнать, сколько n достаточно
 	//    c1 = printf("%e\n", DBL_MAX);
 	// c2 = ft_printf("%e\n", DBL_MAX);
 
-	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
 
 	//    c1 = printf("%10e\n", 1.0/0.0);
 	// c2 = ft_printf("%10e\n", 1.0/0.0);

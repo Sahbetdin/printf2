@@ -10,11 +10,11 @@ void ft_put_sign(t_s *sp)
 }
 
 
-void ft_put_exp(char ch, int dig)
+void ft_put_exp(t_s *sp, int dig)
 {
-	if (ch == 'e')
+	if (sp->s == 'e' || sp->s1 == 'e')
 		write(1, "e", 1);
-	else if (ch == 'E')
+	else if (sp->s == 'E' || sp->s1 == 'E')
 		write(1, "E", 1);
 	if (dig < 0)
 		write(1, "-", 1);
@@ -97,92 +97,88 @@ int ft_find_exp(t_long *lng)
 	while (i > 0 && lng->whole[i] == 0)
 		i--;
 	j = i;
-	printf("j = %d\n", j);
+	// printf("j = %d\n", j);
 	if (j <= 0)
 	{
 		i = 1;
 		while (i < lng->decimal[0] && lng->decimal[i] == 0)
 			i++;
-		// if (i == lng->decimal[0])
-		// 	return (0);
-		// printf("i = %d\n", i);
-		// printf("... = %d\n", lng->decimal[0]);
 		j = -i;
 	}
 	return (j);          
 }
 
-// void	ft_one_array(double x, t_s *sp, )
-// {
-// 	uint *arr;
-// 	t_long *lng;
-
-// //create whole and decimal parts
-// 	if (!(lng = create_long(x, sp)))
-// 		return (0);
-// 	arr = ft_find_exp(lng);
-// //malloc and fill in with zeros
-// // 	arr = (uint *)malloc(sizeof(uint) * (lng->whole[0] + lng->decimal[0] + 1));
-// // 	arr[0] = lng->whole[0] + lng->decimal[0];
-// // 	i = 0;
-// // 	while (++i < arr[0])
-// // 		arr[i] = 0;
-// // //find exponent which is j
-// // 	i = lng->whole[0];
-// // 	while (i > 0 && lng->whole[i] == 0)
-// // 		i--;
-// // 	j = i;
-	
-// 	return (arr);
-// }
-
 void ft_fill_in_one_arr_e(uint *arr, t_long *lng, int j)
 {
 	int i;
-	// printf("j = %d\n", j);
+	int k;
 
 	if (j > 0)
 	{
-		i = j;
-		// write(1, "KK\n",3);
-		while (i > 0)
-		{
-			arr[lng->whole[0] - i] = lng->whole[i];
-			i--;
-		}
-	printf("KK\n");
-	print_memory(arr);
-	printf("KK\n");
+		i = j + 1;
+		while (--i > 0)
+			arr[j - i + 1] = lng->whole[i];
 		i = 1;
 		while (i < lng->decimal[0])
 		{
 			arr[j + i] = lng->decimal[i];
 			i++;
 		}
-
 	}
 	else
 	{
-		// i = 1;
-		// while (i < lng->decimal[0] && lng->decimal[i] == 0)
-		// 	i++;
-		// j = -i;
+		// printf("j = %d\n", j);
+		// print_memory(lng->decimal);
 		i = 1;
 		while (i <= lng->decimal[0] + j)
 		{
+			// ft_putnbr_positive(i);
+			// write(1, " ", 1);
+			// ft_putnbr_positive(lng->decimal[i - j - 1]);
+			// write(1, "\n", 1);
+
 			arr[i] = lng->decimal[i - j - 1];
 			i++;
-		}
-	}
 
+		}
+		// print_memory(lng->decimal);
+		// print_memory(arr);
+	}
+}
+
+
+int ft_put_value_in_e(uint *arr, t_s *sp, int j)	
+{
+	int dig;
+	int i;
+
+	dig = sp->decim + 1;
+	normalize_sci(arr, dig);
+	if (arr[1] > 9)
+	{
+		ft_putchar('1');
+		if (dig > 1)
+			write(1, ".", 1);
+		ft_put_n_chars(48, dig - 1);
+		j++;
+	}
+	else
+	{
+		ft_putchar(arr[1] + '0');
+		if (dig > 1)
+			write(1, ".", 1);
+		i = 1;
+		while (++i <= dig)
+			ft_putchar(arr[i] + '0');
+	}
+	free(arr);
+	// sp->decim--;
+	ft_put_exp(sp, j);
+	return (j);
 }
 
 int ft_put_e_zero(t_s *sp)
 {
-	if (sp->decim > 0)
-		sp->point = 1;
-	else
-		sp->point = 0;
 	write(1, "0", 1);
 	if(sp->decim > 0)
 	{
@@ -199,13 +195,9 @@ int ft_put_e_zero(t_s *sp)
 //ниже x = 0 рассматривается отдельно
 int ft_put_sci(double x, t_s *sp)
 {
-	int k;
-	int n;
 	int i;
 	int j; //кол-во записанных в "arr" целых чисел
 	t_long *lng;
-	uint *a;
-	uint *s;
 	uint *arr; //new array where whole and decimal parts stored
 	int count;
 
@@ -213,57 +205,100 @@ int ft_put_sci(double x, t_s *sp)
 		return (ft_put_e_zero(sp));
 	if (!(lng = create_long(x, sp)))
 		return (0);
+    // print_memory(lng->decimal);
+
 	if (!(arr = create_one_array_e(lng)))
 		return (0);
 	j = ft_find_exp(lng);
+	ft_fill_in_one_arr_e(arr, lng, j);
+	j = ft_put_value_in_e(arr, sp, j);
 
-	print_memory(lng->whole);
+    // print_memory(lng->decimal);
 	// print_memory(arr);
 
-//	print_memory(lng->decimal);
-// 
-	ft_fill_in_one_arr_e(arr, lng, j);
-	ft_putstr("gf\n");
 
+//write down exponent value
+	count = 1 + 2 + (sp->plus || sp->sign); //целая часть и e+
+	if (sp->decim > 0)
+		count += sp->decim + 1; //точка
+	return (count + ft_put_exp_value(j));
+}
 
-////
-	//ft_put_arr_e(uint *arr, t_s *sp)
-	i = 2;
-	sp->decim++;
-	normalize_sci(arr, sp->decim);
-	ft_putchar(arr[1] + '0');
-	if (sp->decim > 1)
-		write(1, ".", 1);
-	if (j >= 0)
+int ft_dig_db(double a)
+{
+	int i;
+
+	if (a < 1)
+		return (1);
+	i = 0;
+	while (a >= 1)
 	{
-		while (i <= sp->decim)
-		{
-			ft_putchar(arr[i] + '0');
-			i++;
-		}
+		a /= 10;
+		i++;
+	}
+	return (i);
+}
+
+int ft_get_k_for_e(double x, t_s *sp)
+{
+	int k;
+	int dig;
+
+	if (sp->decim > 0)
+		sp->point = 1;
+	else
+		sp->point = 0;
+	k = sp->numb - sp->decim - sp->point;
+	dig = ft_dig_db(x);
+	if (dig < 100)
+		k -= 2 + 3;
+	else if (dig < 1000)
+		k -= 3 + 3;
+	if (sp->plus || sp->sign)
+		k--;
+	if (k < 0)
+		k = 0;
+	if (k == 0 && sp->backsp)
+		k = 1;
+	return (k);
+}
+
+int ft_put_whole_sci(double x, t_s *sp)
+{
+	int n;
+	int k;
+
+	k = ft_get_k_for_e(x, sp);
+	if (sp->minus)
+	{
+		ft_put_sign(sp); 
+		n = ft_put_sci(x, sp);
+		ft_put_n_chars(32, k);
+		return (k + n);
 	}
 	else
 	{
-		while (i <= sp->decim)
-		{
-			ft_putchar(arr[i] + '0');
-			i++;
-		}
+		printf("k = %d \n", k);
+		ft_put_n_chars(32, k);
+		
+		ft_put_sign(sp);
+		return (ft_put_sci(x, sp) + k);
 	}
-	sp->decim--;
-	ft_put_exp(sp->s, j);
-////
-
-//write down exponent value
-	count = 1 + 2 + (sp->plus || sp->sign || sp->backsp); //целая часть и e+
-	if (sp->decim > 0)
-		count += sp->decim + 1; //точка
-	n = ft_put_exp_value(j);
-	return (count + n);
 }
 
-// k = sp->numb - sp->decim - sp->point - 5;
-// if (k < 0)
-// 	k = 0;
-// 		ft_put_n_chars(32, k);
+
+/////////
+// void ft_put_sign(t_s *sp);
+// void ft_put_exp(t_s *sp, int dig);
+// int ft_put_exp_value(int exp_);
+// void normalize_sci(uint *s, int d);
+// uint *create_one_array_e(t_long *lng);
+// int ft_find_exp(t_long *lng);
+// void ft_fill_in_one_arr_e(uint *arr, t_long *lng, int j);
+// int ft_put_value_in_e(uint *arr, t_s *sp, int j);
+// int ft_put_e_zero(t_s *sp);
+// int ft_put_sci(double x, t_s *sp);
+// int ft_dig_db(double a);
+// int ft_get_k_for_e(double x, t_s *sp);
+// int ft_put_whole_sci(double x, t_s *sp);
 

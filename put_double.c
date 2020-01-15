@@ -155,19 +155,9 @@ int		put_double_NEW(double x, t_s *sp)
 	t_long *lng;
 	count = 0;
 
-
 	if (!(lng = create_long(x, sp)))
 		return (0);
-
-	// print_sp(sp);
-	// print_memory(lng->decimal);
-
 	normalize(lng->whole, lng->decimal, sp->decim);
-
-	// print_memory(lng->decimal);
-	// write(1, "H", 1);
-	// return (0);
-
 	count += print_double_whole_part(lng->whole);
 	if (!sp->hash && sp->decim == 0 && sp->point)
 	{

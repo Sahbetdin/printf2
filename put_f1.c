@@ -7,7 +7,6 @@ int ft_put_whole_double(double a, t_s *sp)
 	int		n;
 	int		dig;
 	u_double num;
-
 	// printf("NO: n = %d\n", n);
 	if ((n = check_double_inf(a, sp))) //check if number is inf, -inf, nan
 		return (n);
@@ -16,8 +15,9 @@ int ft_put_whole_double(double a, t_s *sp)
 		sp->sign = 1;
 		a = -a;
 	}
+	// printf("HERE");
 	if (sp->s == 'e' || sp->s == 'E')
-		return (ft_put_sci(a, sp));
+		return (ft_put_whole_sci(a, sp));
 	dig = digits_in_base((long)a, 10);
 	if (!(sp->numb || sp->decim))
 	{
