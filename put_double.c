@@ -119,7 +119,9 @@ t_long *create_long(double x, t_s *sp)
 
 	if (!(lng = create_long_whole(&num)))
 		return (NULL);
-	n = (sp->decim > 52) ? sp->decim + 600 : 52;
+	
+	n = 0.30103 * (1023 - num.parts.exponent) + 716;
+//	n = (sp->decim > 52) ? sp->decim + 600 : 52;
 	lng->decimal = set_arithmetic_zeros(n);
 	b = ft_temp_b_floats(&num, n);
 	if (num.parts.exponent < 1023)
@@ -212,7 +214,7 @@ int		ft_memory_LDBL(long double a, t_s *sp)
 	write(1, "sign:     ", 10);
 	print_binary_uint(num.parts.sign, 0);
 	write(1, "exponent: ", 10);
-	print_binary_uint(num.parts.exponent, 10);
+	print_binary_uint(num.parts.exponent, 14);
 	write(1, "mantissa: ", 10);
 	print_binary_ulong(num.parts.mantissa, 63);
 	return (0);

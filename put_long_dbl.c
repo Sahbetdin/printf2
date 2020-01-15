@@ -69,7 +69,7 @@ int ft_create_n_temp(uint exp_, int d)
 	else
 	{
 		exp_ = 16383 - exp_;
-		n = (log2 * exp_ + 4) * 3; //4 for reliability
+		n = (log2 * exp_ + 70); //4 for reliability
 	}
 	return (n);
 }
@@ -103,6 +103,7 @@ void	ft_create_LONG_decimal(t_long *lng2, u_long_dbl *uDBL, int d)
 	double log2;
 
 	n = ft_create_n_temp(uDBL->parts.exponent, d);
+	// printf("n = %d\n", n);
 	b = ft_create_b_temp(uDBL->parts.exponent, d, n);
 	if (uDBL->parts.exponent >= 16383)
 		lng2->decimal = set_arithmetic_zeros(n);
@@ -132,14 +133,10 @@ int		ft_put_LONG_only(long double x, t_s *sp)
 
 	count = 0;
 	num.l_dbl = x;
-
-	lng2 = ft_create_LONG_whole(x);	
-
+	lng2 = ft_create_LONG_whole(x);
 	ft_create_LONG_decimal(lng2, &num, sp->decim);
 	dig = (sp->point > 0) ? sp->decim : 6;
-	// print_memory(lng2->decimal);
 	normalize(lng2->whole, lng2->decimal, sp->decim);
-//	print_memory(lng2->decimal);
 	count += print_double_whole_part(lng2->whole);
 	if (!sp->hash && sp->decim == 0)
 	{
@@ -167,6 +164,40 @@ int ft_dig_LONG(long double a)
 		i++;
 	}
 	return (i);
+}
+
+void	ft_put_from_specif_LDBL_minus(long double x, t_s *sp, int k)
+{
+	ft_put_sign(sp);
+	ft_put_LONG_only(x, sp);
+	ft_put_n_chars(32, k);	
+}
+
+void	ft_put_from_specif_LDBL(long double x, t_s *sp, int k)
+{
+	if (sp->minus)
+		ft_put_from_specif_LDBL_minus(x, sp, k);		
+	else
+	{
+		if (sp->zero && sp->backsp && !sp->plus && !sp->sign)
+		{
+			write(1, " ", 1);
+			ft_put_n_chars(48, k - 1);
+			ft_put_LONG_only(x, sp);
+		}
+		else if (sp->zero)
+		{		
+			ft_put_sign(sp);
+			ft_put_n_chars(48, k);
+			ft_put_LONG_only(x, sp);
+		}
+		else
+		{
+			ft_put_n_chars(32, k);
+			ft_put_sign(sp);
+			ft_put_LONG_only(x, sp);
+		}
+	}
 }
 
 int		ft_put_LONG_double(long double x, t_s *sp)
@@ -197,34 +228,6 @@ int		ft_put_LONG_double(long double x, t_s *sp)
 	if (sp->decim > 0)
 		count += sp->decim + 1;
 //	printf("count = %d\n", count);
-
-	if (sp->minus)
-	{
-			ft_put_sign(sp);
-			ft_put_LONG_only(x, sp);
-			ft_put_n_chars(32, k);
-	}
-	else
-	{
-		if (sp->zero && sp->backsp && !sp->plus && !sp->sign)
-		{
-			write(1, " ", 1);
-			ft_put_n_chars(48, k - 1);
-			ft_put_LONG_only(x, sp);
-		}
-		else if (sp->zero)
-		{		
-			ft_put_sign(sp);
-			ft_put_n_chars(48, k);
-			ft_put_LONG_only(x, sp);
-		}
-		else
-		{
-			ft_put_n_chars(32, k);
-			ft_put_sign(sp);
-			ft_put_LONG_only(x, sp);
-		}
-	}
-	
+	ft_put_from_specif_LDBL(x, sp, k);	
 	return (count);
 }
