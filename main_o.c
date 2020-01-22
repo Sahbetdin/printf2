@@ -167,9 +167,91 @@ int main()
 	// c2 = ft_printf("%.3e\n", 0.0078454);	
 	// printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
 
-	   c1 = printf("%LfA\n", 0.0l);
-	c2 = ft_printf("%LfA\n", 0.0l);
+
+	   c1 = printf("%#.x\n", 0);
+	c2 = ft_printf("%#.x\n", 0);	
 	printf("| c1 = %d, c2 = %d; diff = %d\n", c1, c2, c1 - c2);
+
+
+ // 	   c1 =  printf("%#.x %#.0xA\n", 0, 0);
+	//  c2 = ft_printf("%#.x %#.0xA\n", 0, 0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+
+ // 	   c1 =  printf("%o\n", 0);
+	//  c2 = ft_printf("%o\n", 0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+ // 	   c1 =  printf("%4o\n", 0);
+	//  c2 = ft_printf("%4o\n", 0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+ // 	   c1 =  printf("%.o\n", 0);
+	//  c2 = ft_printf("%.o\n", 0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+ // 	   c1 =  printf("%.4o\n", 0);
+	//  c2 = ft_printf("%.4o\n", 0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+ // 	   c1 =  printf("%6.3o\n", 1433);
+	//  c2 = ft_printf("%6.3o\n", 1433);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+ // 	   c1 =  printf("%#6.3o\n", 1433);
+	//  c2 = ft_printf("%#6.3o\n", 1433);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+ 	//    c1 =  printf("%#.4o\n", 0);
+	 // c2 = ft_printf("%#.4o\n", 0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+ // 	   c1 =  printf("%#.o\n", 0);
+	//  c2 = ft_printf("%#.o\n", 0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+ // 	   c1 =  printf("%#o\n", 0);
+	//  c2 = ft_printf("%#o\n", 0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+
+	//    c1 =  printf("%x\n", 0);
+	//  c2 = ft_printf("%x\n", 0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+ // 	   c1 =  printf("%4x\n", 0);
+	//  c2 = ft_printf("%4x\n", 0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+ // 	   c1 =  printf("%.x\n", 0);
+	//  c2 = ft_printf("%.x\n", 0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+ // 	   c1 =  printf("%.4x\n", 0);
+	//  c2 = ft_printf("%.4x\n", 0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+ // 	   c1 =  printf("%6.3x\n", 1433);
+	//  c2 = ft_printf("%6.3x\n", 1433);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+ // 	   c1 =  printf("%#6.3x\n", 1433);
+	//  c2 = ft_printf("%#6.3x\n", 1433);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+ // 	   c1 =  printf("%#.4x\n", 0);
+	//  c2 = ft_printf("%#.4x\n", 0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+ // 	   c1 =  printf("%#.x\n", 0);
+	//  c2 = ft_printf("%#.x\n", 0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+ // 	   c1 =  printf("%#x\n", 0);
+	//  c2 = ft_printf("%#x\n", 0);
+	// printf("| c1 = %d, c2 = %d; diff = %d\n\n", c1, c2, c1 - c2);
+
+
 
 //узнать, сколько n достаточно
 	//    c1 = printf("%e\n", DBL_MAX);

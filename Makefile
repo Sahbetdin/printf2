@@ -30,7 +30,7 @@ $(NAME): $(OBJ)
 #	@gcc -I $(HEAD) -o $@ -c $<
 
 test: all
-	@gcc main_e.c $(NAME)
+	@gcc main_x.c $(NAME)
 	@./a.out
 
 clean:
