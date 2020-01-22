@@ -103,7 +103,7 @@ int		ft_put_d(long long num, t_s *sp);
 int		ft_put_d_withOUT_numb_point(long long num, t_s *sp);
 int		ft_put_d_with_numb_point(long long num, t_s *sp, int dig);
 int		ft_put_x_o(ulong num, t_s *sp);
-int	ft_put_prelimenaries(ulong num, t_s *sp);
+void	ft_put_prelimenaries(t_s *sp);
 //f, F, Lf, e, E
 void	print_memory(uint *s);
 int		print_double_whole_part(uint *s);

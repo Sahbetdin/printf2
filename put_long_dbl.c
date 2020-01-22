@@ -104,7 +104,7 @@ void	ft_create_LONG_decimal(t_long *lng2, u_long_dbl *num_DBL, int d)
 	n = ft_create_n_temp(num_DBL->parts.exponent, d);
 	// printf("n = %d\n", n);
 	b = ft_create_b_temp(num_DBL->parts.exponent, d, n);
-	print_memory(b);
+	// print_memory(b);
 	if (num_DBL->parts.exponent >= 16383)
 		lng2->decimal = set_arithmetic_zeros(n);
 	else
